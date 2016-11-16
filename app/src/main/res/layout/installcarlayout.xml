@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEEEEE">
+
+    <!--标题区域-->
+    <FrameLayout
+        android:id="@+id/install_titleArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#00C3C5">
+
+        <TextView
+            android:id="@+id/TV_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="12dp"
+            android:text="装车详情"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:typeface="sans" />
+
+        <ImageView
+            android:id="@+id/IV_installback"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="4dp"
+            android:padding="6dp"
+            android:src="@mipmap/back_img" />
+    </FrameLayout>
+    <!--展示区域，控制纵横-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/install_titleArea"
+        android:orientation="vertical">
+        <!--单个展示-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#fff"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/TV_intallGoodsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:drawableLeft="@mipmap/googsname"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:text="商品名称："
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_marginTop="10dp"
+                android:background="#ABBFC6" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/TV_installArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:drawableLeft="@mipmap/place"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:hint="送达地点："
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_marginTop="10dp"
+                android:background="#ABBFC6" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/TV_installWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:drawableLeft="@mipmap/weight"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:hint="商品重量："
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_marginTop="10dp"
+                android:background="#ABBFC6" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="货物详情"
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <!--货物详情区域-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="#fff">
+
+            <EditText
+                android:id="@+id/ED_installRemarks"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:hint="备注信息、客户要求等（选填）"
+                android:paddingLeft="10dp" />
+            <!--照片区域-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:id="@+id/IV_installUpImg1"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone" />
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/IV_installUpImg2"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone" />
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/IV_installUpImg3"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:id="@+id/IV_installAddImg"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/addimg" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:clickable="true"
+            android:id="@+id/tv_installcommit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/order_informationArea"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bluebuttonstyle"
+            android:gravity="center"
+            android:text="提交数据"
+            android:textColor="#fff"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

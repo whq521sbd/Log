@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--标题栏-->
+    <TextView
+        android:typeface="sans"
+        android:id="@+id/messagetitelArea"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#00C3C5"
+        android:gravity="center"
+        android:text="消息中心"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
+    <!--展示区域-->
+    <RelativeLayout
+        android:layout_below="@+id/messagetitelArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:dividerHeight="0.6px"
+            android:divider="@color/colorPrimary"
+            android:id="@+id/LV_MessageListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

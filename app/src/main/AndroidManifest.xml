@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.auto.logistics">
+    <!--网络请求权限-->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+
+    <!--andbase权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+<!--照相机拍照存储权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!--打电话权限-->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <!--程序主入口-->
+        <activity
+            android:name=".Activity.GuideActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--登录页面-->
+        <activity
+            android:name=".Activity.LoginActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <!--忘记密码页面-->
+        <activity
+            android:name=".Activity.MissPwdAcitvity"
+            android:screenOrientation="portrait"></activity>
+
+        <!--程序主页面-->
+        <activity
+            android:name=".Activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+        <!--接单页面-->
+        <activity
+            android:name=".Activity.OrderActivity"
+            android:screenOrientation="portrait" />
+        <!--装车页面-->
+        <activity android:name=".Activity.InstallCarActivity"
+            android:screenOrientation="portrait"/>
+        <!--发货页面-->
+        <activity android:name=".Activity.SendGoodsActivity"
+            android:screenOrientation="portrait"/>
+        <!--送到页面-->
+        <activity android:name=".Activity.ReachAcitvity"
+            android:screenOrientation="portrait"/>
+        <!--修改密码-->
+        <activity android:name=".Activity.RevisePWDActivity"
+            android:screenOrientation="portrait"/>
+        <!--派送记录-->
+        <activity android:name=".Activity.DispatchNotesActivity"
+            android:screenOrientation="portrait"/>
+
+    </application>
+
+</manifest>

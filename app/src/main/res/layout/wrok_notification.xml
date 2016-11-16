@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/notifi_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/icon" />
+    <TextView
+        android:textColor="#000"
+        android:id="@+id/notifi_title"
+        android:layout_toRightOf="@+id/notifi_img"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="开始接单啦~"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+<TextView
+    android:textColor="#000"
+    android:layout_marginTop="2dp"
+    android:layout_marginLeft="5dp"
+    android:text="开车小心哦~"
+    android:textSize="10dp"
+    android:layout_toRightOf="@+id/notifi_img"
+    android:layout_below="@+id/notifi_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+</RelativeLayout>

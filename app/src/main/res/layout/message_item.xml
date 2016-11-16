@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/rightarrow"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="8dp"
+        android:background="@mipmap/rightarrow" />
+
+    <LinearLayout
+        android:id="@+id/Area1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow">
+
+        <TextView
+            android:typeface="sans"
+            android:drawablePadding="2dp"
+            android:drawableLeft="@mipmap/googsname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品名称："
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_GoodsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Area2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow">
+
+        <TextView
+            android:typeface="sans"
+            android:drawablePadding="2dp"
+            android:drawableLeft="@mipmap/weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品重量："
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_Weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Area3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area2"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow">
+
+        <TextView
+            android:typeface="sans"
+            android:drawablePadding="2dp"
+            android:drawableLeft="@mipmap/booth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商家摊位："
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--标题栏区域-->
+
+    <TextView
+        android:id="@+id/dispatchttitleArea"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#00C3C5"
+        android:gravity="center"
+        android:text="物流中心"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <TextView
+
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dispatchttitleArea"
+        android:layout_marginBottom="2dp"
+        android:background="#fff"
+        android:padding="7dp"
+        android:text=" | 运单列表"
+        android:textColor="#45494A"
+        android:typeface="sans" />
+
+    <TextView
+        android:id="@+id/Inactionline"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/title"
+        android:background="#000"
+        android:visibility="gone" />
+
+
+    <!--按钮第一排区域-->
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/mylogisticsArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Inactionline"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="#fff"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
+
+
+        <TextView
+            android:id="@+id/TV_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/stop"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="不接单"
+            android:textColor="@drawable/textstyle"
+            android:typeface="monospace" />
+
+        <FrameLayout
+            android:id="@+id/frame0"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@mipmap/ture"
+            android:visibility="invisible"></FrameLayout>
+
+        <View
+            android:layout_width="0.6px"
+            android:layout_height="match_parent"
+            android:background="#45494A"
+            android:visibility="gone" />
+
+        <!-- -->
+        <TextView
+            android:id="@+id/TV_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/accept"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="已接单"
+            android:textColor="@drawable/textstyle"
+            android:typeface="monospace"></TextView>
+
+        <FrameLayout
+            android:id="@+id/frame1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@mipmap/ture"
+            android:visibility="invisible"></FrameLayout>
+
+        <View
+            android:layout_width="0.6px"
+            android:layout_height="match_parent"
+            android:background="#45494A"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+
+    <!--按钮第二排区域-->
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/mylogisticsArea2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mylogisticsArea"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="#fff"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
+
+
+        <TextView
+            android:id="@+id/TV_install"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/install"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="已装配"
+            android:textColor="@drawable/textstyle"
+            android:typeface="monospace" />
+
+        <FrameLayout
+            android:id="@+id/frame2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@mipmap/ture"
+            android:visibility="invisible"></FrameLayout>
+
+
+        <TextView
+            android:id="@+id/TV_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/send"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="已发车"
+            android:textColor="@drawable/textstyle"
+            android:typeface="monospace" />
+
+
+        <FrameLayout
+            android:id="@+id/frame3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@mipmap/ture"
+            android:visibility="invisible"></FrameLayout>
+
+        <View
+            android:layout_width="0.6px"
+            android:layout_height="match_parent"
+            android:background="#45494A"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <!--按钮第三排区域-->
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mylogisticsArea2"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="#fff"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
+
+        <TextView
+            android:id="@+id/TV_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/black"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="已返程"
+            android:textColor="@drawable/textstyle"
+            android:typeface="monospace" />
+
+        <FrameLayout
+            android:id="@+id/frame4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@mipmap/ture"
+            android:visibility="invisible"></FrameLayout>
+
+        <View
+            android:layout_width="0.6px"
+            android:layout_height="match_parent"
+            android:background="#45494A"
+            android:visibility="gone" />
+
+
+        <TextView
+
+            android:layout_marginTop="15dp"
+            android:id="@+id/TV_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/no"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="敬请期待"
+            android:textColor="#707070"
+            android:typeface="monospace" />
+
+        <FrameLayout
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@mipmap/ture"
+            android:visibility="invisible"></FrameLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

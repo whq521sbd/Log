@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--标题区域-->
+    <FrameLayout
+        android:id="@+id/dispatch_titleArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#00C3C5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="12dp"
+            android:text="派送详情"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:typeface="sans" />
+
+        <ImageView
+            android:id="@+id/IV_dispatchgoback"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="4dp"
+            android:padding="6dp"
+            android:src="@mipmap/back_img" />
+    </FrameLayout>
+
+    <!--查询区域-->
+    <LinearLayout
+        android:id="@+id/Select_Area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dispatch_titleArea"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"
+            android:text="查询日期："
+            android:textColor="#fff"
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/TV_Dataselect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/find"
+            android:drawableRight="@mipmap/find_img"
+            android:gravity="center"
+            android:hint="请选择查询日期"
+            android:imeOptions="actionDone"
+            android:inputType="textCapWords"
+            android:paddingLeft="10dp"
+            android:selectAllOnFocus="true"
+            android:textSize="14sp"
+            android:typeface="monospace" />
+
+        <TextView
+            android:id="@+id/TV_Qurey"
+            android:clickable="true"
+            android:textSize="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:gravity="center"
+            android:text="查询"
+            android:textColor="@drawable/qrystyle"
+            android:typeface="serif" />
+
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/LV_DisListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/Select_Area"
+        android:divider="@color/colorPrimary"
+        android:dividerHeight="0.6px"></ListView>
+
+
+    <!--日期选择器-->
+    <DatePicker
+        android:id="@+id/DP_DatePicker"
+        android:layout_below="@+id/Select_Area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"></DatePicker>
+
+
+</RelativeLayout>

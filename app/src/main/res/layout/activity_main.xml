@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f0f0f0">
+
+    <LinearLayout
+        android:layout_above="@+id/NavigationBarArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--容器布局-->
+        <RelativeLayout
+            android:id="@+id/RL_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/InanitionLine"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@+id/NavigationBarArea"
+        android:background="#000" />
+
+
+    <!--导航栏区域-->
+    <LinearLayout
+        android:id="@+id/NavigationBarArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/TV_Message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="3dp"
+            android:drawableTop="@mipmap/message"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="消息提醒"
+            android:textColor="@drawable/textstyle" />
+
+        <TextView
+            android:id="@+id/TV_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="3dp"
+            android:drawableTop="@mipmap/list"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="运单查询"
+            android:textColor="@drawable/textstyle" />
+
+
+        <TextView
+           android:id="@+id/TV_mydispatching"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="3dp"
+            android:drawableTop="@mipmap/dispatching"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="我的物流"
+            android:textColor="@drawable/textstyle" />
+
+
+
+
+
+        <TextView
+            android:id="@+id/TV_mineinfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="3dp"
+            android:drawableTop="@mipmap/mine"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="个人中心"
+            android:textColor="@drawable/textstyle" />
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</RelativeLayout>
