@@ -18,10 +18,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ab.cache.AbDiskBaseCache;
 import com.ab.fragment.AbAlertDialogFragment;
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
+import com.ab.image.AbImageLoader;
 import com.ab.util.AbDialogUtil;
 import com.ab.util.AbToastUtil;
 import com.auto.logistics.Activity.DispatchNotesActivity;
@@ -51,9 +53,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     private TextView TV_MineUserName;
     private File tempFile;
     private Uri tempUri;
-    private LinearLayout LL_revisePWD,LL_dispatchNotes;
-  //  private TextView tv_phone;
-   // private LogTaskBean.DataBean.LogsBean LogsBean;
+    private LinearLayout LL_revisePWD, LL_dispatchNotes;
 
     @Nullable
     @Override
@@ -63,10 +63,14 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         mHttpUtil = AbHttpUtil.getInstance(getActivity());
         initView(view);
         setView();
+//       模拟接口，网络获取图片
+        String url = "http://img.woyaogexing.com/2016/11/15/c5716e080796558e!200x200.jpg";
+        AbImageLoader loader = AbImageLoader.getInstance(getActivity());
+        loader.display(IV_Headimg, url);
         return view;
     }
 
-//退出登录
+    //退出登录
     private void exit() {
         params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
         mHttpUtil.post(FinalURL.URL + "/LogOut", params, new AbStringHttpResponseListener() {
@@ -127,12 +131,12 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.LL_dispatchNotes:
-                startActivity(new Intent(getActivity(),DispatchNotesActivity.class));
+                startActivity(new Intent(getActivity(), DispatchNotesActivity.class));
 
                 break;
             case R.id.LL_revisePWD:
-                startActivity(new Intent(getActivity(),RevisePWDActivity.class));
-            break;
+                startActivity(new Intent(getActivity(), RevisePWDActivity.class));
+                break;
             case R.id.TV_exit:
                 AbDialogUtil.showAlertDialog(getActivity(), -1, "退出", "您确定要退出程序并注销用户吗？", new AbAlertDialogFragment.AbDialogOnClickListener() {
                     @Override

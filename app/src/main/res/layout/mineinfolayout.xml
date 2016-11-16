@@ -34,24 +34,24 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_gravity="center_horizontal"
                     android:id="@+id/IV_Headimg"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/headimgstyle"/>
+                    android:background="@drawable/headimgstyle" />
 
 
                 <TextView
 
-                    android:layout_marginBottom="10dp"
                     android:id="@+id/TV_MineUserName"
-                    android:padding="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
+                    android:padding="5dp"
                     android:text="用户名" />
             </LinearLayout>
 
@@ -66,29 +66,29 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:drawablePadding="4dp"
-                    android:drawableLeft="@mipmap/revisepwd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:drawableLeft="@mipmap/revisepwd"
+                    android:drawablePadding="4dp"
                     android:padding="5dp"
                     android:text="修改密码"
                     android:typeface="sans" />
 
 
                 <TextView
-                    android:layout_weight="1"
-                    android:padding="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:padding="5dp"
                     android:typeface="sans" />
 
 
                 <TextView
-                    android:layout_gravity="center_vertical"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
                     android:background="@mipmap/rightarrow" />
 
             </LinearLayout>
@@ -97,21 +97,21 @@
             <!--电话-->
             <LinearLayout
                 android:id="@+id/LL_dispatchNotes"
-                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/click"
+                android:clickable="true"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <TextView
-                    android:gravity="center"
-                    android:drawablePadding="4dp"
-                    android:drawableLeft="@mipmap/notes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:drawableLeft="@mipmap/notes"
+                    android:drawablePadding="4dp"
+                    android:gravity="center"
                     android:padding="5dp"
                     android:text="派送记录"
                     android:typeface="sans" />
@@ -128,21 +128,21 @@
 
 
                 <TextView
-                    android:layout_gravity="center_vertical"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
                     android:background="@mipmap/rightarrow" />
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
-                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="#fff"
+                android:clickable="true"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -162,27 +162,27 @@
                     android:typeface="sans" />
 
                 <TextView
-                    android:layout_gravity="center_vertical"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
                     android:background="@mipmap/rightarrow" />
             </LinearLayout>
 
             <LinearLayout
-                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="#fff"
+                android:clickable="true"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <TextView
-                    android:drawablePadding="4dp"
-                    android:drawableLeft="@mipmap/tel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:drawableLeft="@mipmap/tel"
+                    android:drawablePadding="4dp"
                     android:padding="5dp"
                     android:text="联系方式"
                     android:typeface="sans" />
@@ -198,31 +198,31 @@
 
 
                 <TextView
-                    android:layout_gravity="center_vertical"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
                     android:background="@mipmap/rightarrow" />
             </LinearLayout>
 
             <LinearLayout
-                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="#fff"
+                android:clickable="true"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <TextView
-                    android:drawablePadding="4dp"
-                    android:drawableLeft="@mipmap/frind"
+                    android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:drawableLeft="@mipmap/frind"
+                    android:drawablePadding="4dp"
                     android:padding="5dp"
                     android:text="好友关系"
-                    android:typeface="sans"
-                    android:id="@+id/textView2" />
+                    android:typeface="sans" />
 
 
                 <TextView
@@ -234,27 +234,27 @@
                     android:typeface="sans" />
 
                 <TextView
-                    android:layout_gravity="center_vertical"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
                     android:background="@mipmap/rightarrow" />
             </LinearLayout>
 
             <LinearLayout
-                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="#fff"
+                android:clickable="true"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <TextView
-                    android:drawablePadding="4dp"
-                    android:drawableLeft="@mipmap/wrok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:drawableLeft="@mipmap/wrok"
+                    android:drawablePadding="4dp"
                     android:padding="5dp"
                     android:text="工作事宜"
                     android:typeface="sans" />
@@ -270,27 +270,27 @@
 
 
                 <TextView
-                    android:layout_gravity="center_vertical"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
                     android:background="@mipmap/rightarrow" />
             </LinearLayout>
 
             <LinearLayout
-                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="#fff"
+                android:clickable="true"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <TextView
-                    android:drawablePadding="4dp"
-                    android:drawableLeft="@mipmap/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:drawableLeft="@mipmap/time"
+                    android:drawablePadding="4dp"
                     android:padding="5dp"
                     android:text="时间管理"
                     android:typeface="sans" />
@@ -306,9 +306,9 @@
 
 
                 <TextView
-                    android:layout_gravity="center_vertical"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
                     android:background="@mipmap/rightarrow" />
             </LinearLayout>
 

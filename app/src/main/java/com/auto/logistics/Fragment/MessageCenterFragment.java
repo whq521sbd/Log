@@ -102,6 +102,8 @@ public class MessageCenterFragment extends Fragment {
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {//失败
+                Log.d("1111", "onFailure: "+"------>"+s);
+                Log.d("1111", "throwable: "+"----->"+throwable);
                 AbDialogUtil.removeDialog(getActivity());
                 AbToastUtil.showToast(getActivity(), "查询失败，请重试~");
             }

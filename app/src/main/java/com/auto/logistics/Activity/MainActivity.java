@@ -27,6 +27,7 @@ import com.auto.logistics.Fragment.MineInfoFragment;
 import com.auto.logistics.Fragment.TransListFragment;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;

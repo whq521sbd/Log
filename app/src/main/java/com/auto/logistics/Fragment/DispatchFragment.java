@@ -4,35 +4,37 @@ package com.auto.logistics.Fragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.icu.math.BigDecimal;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 
-import com.ab.fragment.AbAlertDialogFragment;
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
 import com.ab.util.AbDialogUtil;
 import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
-import com.auto.logistics.Activity.LoginActivity;
 import com.auto.logistics.JavaBean.CarSata;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 
 /**
  * Created by Administrator on 2016/10/21.
@@ -40,11 +42,14 @@ import org.json.JSONObject;
 
 public class DispatchFragment extends Fragment implements View.OnClickListener {
     private AbHttpUtil mAbHttpUtil;
-    //  private BadgeView  badgeView1,badgeView2,badgeView3,badgeView4,badgeView5;
-    private TextView TV_accept, TV_install, TV_send, TV_stop, TV_back,TV_exit;
+    private TextView TV_accept, TV_install, TV_send, TV_stop, TV_back, TV_exit;
     private AbRequestParams params;
     private FrameLayout frame1, frame2, frame3, frame4, frame5;
-    private BigDecimal bigDecimal ;
+    private BigDecimal bigDecimal;
+
+    private NotificationManager mNotificationManager;
+    private NotificationCompat.Builder mBuilder;
+    private List<FrameLayout> framelists;
 
 
     @Override
@@ -55,12 +60,15 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
         mAbHttpUtil.setTimeout(10000);
         params = new AbRequestParams();
         params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
+        framelists = new ArrayList<FrameLayout>();
 //     初始化view
         initView(view);
 //    设置view事件
         setView();
         return view;
     }
+
+//    设置控件
     private void setView() {
         TV_accept.setOnClickListener(this);
         TV_install.setOnClickListener(this);
@@ -69,6 +77,8 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
         TV_back.setOnClickListener(this);
         TV_exit.setOnClickListener(this);
     }
+
+//    初始化控件
     private void initView(View view) {
         //对号
         frame1 = (FrameLayout) view.findViewById(R.id.frame0);
@@ -83,12 +93,15 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
         TV_stop = (TextView) view.findViewById(R.id.TV_stop);
         TV_back = (TextView) view.findViewById(R.id.TV_back);
         TV_exit = (TextView) view.findViewById(R.id.TV_exit);
-//        badgeView1 = new BadgeView(getActivity(),TV_accept);
-//        badgeView2 = new BadgeView(getActivity(),TV_install);
-//        badgeView3 = new BadgeView(getActivity(),TV_send);
-//        badgeView4 = new BadgeView(getActivity(),TV_stop);
-//        badgeView5 = new BadgeView(getActivity(),TV_back);
+
+        framelists.add(frame1);
+        framelists.add(frame2);
+        framelists.add(frame3);
+        framelists.add(frame4);
+        framelists.add(frame5);
+
     }
+
     public void getData(AbRequestParams params, final int tag) {
         mAbHttpUtil.post(FinalURL.URL + "/CarSign", params, new AbStringHttpResponseListener() {
             @Override
@@ -103,30 +116,9 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                             frame3.setVisibility(View.INVISIBLE);
                             frame4.setVisibility(View.INVISIBLE);
                             frame5.setVisibility(View.INVISIBLE);
-                            // 在Android进行通知处理，首先需要重系统哪里获得通知管理器NotificationManager，它是一个系统Service。
-                            NotificationManager manager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                            // Notification myNotify = new Notification(R.drawable.message,
-                            // "自定义通知：您有新短信息了，请注意查收！", System.currentTimeMillis());
-                            Notification myNotify = new Notification();
-                            myNotify.icon = R.mipmap.ic_launcher;
-                            myNotify.tickerText = "TickerText:您有新短消息，请注意查收！";
-                            myNotify.when = System.currentTimeMillis();
-                            myNotify.flags = Notification.FLAG_NO_CLEAR;// 不能够自动清除
-                            myNotify.defaults=Notification.DEFAULT_SOUND;
-                            myNotify.flags = Notification.FLAG_SHOW_LIGHTS;//开启led提示
-                            RemoteViews rv = new RemoteViews(
-                                    getContext().getPackageName(),
-                                    R.layout.stop_notification);
-                            myNotify.ledARGB= Color.parseColor("#00C3C5");
-                            myNotify.ledOnMS=300;
-                            myNotify.ledOffMS=300;
-                            //  rv.setTextViewText(R.id.text_content, "hello wrold!");
-                            myNotify.contentView = rv;
-//                            Intent intent = new Intent();
-//                            intent.setClass(getActivity(),getActivity().getClass());
-//                            PendingIntent contentIntent = PendingIntent.getActivity(getActivity(), 1,intent, 0);
-//                            myNotify.contentIntent = contentIntent;
-                            manager.notify(1, myNotify);
+                            notifymethod("暂停接单啦！", "师傅辛苦了~", "您有新的物流信息！");
+                            alphaAnmation(frame1);
+
                             break;
                         case 1:
                             frame1.setVisibility(View.INVISIBLE);
@@ -134,30 +126,8 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                             frame3.setVisibility(View.INVISIBLE);
                             frame4.setVisibility(View.INVISIBLE);
                             frame5.setVisibility(View.INVISIBLE);
-                            // 在Android进行通知处理，首先需要重系统哪里获得通知管理器NotificationManager，它是一个系统Service。
-                            manager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                            // Notification myNotify = new Notification(R.drawable.message,
-                            // "自定义通知：您有新短信息了，请注意查收！", System.currentTimeMillis());
-                            myNotify = new Notification();
-                            myNotify.icon = R.mipmap.ic_launcher;
-                            myNotify.tickerText = "TickerText:您有新短消息，请注意查收！";
-                            myNotify.when = System.currentTimeMillis();
-                            myNotify.flags = Notification.FLAG_NO_CLEAR;// 不能够自动清除
-                            myNotify.flags = Notification.FLAG_SHOW_LIGHTS;//开启led提示
-                            myNotify.defaults=Notification.DEFAULT_SOUND;
-                            rv = new RemoteViews(
-                                    getContext().getPackageName(),
-                                    R.layout.wrok_notification);
-                            myNotify.ledARGB= Color.parseColor("#00C3C5");
-                            myNotify.ledOnMS=300;
-                            myNotify.ledOffMS=300;
-                            //  rv.setTextViewText(R.id.text_content, "hello wrold!");
-                            myNotify.contentView = rv;
-//                            intent = new Intent();
-//                            intent.setClass(getActivity(),getActivity().getClass());
-//                             contentIntent = PendingIntent.getActivity(getActivity(), 1,intent, 0);
-//                            myNotify.contentIntent = contentIntent;
-                            manager.notify(1, myNotify);
+                            notifymethod("开始接单啦！", "开车请小心~", "您有新的物流信息！");
+                            alphaAnmation(frame2);
                             break;
                         case 2:
                             frame1.setVisibility(View.INVISIBLE);
@@ -165,6 +135,7 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                             frame3.setVisibility(View.VISIBLE);
                             frame4.setVisibility(View.INVISIBLE);
                             frame5.setVisibility(View.INVISIBLE);
+                            alphaAnmation(frame3);
                             break;
                         case 3:
                             frame1.setVisibility(View.INVISIBLE);
@@ -172,6 +143,7 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                             frame3.setVisibility(View.INVISIBLE);
                             frame4.setVisibility(View.VISIBLE);
                             frame5.setVisibility(View.INVISIBLE);
+                            alphaAnmation(frame4);
                             break;
                         case 4:
                             frame1.setVisibility(View.INVISIBLE);
@@ -179,6 +151,7 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                             frame3.setVisibility(View.INVISIBLE);
                             frame4.setVisibility(View.INVISIBLE);
                             frame5.setVisibility(View.VISIBLE);
+                            alphaAnmation(frame5);
                             break;
                     }
                     AbToastUtil.showToast(getActivity(), "已经修改物流状态");
@@ -191,7 +164,7 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onStart() {
-                AbDialogUtil.showProgressDialog(getActivity(),-1,"正在验证您的身份信息");
+                AbDialogUtil.showProgressDialog(getActivity(), -1, "正在验证您的身份信息");
             }
 
             @Override
@@ -208,8 +181,47 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    /*
+    * 动画效果
+    * */
+    private void alphaAnmation(FrameLayout frame) {
+        AlphaAnimation animation =new AlphaAnimation(0.1f,1.0f);
+        animation.setDuration(1000);
+        animation.setRepeatCount(3);
+        animation.setRepeatMode(Animation.REVERSE);
+        frame.setAnimation(animation);
+        animation.startNow();
+    }
 
 
+    private void notifymethod(String title, String content, String ticker) {
+        mNotificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(getActivity());
+        mBuilder.setContentTitle(title)//设置通知栏标题
+                .setContentText(content) //设置通知栏显示内容
+                .setAutoCancel(true)//自动清空 打开
+                //.setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL)) //设置通知栏点击意图
+                //  .setNumber(number) //设置通知集合的数量
+                .setTicker(ticker) //通知首次出现在通知栏，带上升动画效果的
+                .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
+                .setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
+                //  .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
+                .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
+                .setDefaults(Notification.DEFAULT_VIBRATE)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
+                //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
+                .setSmallIcon(R.mipmap.logsimg)//设置通知小ICON
+                .setLights(Color.parseColor("#00C3C5"), 2000, 5000);
+        Notification notification = mBuilder.build();
+        notification.flags = Notification.FLAG_SHOW_LIGHTS;              //三色灯提醒，在使用三色灯提醒时候必须加该标志符
+       // notification.flags = Notification.FLAG_ONGOING_EVENT;          //发起正在运行事件（活动中）
+        //notification.flags = Notification.FLAG_INSISTENT;   //让声音、振动无限循环，直到用户响应 （取消或者打开）
+        notification.flags = Notification.FLAG_ONLY_ALERT_ONCE;  //发起Notification后，铃声和震动均只执行一次
+        notification.flags = Notification.FLAG_AUTO_CANCEL;      //用户单击通知后自动消失
+        //notification.flags = Notification.FLAG_NO_CLEAR;          //只有全部清除时，Notification才会清除 ，不清楚该通知(QQ的通知无法清除，就是用的这个)
+        // notification.flags = Notification.FLAG_FOREGROUND_SERVICE;    //表示正在运行的服务
+        mNotificationManager.notify(1, mBuilder.build());
+
+    }
 
 
     @Override
@@ -218,65 +230,24 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
             case R.id.TV_stop:
                 params.put("State", "0");
                 getData(params, 0);
-//                badgeView4.setBadgePosition(BadgeView.POSITION_BOTTOM_RIGHT);
-//                badgeView4.setText("ok");
-//                badgeView4.setTextColor(Color.RED);
-//                badgeView1.setVisibility(View.GONE);
-//                badgeView2.setVisibility(View.GONE);
-//                badgeView3.setVisibility(View.GONE);
-//                badgeView4.setVisibility(View.VISIBLE);
-//                badgeView5.setVisibility(View.GONE);
                 break;
 
 
             case R.id.TV_accept:
                 params.put("State", "1");
                 getData(params, 1);
-//                badgeView1.setBadgePosition(BadgeView.POSITION_BOTTOM_RIGHT);
-//                badgeView1.setText("ok");
-//                badgeView1.setTextColor(Color.RED);
-//                badgeView1.setVisibility(View.VISIBLE);
-//                badgeView2.setVisibility(View.GONE);
-//                badgeView3.setVisibility(View.GONE);
-//                badgeView4.setVisibility(View.GONE);
-//                badgeView5.setVisibility(View.GONE);
                 break;
             case R.id.TV_install:
                 params.put("State", "2");
                 getData(params, 2);
-//                badgeView2.setBadgePosition(BadgeView.POSITION_BOTTOM_RIGHT);
-//                badgeView2.setText("ok");
-//                badgeView2.setTextColor(Color.RED);
-//                badgeView1.setVisibility(View.GONE);
-//                badgeView2.setVisibility(View.VISIBLE);
-//                badgeView3.setVisibility(View.GONE);
-//                badgeView4.setVisibility(View.GONE);
-//                badgeView5.setVisibility(View.GONE);
                 break;
             case R.id.TV_send:
                 params.put("State", "3");
                 getData(params, 3);
-//                badgeView3.setBadgePosition(BadgeView.POSITION_BOTTOM_RIGHT);
-//                badgeView3.setText("ok");
-//                badgeView3.setTextColor(Color.RED);
-//                badgeView2.setTextColor(Color.RED);
-//                badgeView1.setVisibility(View.GONE);
-//                badgeView2.setVisibility(View.GONE);
-//                badgeView3.setVisibility(View.VISIBLE);
-//                badgeView4.setVisibility(View.GONE);
-//                badgeView5.setVisibility(View.GONE);
                 break;
             case R.id.TV_back:
                 params.put("State", "4");
                 getData(params, 4);
-//                badgeView5.setBadgePosition(BadgeView.POSITION_BOTTOM_RIGHT);
-//                badgeView5.setText("ok");
-//                badgeView5.setTextColor(Color.RED);
-//                badgeView1.setVisibility(View.GONE);
-//                badgeView2.setVisibility(View.GONE);
-//                badgeView3.setVisibility(View.GONE);
-//                badgeView4.setVisibility(View.GONE);
-//                badgeView5.setVisibility(View.VISIBLE);
                 break;
 
         }
