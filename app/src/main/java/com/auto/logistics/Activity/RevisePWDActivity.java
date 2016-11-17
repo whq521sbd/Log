@@ -1,9 +1,11 @@
 package com.auto.logistics.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +24,9 @@ import com.ab.view.ioc.AbIocView;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Administrator on 2016/11/14.
@@ -153,9 +158,24 @@ public class RevisePWDActivity extends AbActivity {
                 if (checkLogin()) {
 //                    TODO:修改密码接口
                     params.put("Token", SharedPreferencesSava.getInstance().getStringValue(this, "Token"));
-                    mAbHttpUtil.post(FinalURL.URL + "/", params, new AbStringHttpResponseListener() {
+                    mAbHttpUtil.post(FinalURL.URL + "/EditPwd", params, new AbStringHttpResponseListener() {
                         @Override
                         public void onSuccess(int i, String s) {
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                if (object.getBoolean("Suc")){
+                                    AbToastUtil.showToast(RevisePWDActivity.this,"修改成功!请重新登录！");
+                                    SharedPreferencesSava.getInstance().savaStringValue(RevisePWDActivity.this,"MDpwd","");//将密码清空，返回登录时，判读条件为不通过
+                                    finish();
+                                    startActivity(new Intent(RevisePWDActivity.this,LoginActivity.class));
+                                }else {
+                                    String msg = object.getString("Msg");
+                                    Log.e("RevisePWDActivity", msg);//如果登录不成功则打印日志
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
 
                         }
 
@@ -233,12 +253,10 @@ public class RevisePWDActivity extends AbActivity {
 
 
 //      判断完成后并符合条件后，将数据放置到参数中
-        params.put("oldMD5", oldMD5);//原MD密码
-        params.put("newmd5", newmd5);//新MD密码
-        params.put("confirmMD5", confirmMD5);//确认MD
+        params.put("oldPwd", oldMD5);//原MD密码
+        params.put("pwd", newmd5);//新MD密码
         return true;
     }
-
 
     /*
     * 重写返回键

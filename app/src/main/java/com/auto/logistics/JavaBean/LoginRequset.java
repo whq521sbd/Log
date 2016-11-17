@@ -1,29 +1,58 @@
 package com.auto.logistics.JavaBean;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Administrator on 2016/10/26.
  */
 
 public  class LoginRequset implements Serializable {
-    // { Token = "tokenValue",MarketNum="",MarketName="" }
 
 
-//    "Suc": false,
-//            "Msg": "用户名或密码不正确",
-//            "Data": {
-//
-//    }
+    /**
+     * Suc : true
+     * Msg :
+     * Data : {"Token":"6af2f01500e64d288402a9d587e7c51d","Avatar":"/UImage/BudLic/201611/20161117015701R0Z.PNG","MarketNum":"370101","MarketName":"匡山蔬菜批发市场"}
+     */
 
     private boolean Suc;
     private String Msg;
-    private Data Data;
+    private DataBean Data;
 
-    //{Data":{"Token":"34471ece855d4ed49b756bda24d3c0f3","MarketNum":"370101","MarketName":"匡山蔬菜批发市场"}}
-    public class Data {
+    public boolean isSuc() {
+        return Suc;
+    }
+
+    public void setSuc(boolean Suc) {
+        this.Suc = Suc;
+    }
+
+    public String getMsg() {
+        return Msg;
+    }
+
+    public void setMsg(String Msg) {
+        this.Msg = Msg;
+    }
+
+    public DataBean getData() {
+        return Data;
+    }
+
+    public void setData(DataBean Data) {
+        this.Data = Data;
+    }
+
+    public static class DataBean {
+        /**
+         * Token : 6af2f01500e64d288402a9d587e7c51d
+         * Avatar : /UImage/BudLic/201611/20161117015701R0Z.PNG
+         * MarketNum : 370101
+         * MarketName : 匡山蔬菜批发市场
+         */
+
         private String Token;
+        private String Avatar;
         private String MarketNum;
         private String MarketName;
 
@@ -31,51 +60,32 @@ public  class LoginRequset implements Serializable {
             return Token;
         }
 
-        public void setToken(String token) {
-            Token = token;
+        public void setToken(String Token) {
+            this.Token = Token;
+        }
+
+        public String getAvatar() {
+            return Avatar;
+        }
+
+        public void setAvatar(String Avatar) {
+            this.Avatar = Avatar;
         }
 
         public String getMarketNum() {
             return MarketNum;
         }
 
-        public void setMarketNum(String marketNum) {
-            MarketNum = marketNum;
+        public void setMarketNum(String MarketNum) {
+            this.MarketNum = MarketNum;
         }
 
         public String getMarketName() {
             return MarketName;
         }
 
-        public void setMarketName(String marketName) {
-            MarketName = marketName;
+        public void setMarketName(String MarketName) {
+            this.MarketName = MarketName;
         }
     }
-
-
-    public Data getData() {
-        return Data;
-    }
-
-    public void setData(Data data) {
-        this.Data = data;
-    }
-
-    public boolean isSuc() {
-        return Suc;
-    }
-
-    public void setSuc(boolean suc) {
-        Suc = suc;
-    }
-
-    public String getMsg() {
-        return Msg;
-    }
-
-    public void setMsg(String msg) {
-        Msg = msg;
-    }
-
-
 }

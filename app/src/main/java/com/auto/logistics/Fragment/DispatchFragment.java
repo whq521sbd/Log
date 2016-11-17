@@ -102,6 +102,13 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
+    /*
+    *
+    *  改变物流状态，设置动画效果
+    *
+    * */
+
     public void getData(AbRequestParams params, final int tag) {
         mAbHttpUtil.post(FinalURL.URL + "/CarSign", params, new AbStringHttpResponseListener() {
             @Override
@@ -185,6 +192,7 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
     * 动画效果
     * */
     private void alphaAnmation(FrameLayout frame) {
+//        透明度动画
         AlphaAnimation animation =new AlphaAnimation(0.1f,1.0f);
         animation.setDuration(1000);
         animation.setRepeatCount(3);
@@ -223,29 +231,30 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
 
     }
 
-
+/*
+*
+*点击事件
+* */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.TV_stop:
+            case R.id.TV_stop://停止接单
                 params.put("State", "0");
                 getData(params, 0);
                 break;
-
-
-            case R.id.TV_accept:
+            case R.id.TV_accept://开始接单
                 params.put("State", "1");
                 getData(params, 1);
                 break;
-            case R.id.TV_install:
+            case R.id.TV_install://正在装车
                 params.put("State", "2");
                 getData(params, 2);
                 break;
-            case R.id.TV_send:
+            case R.id.TV_send://准备运送
                 params.put("State", "3");
                 getData(params, 3);
                 break;
-            case R.id.TV_back:
+            case R.id.TV_back://运送返回
                 params.put("State", "4");
                 getData(params, 4);
                 break;

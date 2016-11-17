@@ -179,13 +179,13 @@ public class LoginActivity extends AbActivity {
                 public void onSuccess(int i, String s) {//访问成功
                     //返回json ，放入JavaBean并解析
                     LoginRequset loginRequset = AbJsonUtil.fromJson(s, LoginRequset.class);
-                    //AbToastUtil.showToast(LoginActivity.this, loginRequset.getData().getMarketName());
-                    //AbToastUtil.showToast(LoginActivity.this, loginRequset.getData().getToken());
-                    //AbToastUtil.showToast(LoginActivity.this, loginRequset.getData().getMarketNum());
                     if (loginRequset.isSuc()) {
+//                       头像路径保存
+                        SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this,"Avatar",loginRequset.getData().getAvatar());
                         //将用户令牌记录sp
                         SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this, "Token", loginRequset.getData().getToken());
                         //  记住用户名，密码，判断自动登录
+                        //Log.d("Token", "login: "+loginRequset.getData().getToken());
                         SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this, "username", username);
                         SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this, "MDpwd", MDpwd);
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));

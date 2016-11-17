@@ -90,13 +90,20 @@ public class MessageCenterFragment extends Fragment {
             @Override
             public void onSuccess(int i, String s) {//成功
                 LogTaskBean dataBean = AbJsonUtil.fromJson(s, LogTaskBean.class);
-                for (int j = 0; j<dataBean.getData().getLogs().size();j++){
-                    listlogs = dataBean.getData().getLogs();
-                    //        适配器装载数据源
-                    messageAdapter = new MessageAdapter(getActivity(), (ArrayList<LogTaskBean.DataBean.LogsBean>) listlogs);
-                    //       listview加载适配器
-                    LV_MessageListView.setAdapter(messageAdapter);
+                if (dataBean.isSuc()) {
+                    for (int j = 0; j<dataBean.getData().getLogs().size();j++){
+                        listlogs = dataBean.getData().getLogs();
+                        //        适配器装载数据源
+                        messageAdapter = new MessageAdapter(getActivity(), (ArrayList<LogTaskBean.DataBean.LogsBean>) listlogs);
+                        //       listview加载适配器
+                        LV_MessageListView.setAdapter(messageAdapter);
+                    }
+                } else {
+                    AbToastUtil.showToast(getActivity(),"数据获取失败，请重试！");
+                    Log.e("MessageCenterFragment", dataBean.getMsg());
                 }
+
+
             }
 
 

@@ -71,15 +71,15 @@
 
         <TextView
             android:id="@+id/TV_Qurey"
-            android:clickable="true"
-            android:textSize="16dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
+            android:clickable="true"
             android:gravity="center"
             android:text="查询"
             android:textColor="@drawable/qrystyle"
+            android:textSize="16dp"
             android:typeface="serif" />
 
     </LinearLayout>
@@ -91,15 +91,16 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/Select_Area"
         android:divider="@color/colorPrimary"
-        android:dividerHeight="0.6px"></ListView>
+        android:dividerHeight="0.6px"
+        android:layoutAnimation="@anim/list_anim_layout"></ListView>
 
 
     <!--日期选择器-->
     <DatePicker
         android:id="@+id/DP_DatePicker"
-        android:layout_below="@+id/Select_Area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/Select_Area"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         android:visibility="gone"></DatePicker>

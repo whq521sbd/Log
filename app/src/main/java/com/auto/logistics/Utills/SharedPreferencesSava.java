@@ -148,29 +148,28 @@ public class SharedPreferencesSava {
      * @方法说明:存储boolean数据
      * @方法名称:savaBooleanValue
      * @param context
-     * @param spName
+     * @param key
      * @param value
      * @返回void
      */
-/*
-    public void savaBooleanValue(Context context, String spName,
+
+    public void savaBooleanValue(Context context, String key ,
 								 boolean value) {
-		SharedPreferences preferences = context.getSharedPreferences(spName,
+		SharedPreferences preferences = context.getSharedPreferences("litdate",
 				context.MODE_PRIVATE);
 		preferences.edit().putBoolean(key, value).commit();
-	}*/
+	}
 
     /**
      * @param context
-     * @param spName
      * @param key
      * @return
      * @方法说明:获取boolean数据
      * @方法名称:getBooleanValue
      * @返回boolean
      */
-    public boolean getBooleanValue(Context context, String spName, String key) {
-        SharedPreferences preferences = context.getSharedPreferences(spName,
+    public boolean getBooleanValue(Context context,  String key) {
+        SharedPreferences preferences = context.getSharedPreferences("litdate",
                 context.MODE_PRIVATE);
         return preferences.getBoolean(key, false);
     }
@@ -188,7 +187,7 @@ public class SharedPreferencesSava {
 		SharedPreferences preferences = context.getSharedPreferences(spName,
 				context.MODE_PRIVATE);
 		return preferences.getBoolean(key, isDefault);
-	}*/
+	}
 
     /**
      * @param context

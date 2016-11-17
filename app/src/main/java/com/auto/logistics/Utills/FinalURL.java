@@ -9,4 +9,5 @@ package com.auto.logistics.Utills;
 
 public class FinalURL {
     public static final String URL = "http://192.168.0.107:9066/TUser";
+    public static final String imgURL = "http://192.168.0.107:9066";
 }

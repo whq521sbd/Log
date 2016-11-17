@@ -1,10 +1,12 @@
 package com.auto.logistics.Activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
@@ -12,13 +14,18 @@ import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
 import com.ab.util.AbDialogUtil;
+import com.ab.util.AbJsonUtil;
 import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
+import com.auto.logistics.Utills.SharedPreferencesSava;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2016/11/15.
@@ -33,6 +40,8 @@ public class DispatchNotesActivity extends AbActivity {
     DatePicker DP_DatePicker;
     @AbIocView(id = R.id.TV_Qurey, click = "click")
     TextView TV_Qurey;
+    @AbIocView(id = R.id.LV_DisListView)
+    ListView LV_DisListView;
 
     private int year, month, day;
     private String data;
@@ -50,7 +59,11 @@ public class DispatchNotesActivity extends AbActivity {
 
     }
 
-
+/*
+* 点击事件
+*
+*
+* */
     public void click(View view) {
         switch (view.getId()) {
             case R.id.TV_Qurey:
@@ -84,13 +97,19 @@ public class DispatchNotesActivity extends AbActivity {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 TV_Dataselect.setText(year + "年" + monthOfYear + "月" + dayOfMonth + "日");
-                data = "" + year + monthOfYear + dayOfMonth;
+
+                //data =year +"-"+monthOfYear+"-"+dayOfMonth;
+
+
 
             }
         });
 
 
     }
+
+
+
 
 
     //返回键监听
@@ -102,9 +121,12 @@ public class DispatchNotesActivity extends AbActivity {
         return false;
     }
 
-
+/*
+*
+* 获取数据
+*
+* */
     public void getData() {
-
         if (AbStrUtil.isEmpty(data)) {
             AbToastUtil.showToast(DispatchNotesActivity.this, "请输入要查询的日期");
         } else {
