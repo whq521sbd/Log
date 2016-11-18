@@ -185,7 +185,7 @@ public class LoginActivity extends AbActivity {
                         //将用户令牌记录sp
                         SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this, "Token", loginRequset.getData().getToken());
                         //  记住用户名，密码，判断自动登录
-                        //Log.d("Token", "login: "+loginRequset.getData().getToken());
+                        Log.d("Token", "login: "+loginRequset.getData().getToken());
                         SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this, "username", username);
                         SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this, "MDpwd", MDpwd);
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));

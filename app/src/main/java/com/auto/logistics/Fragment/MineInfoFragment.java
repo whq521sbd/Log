@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,9 +28,11 @@ import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
 import com.ab.image.AbImageLoader;
 import com.ab.util.AbDialogUtil;
+import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
 import com.auto.logistics.Activity.DispatchNotesActivity;
 import com.auto.logistics.Activity.RevisePWDActivity;
+import com.auto.logistics.JavaBean.HeadBean;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
@@ -55,7 +59,8 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     private File tempFile;
     private Uri tempUri;
     private LinearLayout LL_revisePWD, LL_dispatchNotes;
-    private  AbImageLoader loader;
+    private AbImageLoader loader;
+    private String headImgUrl;
 
     @Nullable
     @Override
@@ -65,8 +70,11 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         mHttpUtil = AbHttpUtil.getInstance(getActivity());
         initView(view);
         setView();
+
 //       获取接口，网络获取图片
         getHeadImg();
+
+
 //        String url = "http://img.woyaogexing.com/2016/11/15/c5716e080796558e!200x200.jpg";
 //        AbImageLoader loader = AbImageLoader.getInstance(getActivity());
 //        loader.display(IV_Headimg, url);
@@ -224,7 +232,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                 Bitmap bitmap = decodeUriAsBitmap(tempUri);// decode bitmap
                 IV_Headimg.setImageBitmap(bitmap);
                 if (tempFile.exists()) {
-//                   TODO:头像文件
+//                    头像文件添加到参数中
                     params.put("HeadImg", tempFile);
                     upDataImg();
 
@@ -246,17 +254,20 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         mHttpUtil.post(FinalURL.URL + "/Avatar", params, new AbStringHttpResponseListener() {
             @Override
             public void onSuccess(int i, String s) {
-
-                try {
-                    JSONObject object = new JSONObject(s);
-                    if (object.getBoolean("Suc")) {
-                        AbToastUtil.showToast(getActivity(), "头像修改成功！");
-                    } else {
-                        String msg = object.getString("Msg");
-                        Log.e("MineInfoFragment", msg);
+                if (s != null) {
+                    try {
+                        JSONObject object = new JSONObject(s);
+                        if (object.getBoolean("Suc")) {
+                            AbToastUtil.showToast(getActivity(), "头像修改成功！");
+                        } else {
+                            String msg = object.getString("Msg");
+                            Log.e("MineInfoFragment", msg);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    AbToastUtil.showToast(getActivity(), "没有返回数据！");
                 }
 
             }
@@ -359,9 +370,53 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     *
     * */
     public void getHeadImg() {
+        params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
 
-        loader  = AbImageLoader.getInstance(getActivity());
-        Log.v("MineInfoFragment", "getHeadImg: "+SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Avatar"));
-        loader.display(IV_Headimg,  FinalURL.imgURL+ SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Avatar"));
+        mHttpUtil.post(FinalURL.URL + "/UserInfo", params, new AbStringHttpResponseListener() {
+            @Override
+            public void onSuccess(int i, String s) {
+                if (s != null) {
+                    HeadBean bean = AbJsonUtil.fromJson(s, HeadBean.class);
+                    headImgUrl = bean.getData().getAvatar();
+                    loader = AbImageLoader.getInstance(getActivity());
+                    if (headImgUrl!=null){
+                    loader.display(IV_Headimg, FinalURL.IMGURL + headImgUrl);
+                    startanima(IV_Headimg);
+                    }else {
+                        AbToastUtil.showToast(getActivity(),"没有头像链接哦~");
+                    }
+                } else {
+                    AbToastUtil.showToast(getActivity(), "没有返回数据！");
+                }
+
+            }
+            @Override
+            public void onStart() {
+
+            }
+            @Override
+            public void onFinish() {
+
+            }
+            @Override
+            public void onFailure(int i, String s, Throwable throwable) {
+
+            }
+        });
+
     }
+
+
+
+private void startanima(View view){
+    AlphaAnimation animation =new AlphaAnimation(0.1f,1.0f);
+    animation.setDuration(1000);
+    animation.setRepeatCount(2);
+    animation.setRepeatMode(Animation.REVERSE);
+    view.setAnimation(animation);
+    animation.startNow();
+}
+
+
+
 }

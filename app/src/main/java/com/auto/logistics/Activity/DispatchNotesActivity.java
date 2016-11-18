@@ -1,5 +1,6 @@
 package com.auto.logistics.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
 import com.ab.http.AbHttpUtil;
+import com.ab.http.AbJsonParams;
 import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
 import com.ab.util.AbDialogUtil;
@@ -59,17 +61,20 @@ public class DispatchNotesActivity extends AbActivity {
         mHttpUtil = AbHttpUtil.getInstance(this);
         mHttpUtil.setTimeout(10000);
         setView();
-
     }
 
+
+
+
+    //设置控件
     private void setView() {
         LV_DisListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DispatchBean.DataBean.LogsListBean itemBean =  logsListBean.get(position);
+                DispatchBean.DataBean.LogsListBean itemBean = logsListBean.get(position);
                 Intent intent = new Intent();
                 intent.putExtra("itembean", itemBean);
-                intent.setClass(DispatchNotesActivity.this,DispatchDetailActivity.class);
+                intent.setClass(DispatchNotesActivity.this, DispatchDetailActivity.class);
                 startActivity(intent);
 
             }
@@ -104,6 +109,10 @@ public class DispatchNotesActivity extends AbActivity {
 
     }
 
+    /*
+    *
+    * 初始化DatePicker ，获取年月日
+    * */
     private void initData() {
         // 获取当前的年、月、日、小时、分钟
         Calendar calendar = Calendar.getInstance();
@@ -115,42 +124,51 @@ public class DispatchNotesActivity extends AbActivity {
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 TV_Dataselect.setText(year + "年" + monthOfYear + "月" + dayOfMonth + "日");
 
-                data =year +"-"+monthOfYear+"-"+dayOfMonth;
+                data = year + "-" + monthOfYear + "-" + dayOfMonth;
 
-                params.put("queryTime",data);
+                params.put("queryTime", data);
             }
         });
 
 
     }
 
-/*
-*
-* 获取数据
-*
-* */
+
+
+
+
+
+    /*
+    *
+    * 获取数据
+    *
+    * */
     public void getData() {
         if (AbStrUtil.isEmpty(data)) {
             AbToastUtil.showToast(DispatchNotesActivity.this, "请输入要查询的日期");
         } else {
-            params.put("Token",SharedPreferencesSava.getInstance().getStringValue(DispatchNotesActivity.this,"Token"));
-            params.put("curPage",1);
-            params.put("state",6);
-            params.put("TaskNum","");
+            params.put("Token", SharedPreferencesSava.getInstance().getStringValue(DispatchNotesActivity.this, "Token"));
+            params.put("curPage", 1);
+            params.put("state", 6);
+            params.put("TaskNum", "");
             mHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
                 @Override
                 public void onSuccess(int i, String s) {
-                    if (s!=null){
-                      DispatchBean dispatchBean =  AbJsonUtil.fromJson(s, DispatchBean.class);
-                        for (int j = 0; j<dispatchBean.getData().getLogs().size();j++){
-                            logsListBean  =  dispatchBean.getData().getLogs();
+                    if (s != null) {
+                        DispatchBean dispatchBean = AbJsonUtil.fromJson(s, DispatchBean.class);
+                        try {
+//                            由于返回字段，有可能没有logs字段，所以，判定如果没有logs字段，就没有数据信息，手动抛异常
+                            for (int j = 0; j < dispatchBean.getData().getLogs().size(); j++) {
+                                logsListBean = dispatchBean.getData().getLogs();
+                            }
+                            DispatchAdapter dispatchAdapter = new DispatchAdapter(DispatchNotesActivity.this, logsListBean);
+                            LV_DisListView.setAdapter(dispatchAdapter);
+                        } catch (Exception e) {
+                            AbToastUtil.showToast(DispatchNotesActivity.this, "此日期没有数据！");
+                            e.printStackTrace();
                         }
-                        DispatchAdapter dispatchAdapter = new DispatchAdapter(DispatchNotesActivity.this,logsListBean);
-                        LV_DisListView.setAdapter(dispatchAdapter);
-
-                    }else {
-
-                        AbToastUtil.showToast(DispatchNotesActivity.this,"返回数据为空");
+                    } else {
+                        AbToastUtil.showToast(DispatchNotesActivity.this, "返回数据为空");
                     }
                 }
 

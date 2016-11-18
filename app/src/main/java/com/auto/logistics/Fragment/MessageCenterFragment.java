@@ -86,9 +86,9 @@ public class MessageCenterFragment extends Fragment {
         params.put("state", "6");
         mAbHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
 
-
             @Override
             public void onSuccess(int i, String s) {//成功
+                if (s!=null){
                 LogTaskBean dataBean = AbJsonUtil.fromJson(s, LogTaskBean.class);
                 if (dataBean.isSuc()) {
                     for (int j = 0; j<dataBean.getData().getLogs().size();j++){
@@ -103,14 +103,15 @@ public class MessageCenterFragment extends Fragment {
                     Log.e("MessageCenterFragment", dataBean.getMsg());
                 }
 
-
+                }else {
+                    AbToastUtil.showToast(getActivity(),"没有返回数据！");
+                }
             }
 
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {//失败
-                Log.d("1111", "onFailure: "+"------>"+s);
-                Log.d("1111", "throwable: "+"----->"+throwable);
+
                 AbDialogUtil.removeDialog(getActivity());
                 AbToastUtil.showToast(getActivity(), "查询失败，请重试~");
             }
