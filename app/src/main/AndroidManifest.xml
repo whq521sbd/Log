@@ -79,6 +79,9 @@
         <!--派送记录-->
         <activity android:name=".Activity.DispatchNotesActivity"
             android:screenOrientation="portrait"/>
+        <!--派送详情-->
+        <activity android:name=".Activity.DispatchDetailActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

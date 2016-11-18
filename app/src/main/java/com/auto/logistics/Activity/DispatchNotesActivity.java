@@ -1,9 +1,10 @@
 package com.auto.logistics.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,14 +19,14 @@ import com.ab.util.AbJsonUtil;
 import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
+import com.auto.logistics.Adapter.DispatchAdapter;
+import com.auto.logistics.JavaBean.DispatchBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2016/11/15.
@@ -47,6 +48,7 @@ public class DispatchNotesActivity extends AbActivity {
     private String data;
     private AbRequestParams params;
     private AbHttpUtil mHttpUtil;
+    private ArrayList<DispatchBean.DataBean.LogsListBean> logsListBean;
 
 
     @Override
@@ -56,14 +58,29 @@ public class DispatchNotesActivity extends AbActivity {
         params = new AbRequestParams();
         mHttpUtil = AbHttpUtil.getInstance(this);
         mHttpUtil.setTimeout(10000);
+        setView();
 
     }
 
-/*
-* 点击事件
-*
-*
-* */
+    private void setView() {
+        LV_DisListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DispatchBean.DataBean.LogsListBean itemBean =  logsListBean.get(position);
+                Intent intent = new Intent();
+                intent.putExtra("itembean", itemBean);
+                intent.setClass(DispatchNotesActivity.this,DispatchDetailActivity.class);
+                startActivity(intent);
+
+            }
+        });
+    }
+
+    /*
+    * 点击事件
+    *
+    *
+    * */
     public void click(View view) {
         switch (view.getId()) {
             case R.id.TV_Qurey:
@@ -98,27 +115,13 @@ public class DispatchNotesActivity extends AbActivity {
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 TV_Dataselect.setText(year + "年" + monthOfYear + "月" + dayOfMonth + "日");
 
-                //data =year +"-"+monthOfYear+"-"+dayOfMonth;
+                data =year +"-"+monthOfYear+"-"+dayOfMonth;
 
-
-
+                params.put("queryTime",data);
             }
         });
 
 
-    }
-
-
-
-
-
-    //返回键监听
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-        }
-        return false;
     }
 
 /*
@@ -130,11 +133,25 @@ public class DispatchNotesActivity extends AbActivity {
         if (AbStrUtil.isEmpty(data)) {
             AbToastUtil.showToast(DispatchNotesActivity.this, "请输入要查询的日期");
         } else {
-//        TODO:查询接口
-            mHttpUtil.post(FinalURL.URL + "", params, new AbStringHttpResponseListener() {
+            params.put("Token",SharedPreferencesSava.getInstance().getStringValue(DispatchNotesActivity.this,"Token"));
+            params.put("curPage",1);
+            params.put("state",6);
+            params.put("TaskNum","");
+            mHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
                 @Override
                 public void onSuccess(int i, String s) {
+                    if (s!=null){
+                      DispatchBean dispatchBean =  AbJsonUtil.fromJson(s, DispatchBean.class);
+                        for (int j = 0; j<dispatchBean.getData().getLogs().size();j++){
+                            logsListBean  =  dispatchBean.getData().getLogs();
+                        }
+                        DispatchAdapter dispatchAdapter = new DispatchAdapter(DispatchNotesActivity.this,logsListBean);
+                        LV_DisListView.setAdapter(dispatchAdapter);
 
+                    }else {
+
+                        AbToastUtil.showToast(DispatchNotesActivity.this,"返回数据为空");
+                    }
                 }
 
                 @Override
@@ -156,4 +173,15 @@ public class DispatchNotesActivity extends AbActivity {
             });
         }
     }
+
+
+    //返回键监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+        }
+        return false;
+    }
+
 }
