@@ -1,6 +1,5 @@
 package com.auto.logistics.Activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
 import com.ab.http.AbHttpUtil;
-import com.ab.http.AbJsonParams;
 import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
 import com.ab.util.AbDialogUtil;
@@ -168,7 +166,7 @@ public class DispatchNotesActivity extends AbActivity {
                             e.printStackTrace();
                         }
                     } else {
-                        AbToastUtil.showToast(DispatchNotesActivity.this, "返回数据为空");
+                        AbToastUtil.showToast(DispatchNotesActivity.this, "服务器连接异常");
                     }
                 }
 

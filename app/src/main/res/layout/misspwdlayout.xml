@@ -200,6 +200,4 @@
         android:layout_toRightOf="@+id/text"
         android:text="《用户协议》"
         android:textColor="#00C3C5" />
-
-
 </RelativeLayout>
