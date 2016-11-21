@@ -70,14 +70,8 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         mHttpUtil = AbHttpUtil.getInstance(getActivity());
         initView(view);
         setView();
-
-//       获取接口，网络获取图片
+//       获取头像，网络获取图片
         getHeadImg();
-
-
-//        String url = "http://img.woyaogexing.com/2016/11/15/c5716e080796558e!200x200.jpg";
-//        AbImageLoader loader = AbImageLoader.getInstance(getActivity());
-//        loader.display(IV_Headimg, url);
         return view;
     }
 
@@ -133,8 +127,8 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         TV_MineUserName = (TextView) view.findViewById(R.id.TV_MineUserName);
         LL_revisePWD = (LinearLayout) view.findViewById(R.id.LL_revisePWD);
         LL_dispatchNotes = (LinearLayout) view.findViewById(R.id.LL_dispatchNotes);
-
     }
+
 
     /*
     *
@@ -151,7 +145,6 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
 
 
     /*
-    *
     *  点击事件
     * */
     @Override
@@ -159,7 +152,6 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.LL_dispatchNotes:
                 startActivity(new Intent(getActivity(), DispatchNotesActivity.class));
-
                 break;
             case R.id.LL_revisePWD:
                 startActivity(new Intent(getActivity(), RevisePWDActivity.class));
@@ -206,11 +198,9 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                                 }
                             }
                         }).show();
-
                 break;
         }
     }
-
 
     /**
      * 调用照相机之后，缩小比例，裁剪，等相关操作
@@ -248,7 +238,6 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     * 上传头像
     *
     * */
-//    TODO： 上传头像接口
     private void upDataImg() {
         params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
         mHttpUtil.post(FinalURL.URL + "/Avatar", params, new AbStringHttpResponseListener() {
@@ -284,12 +273,11 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {
-
+                AbToastUtil.showToast(getActivity(), "头像接口数据联网失败！");
             }
         });
 
     }
-
 
     // 使用系统当前日期加以调整作为照片的名称
     private String getPhotoFileName() {
@@ -379,25 +367,28 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                     HeadBean bean = AbJsonUtil.fromJson(s, HeadBean.class);
                     headImgUrl = bean.getData().getAvatar();
                     loader = AbImageLoader.getInstance(getActivity());
-                    if (headImgUrl!=null){
-                    loader.display(IV_Headimg, FinalURL.IMGURL + headImgUrl);
-                    startanima(IV_Headimg);
-                    }else {
-                        AbToastUtil.showToast(getActivity(),"没有头像链接哦~");
+                    if (headImgUrl != null) {
+                        loader.display(IV_Headimg, FinalURL.IMGURL + headImgUrl);
+                        startanima(IV_Headimg);
+                    } else {
+                        AbToastUtil.showToast(getActivity(), "没有头像链接哦~");
                     }
                 } else {
                     AbToastUtil.showToast(getActivity(), "没有返回数据！");
                 }
 
             }
+
             @Override
             public void onStart() {
 
             }
+
             @Override
             public void onFinish() {
 
             }
+
             @Override
             public void onFailure(int i, String s, Throwable throwable) {
 
@@ -407,16 +398,13 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
-private void startanima(View view){
-    AlphaAnimation animation =new AlphaAnimation(0.1f,1.0f);
-    animation.setDuration(1000);
-    animation.setRepeatCount(2);
-    animation.setRepeatMode(Animation.REVERSE);
-    view.setAnimation(animation);
-    animation.startNow();
-}
-
+    private void startanima(View view) {
+        AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
+        animation.setDuration(2500);
+        animation.setRepeatMode(Animation.REVERSE);
+        view.setAnimation(animation);
+        animation.startNow();
+    }
 
 
 }

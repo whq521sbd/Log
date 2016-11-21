@@ -38,7 +38,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2016/11/9.
  */
-public class ReachAcitvity  extends AbActivity {
+public class ReachAcitvity extends AbActivity {
     @AbIocView(id = R.id.TV_intallGoodsTitle)
     TextView TV_intallGoodsTitle;
     @AbIocView(id = R.id.TV_installWeight)
@@ -53,27 +53,27 @@ public class ReachAcitvity  extends AbActivity {
     ImageView IV_installUpImg2;
     @AbIocView(id = R.id.IV_installUpImg3)
     ImageView IV_installUpImg3;
-    @AbIocView(id = R.id.IV_installback,click = "click")
-    ImageView  IV_installback;
-    @AbIocView(id = R.id.tv_installcommit,click = "click")
+    @AbIocView(id = R.id.IV_installback, click = "click")
+    ImageView IV_installback;
+    @AbIocView(id = R.id.tv_installcommit, click = "click")
     private TextView tv_installcommit;
-    @AbIocView(id= R.id.TV_tile)
+    @AbIocView(id = R.id.TV_tile)
     TextView TV_tile;
     private LogTaskBean.DataBean.LogsBean logsBean;
-    private  int count = 0 ;
+    private int count = 0;
     private Uri tempUri;
     private AbHttpUtil mAbHttpUtil;
-    private File file1 ,file2,file3;
-    private File tempFile ;
-    private  AbRequestParams params;
+    private File file1, file2, file3;
+    private File tempFile;
+    private AbRequestParams params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.installcarlayout);
-        mAbHttpUtil =  AbHttpUtil.getInstance(ReachAcitvity.this);
+        mAbHttpUtil = AbHttpUtil.getInstance(ReachAcitvity.this);
         mAbHttpUtil.setTimeout(10000);
-        params =  new AbRequestParams();
+        params = new AbRequestParams();
         //首先获取上个页面传过来的数据
         Intent intent = getIntent();
         logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
@@ -81,7 +81,11 @@ public class ReachAcitvity  extends AbActivity {
         setView();
     }
 
-    //返回键监听
+    /**
+     * @param keyCode 返回键监听
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -91,7 +95,9 @@ public class ReachAcitvity  extends AbActivity {
     }
 
 
-    //控件赋值
+    /**
+     * 注册控件，控件赋值
+     */
     private void setView() {
         TV_tile.setText("货物到达");
         TV_intallGoodsTitle.setText("送达时间：" + logsBean.getSendTime());
@@ -99,19 +105,20 @@ public class ReachAcitvity  extends AbActivity {
         TV_installArea.setText("收货人：" + logsBean.getArea() + logsBean.getDeliUser());
     }
 
-    //点击事件
+    /**
+     * @param view    点击事件
+     */
     public void click(View view) {
         switch (view.getId()) {
 //            提交操作
             case R.id.tv_installcommit:
-
-                params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this,"Token"));
-                params.put("TaskNum",logsBean.getTaskNum());
-                params.put("state","9");
+                params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this, "Token"));
+                params.put("TaskNum", logsBean.getTaskNum());
+                params.put("state", "9");
                 mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                     @Override
                     public void onStart() {
-                        AbDialogUtil.showProgressDialog(ReachAcitvity.this,-1,"正在上传数据");
+                        AbDialogUtil.showProgressDialog(ReachAcitvity.this, -1, "正在上传数据");
                     }
 
                     @Override
@@ -121,19 +128,19 @@ public class ReachAcitvity  extends AbActivity {
 
                     @Override
                     public void onFailure(int i, String s, Throwable throwable) {
-                        Log.e("1111", "onFailure: "+throwable);
+                        Log.e("1111", "onFailure: " + throwable);
                         AbDialogUtil.removeDialog(ReachAcitvity.this);
-                        AbToastUtil.showToast(ReachAcitvity.this,"上传网络失败,请重试~");
+                        AbToastUtil.showToast(ReachAcitvity.this, "上传网络失败,请重试~");
                     }
 
                     @Override
                     public void onSuccess(int i, String s) {
-                        if (s!= null ){
+                        if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);
-                                boolean Suc =   object.getBoolean("Suc");
-                                if (Suc){
-                                    AbToastUtil.showToast(ReachAcitvity.this,"数据上传成功！返回途中开车请小心~");
+                                boolean Suc = object.getBoolean("Suc");
+                                if (Suc) {
+                                    AbToastUtil.showToast(ReachAcitvity.this, "数据上传成功！返回途中开车请小心~");
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -145,7 +152,6 @@ public class ReachAcitvity  extends AbActivity {
             case R.id.IV_installback:// 返回按钮
                 finish();
                 break;
-
 //            添加照片
             case R.id.IV_installAddImg:
                 count++;
@@ -155,23 +161,23 @@ public class ReachAcitvity  extends AbActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
-                                    case 0:
-                                        // 拍照
+                                    case 0:// 拍照
                                         //判断sd卡是否存在
                                         boolean sdCardExist = Environment.getExternalStorageState()
                                                 .equals(Environment.MEDIA_MOUNTED);
                                         //  创建新文件夹
-//                                        File file =  new File(Environment.getExternalStorageDirectory()+"/BJDLogistics");
-//                                        if (!file.exists()){
-//                                            file.mkdirs();//不存在就建一个
-//                                        }
+                                        File file =  new File(Environment.getExternalStorageDirectory()+"/BJDLogistics");
+//                                       判断文件夹是否存在，不存在则创建一个
+                                        if (!file.exists()){
+                                            file.mkdirs();
+                                        }
                                         if (sdCardExist) {
                                             startCamera();
                                         } else {
                                             AbToastUtil.showToast(ReachAcitvity.this, "SD卡不存在，请检查SD卡！");
                                         }
                                         break;
-                                    case 1:
+                                    case 1:// 从相册选取照片
                                         tempUri = Uri.fromFile(tempFile);
                                         startPick();
                                         break;
@@ -186,12 +192,12 @@ public class ReachAcitvity  extends AbActivity {
 
     /**
      * 调用照相机之后，缩小比例，裁剪，等相关操作
-     * */
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 102:
-                if (resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     startPhotoZoom(tempUri, 1, 1, 500, 500);
                 }
                 break;
@@ -202,11 +208,11 @@ public class ReachAcitvity  extends AbActivity {
                 break;
             case 104:
                 Bitmap bitmap = decodeUriAsBitmap(tempUri);// decode bitmap
-                switch (count){
+                switch (count) {
                     case 1:
                         file1 = tempFile;
-                        if (file1.exists()){
-                            params.put("file1",file1);
+                        if (file1.exists()) {
+                            params.put("file1", file1);
                             IV_installUpImg1.setImageBitmap(bitmap);
                             IV_installUpImg1.setVisibility(View.VISIBLE);
                         }
@@ -214,8 +220,8 @@ public class ReachAcitvity  extends AbActivity {
                         break;
                     case 2:
                         file2 = tempFile;
-                        if (file2.exists()){
-                            params.put("file2",file2);
+                        if (file2.exists()) {
+                            params.put("file2", file2);
                             IV_installUpImg2.setImageBitmap(bitmap);
                             IV_installUpImg2.setVisibility(View.VISIBLE);
                         }
@@ -223,8 +229,8 @@ public class ReachAcitvity  extends AbActivity {
                         break;
                     case 3:
                         file3 = tempFile;
-                        if (file3.exists()){
-                            params.put("file3",file3);
+                        if (file3.exists()) {
+                            params.put("file3", file3);
                             IV_installUpImg3.setImageBitmap(bitmap);
                             IV_installUpImg3.setVisibility(View.VISIBLE);
                             IV_installAddImg.setVisibility(View.GONE);
@@ -238,7 +244,9 @@ public class ReachAcitvity  extends AbActivity {
     }
 
 
-    // 使用系统当前日期加以调整作为照片的名称
+    /**
+     * @return 使用系统当前日期加以调整作为照片的名称
+     */
     private String getPhotoFileName() {
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("'PNG'_yyyyMMdd_HHmmss");
@@ -246,9 +254,11 @@ public class ReachAcitvity  extends AbActivity {
     }
 
 
-    // 调用系统相机
+    /**
+     * 调用系统相机，并拍照完成之后存储
+     */
     protected void startCamera() {
-        tempFile = new File(Environment.getExternalStorageDirectory()+"/BJDLogistics",
+        tempFile = new File(Environment.getExternalStorageDirectory() + "/BJDLogistics",
                 getPhotoFileName());
         tempUri = Uri.fromFile(tempFile);
         // 调用系统的拍照功能
@@ -264,7 +274,9 @@ public class ReachAcitvity  extends AbActivity {
     }
 
 
-    // 调用系统相册
+    /**
+     * 调用系统相册
+     */
     protected void startPick() {
         Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -273,10 +285,17 @@ public class ReachAcitvity  extends AbActivity {
     }
 
 
-
-    //裁剪照片
+    /**
+     * 裁剪照片
+     *
+     * @param uri   照片拍完之后的路径
+     * @param x     宽的比例
+     * @param y     高的比例
+     * @param sizex 裁剪的宽
+     * @param sizey 裁剪的高
+     */
     private void startPhotoZoom(Uri uri, int x, int y, int sizex, int sizey) {
-        tempFile = new File(Environment.getExternalStorageDirectory()+"/BJDLogistics",
+        tempFile = new File(Environment.getExternalStorageDirectory() + "/BJDLogistics",
                 getPhotoFileName());
         tempUri = Uri.fromFile(tempFile);
         Intent intent = new Intent("com.android.camera.action.CROP");
@@ -300,7 +319,12 @@ public class ReachAcitvity  extends AbActivity {
     }
 
 
-    //    转换成bitmap格式
+    /**
+     * 转换成bitmap格式
+     *
+     * @param uri 裁剪完成的路径，现在拍照路径与裁剪路径为同一个
+     * @return    返回bitmap对象
+     */
     private Bitmap decodeUriAsBitmap(Uri uri) {
         Bitmap bitmap = null;
         try {
@@ -312,7 +336,6 @@ public class ReachAcitvity  extends AbActivity {
         }
         return bitmap;
     }
-
 
 
 }

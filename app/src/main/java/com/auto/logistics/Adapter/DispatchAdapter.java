@@ -19,9 +19,10 @@ import java.util.ArrayList;
  * Created by Administrator on 2016/11/18.
  */
 
-public class DispatchAdapter  extends BaseAdapter {
+public class DispatchAdapter extends BaseAdapter {
     private ArrayList<DispatchBean.DataBean.LogsListBean> dataList = new ArrayList<DispatchBean.DataBean.LogsListBean>();
     private Context ctx;
+
     public DispatchAdapter(Context ctx, ArrayList<DispatchBean.DataBean.LogsListBean> dataList) {
         this.ctx = ctx;
         this.dataList = dataList;
@@ -55,7 +56,7 @@ public class DispatchAdapter  extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) ctx
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            view = inflater.inflate(R.layout.message_item,null);
+            view = inflater.inflate(R.layout.message_item, null);
 
             holder = new DispatchAdapter.ViewHolder();
             // 每项的视图布是一样的,findview
@@ -66,11 +67,12 @@ public class DispatchAdapter  extends BaseAdapter {
             view.setTag(holder);
         } else {
             holder = (DispatchAdapter.ViewHolder) view.getTag();
+
         }
 
         // 每项的数据是不一样的，setview
         holder.tv_GoodsTitle.setText(dataList.get(position).getGoodsTitle());
-        holder.tv_Weight.setText(dataList.get(position).getWeight()+"千克");
+        holder.tv_Weight.setText(dataList.get(position).getWeight() + "千克");
 //        holder.iv_main_item_sex.setImageDrawable(dataList.get(position).getSex());
         //AbToastUtil.showToast(ctx,dataList.get(position).getRecAddr());
         return view;

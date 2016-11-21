@@ -26,7 +26,6 @@ import org.json.JSONObject;
  * Created by Administrator on 2016/11/7.
  */
 public class SendGoodsActivity extends AbActivity {
-
     @AbIocView(id = R.id.TV_SendRecPerson)
     TextView TV_SendRecPerson;
     @AbIocView(id = R.id.TV_SendRecTel)
@@ -39,7 +38,7 @@ public class SendGoodsActivity extends AbActivity {
     TextView TV_SendDepUser;
     @AbIocView(id = R.id.tv_sendgoods, click = "click")
     TextView tv_sendgoods;
-    @AbIocView(id = R.id.IV_sendgoodsgoback,click = "click")
+    @AbIocView(id = R.id.IV_sendgoodsgoback, click = "click")
     ImageView IV_sendgoodsgoback;
     private LogTaskBean.DataBean.LogsBean logsBean;
     private AbHttpUtil mHttpUtil;
@@ -51,15 +50,18 @@ public class SendGoodsActivity extends AbActivity {
         mHttpUtil = AbHttpUtil.getInstance(SendGoodsActivity.this);
 //        设置连接超时
         mHttpUtil.setTimeout(10000);
-
-//        获取上个页面的bean
+//       获取上个页面的bean
         Intent intent = getIntent();
         logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
-//     给控件设置值
+//     注册并设置值
         setView();
-
     }
 
+
+
+    /**
+     * 注册控件
+     */
     private void setView() {
         TV_SendRecPerson.setText(logsBean.getRecPerson());
         TV_SendRecTel.setText(logsBean.getRecTel());
@@ -69,7 +71,11 @@ public class SendGoodsActivity extends AbActivity {
     }
 
 
-    //    点击事件
+    /**
+     * 点击事件
+     *
+     * @param view
+     */
     public void click(View view) {
         switch (view.getId()) {
             case R.id.IV_sendgoodsgoback:
@@ -103,12 +109,12 @@ public class SendGoodsActivity extends AbActivity {
                             try {
                                 JSONObject object = new JSONObject(s);
                                 if (object.getBoolean("Suc")) {
-                                    Intent intent= new Intent(SendGoodsActivity.this,ReachAcitvity.class);
-                                    intent.putExtra("logsBean",logsBean);
+                                    Intent intent = new Intent(SendGoodsActivity.this, ReachAcitvity.class);
+                                    intent.putExtra("logsBean", logsBean);
                                     startActivity(intent);
 
                                 } else {
-
+//                                    如果有异常则直接吐司 服务信息
                                     AbToastUtil.showToast(SendGoodsActivity.this, object.getString("Msg"));
                                 }
                             } catch (JSONException e) {
@@ -125,8 +131,13 @@ public class SendGoodsActivity extends AbActivity {
 
     }
 
-
-    //返回键监听
+    /**
+     * 返回键监听
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

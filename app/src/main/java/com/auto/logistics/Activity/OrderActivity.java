@@ -73,7 +73,11 @@ public class OrderActivity extends AbActivity {
     }
 
 
-    //返回键监听
+    /**
+     * @param keyCode
+     * @param event  返回键监听
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -82,7 +86,9 @@ public class OrderActivity extends AbActivity {
         return false;
     }
 
-    //设置控件相关信息
+    /**
+     * 注册控件，设置控件相关信息
+     */
     private void setView() {
         TV_TaskNum.setText(logsBean.getTaskNum());
         TV_Serial.setText(logsBean.getSerial());
@@ -97,13 +103,18 @@ public class OrderActivity extends AbActivity {
         TV_AccTime.setText(logsBean.getAccTime());
     }
 
-    //    click 方法
+    /**
+     * click 方法
+     * @param v
+     *
+     */
     public void clickMe(View v) {
         switch (v.getId()) {
             case R.id.order_goback://返回
                 finish();
                 break;
             case R.id.tv_confirm:
+//                添加参数
                 AbRequestParams params = new AbRequestParams();
                 Log.d("OrderActivity", "clickMe: " + SharedPreferencesSava.getInstance().getStringValue(OrderActivity.this, "Token").toString());
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(OrderActivity.this, "Token"));
@@ -119,7 +130,7 @@ public class OrderActivity extends AbActivity {
                                 JSONObject obj = new JSONObject(s);
                                 boolean Suc = obj.getBoolean("Suc");
                                 if (Suc) {
-                                    //携带bean 跳转到下一步
+                                    //携带bean 跳转到装车页面
                                     Intent intent = new Intent(OrderActivity.this, InstallCarActivity.class);
                                     intent.putExtra("logsBean", logsBean);
                                     startActivity(intent);
@@ -133,23 +144,22 @@ public class OrderActivity extends AbActivity {
                     }
 
                     @Override
-                    public void onStart() {
+                    public void onStart() {//开始请求
                         //AbDialogUtil.showAlertDialog(OrderActivity.this,"");
                         AbDialogUtil.showProgressDialog(OrderActivity.this, -1, "请稍后...");
                     }
 
                     @Override
-                    public void onFinish() {
+                    public void onFinish() {//请求结束
                         AbDialogUtil.removeDialog(OrderActivity.this);
                     }
 
                     @Override
-                    public void onFailure(int i, String s, Throwable throwable) {
+                    public void onFailure(int i, String s, Throwable throwable) {//请求失败
                         AbDialogUtil.removeDialog(OrderActivity.this);
                         AbToastUtil.showToast(OrderActivity.this, "网络不稳定，请检查网络连接~");
                     }
                 });
-
                 break;
         }
 

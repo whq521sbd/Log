@@ -69,8 +69,6 @@ public class MainActivity extends AbActivity {
                 .replace(R.id.RL_container, messageCenterFragment)
                 .commit();
         TV_Message.setTextColor(Color.parseColor("#00C3C5"));
-
-
         params = new AbRequestParams();
         mAbHttpUtil = AbHttpUtil.getInstance(this);
         // getData();
@@ -164,6 +162,14 @@ public class MainActivity extends AbActivity {
      */
 
 
+
+
+    /**
+     * @param v 点击事件
+     *
+     * 点击后动态替换fragment并设置文字选中状态
+     *
+     */
     public void click(View v) {
         switch (v.getId()) {
             case R.id.TV_mineinfo:
@@ -212,7 +218,11 @@ public class MainActivity extends AbActivity {
     }
 
 
-    //返回键监听
+    /**
+     * @param keyCode
+     * @param event   返回键监听
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -234,10 +244,9 @@ public class MainActivity extends AbActivity {
         return false;
     }
 
-    /*
-    * Android 6.0 权限问题
-    *
-    * */
+    /**
+     * Android 6.0权限问题
+     */
     @Override
     protected void onStart() {
 //        判断权限

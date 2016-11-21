@@ -72,19 +72,18 @@ public class LoginActivity extends AbActivity {
         mHttpUtil = AbHttpUtil.getInstance(this);
         mHttpUtil.setTimeout(10000);
         setview();
-
+//        记住用户名
         ed_user.setText(SharedPreferencesSava.getInstance().getStringValue(LoginActivity.this, "username"));
-
-//        自动登录功能
+//        自动登录功能，判断sp中的密码是否为空，并且是否联网状态
         if ((!SharedPreferencesSava.getInstance().getStringValue(LoginActivity.this, "MDpwd").equals("")) && NetworkUtils.isNetworkAvailable(this)) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
     }
 
-    /*
-    * 设置控件
-    * */
+    /**
+     * 注册控件
+     */
     private void setview() {
         //输入文本使用观察者模式，一旦有变动，即实现回调方法
         ed_user.addTextChangedListener(new TextWatcher() {
@@ -107,7 +106,7 @@ public class LoginActivity extends AbActivity {
             }
         });
 
-        //密码文本框输入设置，当检测到有文本输入时，设置可见或者隐藏密码
+        //密码文本框输入设置，当检测到有文本输入时，设置可见或者隐藏密码、
         ed_pwd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -130,7 +129,9 @@ public class LoginActivity extends AbActivity {
         });
     }
 
-    //    click 方法
+    /**
+     * @param v 点击方法
+     */
     public void click(View v) {
         switch (v.getId()) {
             case R.id.tv_missPWD:
@@ -159,7 +160,9 @@ public class LoginActivity extends AbActivity {
         }
     }
 
-    //    跳转前判断用户名和密码
+    /**
+     * 跳转前判断用户名和密码
+     */
     private void checkUser() {
         username = ed_user.getText().toString().trim();
         String userpwd = ed_pwd.getText().toString().trim();
@@ -181,11 +184,11 @@ public class LoginActivity extends AbActivity {
                     LoginRequset loginRequset = AbJsonUtil.fromJson(s, LoginRequset.class);
                     if (loginRequset.isSuc()) {
 //                       头像路径保存
-                        SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this,"Avatar",loginRequset.getData().getAvatar());
+                        SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this, "Avatar", loginRequset.getData().getAvatar());
                         //将用户令牌记录sp
                         SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this, "Token", loginRequset.getData().getToken());
                         //  记住用户名，密码，判断自动登录
-                        Log.d("Token", "login: "+loginRequset.getData().getToken());
+                        Log.d("Token", "login: " + loginRequset.getData().getToken());
                         SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this, "username", username);
                         SharedPreferencesSava.getInstance().savaStringValue(LoginActivity.this, "MDpwd", MDpwd);
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -217,10 +220,10 @@ public class LoginActivity extends AbActivity {
         }
     }
 
-    /*
-       *重写onstart方法已监听网络状态
-        *
-       * */
+
+    /**
+     * 重写onstart方法已监听网络状态
+     */
     @Override
     protected void onStart() {
         goToMain();
@@ -262,7 +265,11 @@ public class LoginActivity extends AbActivity {
     }
 
 
-    //返回键监听
+    /**
+     * @param keyCode
+     * @param event 返回键监听
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

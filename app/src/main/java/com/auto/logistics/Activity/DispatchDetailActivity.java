@@ -112,6 +112,4 @@ public class DispatchDetailActivity extends AbActivity {
     }
 
 
-
-
 }

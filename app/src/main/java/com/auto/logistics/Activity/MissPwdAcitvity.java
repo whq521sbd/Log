@@ -26,12 +26,14 @@ public class MissPwdAcitvity extends AbActivity {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.misspwdlayout);
 
+
     }
 
 
     public void click(View view){
         switch (view.getId()){
             case  R.id.tv_getcode:
+//                点击后获取验证码并设置60秒倒计时，倒计时期间，设置按键不可用
                 CountDownTimerUtils countDownTimerUtils = new CountDownTimerUtils(tv_getcode,60000,1000);
                 countDownTimerUtils.start();
             break;

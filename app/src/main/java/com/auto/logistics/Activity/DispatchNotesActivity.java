@@ -49,6 +49,7 @@ public class DispatchNotesActivity extends AbActivity {
     private AbRequestParams params;
     private AbHttpUtil mHttpUtil;
     private ArrayList<DispatchBean.DataBean.LogsListBean> logsListBean;
+    private  DispatchAdapter dispatchAdapter;
 
 
     @Override
@@ -60,8 +61,6 @@ public class DispatchNotesActivity extends AbActivity {
         mHttpUtil.setTimeout(10000);
         setView();
     }
-
-
 
 
     //设置控件
@@ -132,10 +131,6 @@ public class DispatchNotesActivity extends AbActivity {
     }
 
 
-
-
-
-
     /*
     *
     * 获取数据
@@ -159,9 +154,11 @@ public class DispatchNotesActivity extends AbActivity {
                             for (int j = 0; j < dispatchBean.getData().getLogs().size(); j++) {
                                 logsListBean = dispatchBean.getData().getLogs();
                             }
-                            DispatchAdapter dispatchAdapter = new DispatchAdapter(DispatchNotesActivity.this, logsListBean);
+                            dispatchAdapter = new DispatchAdapter(DispatchNotesActivity.this, logsListBean);
                             LV_DisListView.setAdapter(dispatchAdapter);
                         } catch (Exception e) {
+                            logsListBean.clear();//清空历史数据
+                            dispatchAdapter.notifyDataSetChanged();//适配器刷新数据
                             AbToastUtil.showToast(DispatchNotesActivity.this, "此日期没有数据！");
                             e.printStackTrace();
                         }

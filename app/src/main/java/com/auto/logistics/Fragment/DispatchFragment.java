@@ -87,7 +87,7 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
         frame4 = (FrameLayout) view.findViewById(R.id.frame3);
         frame5 = (FrameLayout) view.findViewById(R.id.frame4);
 
-        TV_accept = (TextView) view.findViewById(R.id.TV_accept);
+        TV_accept  = (TextView) view.findViewById(R.id.TV_accept);
         TV_install = (TextView) view.findViewById(R.id.TV_install);
         TV_send = (TextView) view.findViewById(R.id.TV_send);
         TV_stop = (TextView) view.findViewById(R.id.TV_stop);
@@ -103,12 +103,13 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    /*
-    *
-    *  改变物流状态，设置动画效果
-    *
-    * */
 
+    /**
+     * 改变物流状态，设置动画效果
+     *
+     * @param params
+     * @param tag    Frame的id
+     */
     public void getData(AbRequestParams params, final int tag) {
         mAbHttpUtil.post(FinalURL.URL + "/CarSign", params, new AbStringHttpResponseListener() {
             @Override
@@ -163,10 +164,8 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                     }
                     AbToastUtil.showToast(getActivity(), "已经修改物流状态");
                 }
-
-
-                String str = catbean.getData().toString();
-                Log.i("1111111111", "onSuccess: " + str);
+                    String str = catbean.getData().toString();
+                    Log.i("1111111111", "onSuccess: " + str);
             }
 
             @Override
@@ -185,7 +184,6 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                 AbToastUtil.showToast(getActivity(), "网络不稳定，请重试~");
             }
         });
-
     }
 
     /*

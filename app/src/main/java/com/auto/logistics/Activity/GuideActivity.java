@@ -31,43 +31,12 @@ public class GuideActivity extends AbActivity {
         animation = AnimationUtils.loadAnimation(GuideActivity.this, R.anim.fade_in);
         initview();
         setview();
-
-//        if (ContextCompat.checkSelfPermission(GuideActivity.this,
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                != PackageManager.PERMISSION_GRANTED)
-//        {
-//
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-//                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-//        }
-
     }
 
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-//    {
-//
-//        if (requestCode == MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE)
-//        {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-//            {
-//             //   callPhone();
-//            } else
-//            {
-//                // Permission Denied
-//                Toast.makeText(GuideActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
-//            }
-//            return;
-//        }
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//    }
 
-
-
-
-    //    设置控件
+    /**
+     *  设置控件
+     */
     private void setview() {
         RL_guidelayout.setAnimation(animation);
         //动画监听
@@ -90,9 +59,47 @@ public class GuideActivity extends AbActivity {
 
     }
 
-    //初始化控件
+    /**
+     * 初始化控件
+     */
     private void initview() {
         RL_guidelayout = (RelativeLayout) findViewById(R.id.RL_guidelayout);
     }
 
 }
+
+
+
+
+
+//        if (ContextCompat.checkSelfPermission(GuideActivity.this,
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                != PackageManager.PERMISSION_GRANTED)
+//        {
+//
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+//        }
+
+
+
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+//    {
+//
+//        if (requestCode == MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE)
+//        {
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+//            {
+//             //   callPhone();
+//            } else
+//            {
+//                // Permission Denied
+//                Toast.makeText(GuideActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+//            }
+//            return;
+//        }
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//    }

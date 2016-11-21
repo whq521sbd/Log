@@ -161,10 +161,10 @@ public class InstallCarActivity extends AbActivity {
                                         boolean sdCardExist = Environment.getExternalStorageState()
                                                 .equals(Environment.MEDIA_MOUNTED);
                                         //  创建新文件夹
-//                                        File file =  new File(Environment.getExternalStorageDirectory()+"/BJDLogistics");
-//                                        if (!file.exists()){
-//                                            file.mkdirs();//不存在就建一个
-//                                        }
+                                        File file =  new File(Environment.getExternalStorageDirectory()+"/BJDLogistics");
+                                        if (!file.exists()){
+                                            file.mkdirs();//不存在就建一个
+                                        }
                                         if (sdCardExist) {
                                             startCamera();
                                         } else {
@@ -172,7 +172,6 @@ public class InstallCarActivity extends AbActivity {
                                         }
                                         break;
                                     case 1:
-                                        tempUri = Uri.fromFile(tempFile);
                                         startPick();
                                         break;
                                 }

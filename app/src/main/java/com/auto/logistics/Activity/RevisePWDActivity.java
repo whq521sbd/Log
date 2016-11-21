@@ -65,13 +65,9 @@ public class RevisePWDActivity extends AbActivity {
     }
 
 
-
-    /*
-    *
-    * 设置控件
-    *
-    * */
-
+    /**
+     * 注册控件
+     */
     private void setView() {
 //       旧密码观察者
         ed_RevOldPwd.addTextChangedListener(new TextWatcher() {
@@ -95,7 +91,7 @@ public class RevisePWDActivity extends AbActivity {
             }
         });
 
-//          新密码观察者
+//          新密码观察者模式
         ed_RevNewPwd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -109,15 +105,15 @@ public class RevisePWDActivity extends AbActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    IV_cleanNew.setVisibility(View.VISIBLE);
+                if (s.length() > 1) {
+                    IV_cleanNew.setVisibility(View.VISIBLE);//如果输入后的数字大于1之后，就显示图标
                 } else {
-                    IV_cleanNew.setVisibility(View.GONE);
+                    IV_cleanNew.setVisibility(View.GONE);// 否则就隐藏图标
                 }
             }
         });
 
-//          确认密码观察者
+//          确认密码观察者模式
         ed_RevConfirmPwd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -131,11 +127,11 @@ public class RevisePWDActivity extends AbActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
+                if (s.length() > 1) {
 
-                    IV_cleanConfirm.setVisibility(View.VISIBLE);
+                    IV_cleanConfirm.setVisibility(View.VISIBLE);//如果输入后的数字大于1之后，就显示图标
                 } else {
-                    IV_cleanConfirm.setVisibility(View.GONE);
+                    IV_cleanConfirm.setVisibility(View.GONE);// 否则就隐藏图标
                 }
 
             }
@@ -144,11 +140,9 @@ public class RevisePWDActivity extends AbActivity {
 
     }
 
-    /*
-    * 点击事件处理
-    *
-    *
-    * */
+    /**
+     * @param view 点击事件
+     */
     public void click(View view) {
         switch (view.getId()) {
             case R.id.IV_revisegoback:
@@ -156,7 +150,6 @@ public class RevisePWDActivity extends AbActivity {
                 break;
             case R.id.tv_revise:
                 if (checkLogin()) {
-//                    TODO:修改密码接口
                     params.put("Token", SharedPreferencesSava.getInstance().getStringValue(this, "Token"));
                     mAbHttpUtil.post(FinalURL.URL + "/EditPwd", params, new AbStringHttpResponseListener() {
                         @Override
@@ -175,8 +168,6 @@ public class RevisePWDActivity extends AbActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-
                         }
 
                         @Override
@@ -215,10 +206,11 @@ public class RevisePWDActivity extends AbActivity {
         }
     }
 
-    /*
-    * 登录前密码判断
-    *
-    * */
+    /**
+     * @return false 提交数据前检验密码,如果不能满足条件返回false,
+     *
+     * 如果满足条件 返回ture,并将数据添加到参数中
+     */
     private Boolean checkLogin() {
         String oldpwd = ed_RevOldPwd.getText().toString().trim();
         String oldMD5 = AbMd5.MD5(oldpwd);
@@ -251,6 +243,43 @@ public class RevisePWDActivity extends AbActivity {
             return false;
         }
 
+        if (newpd.length()<6||newpd.length()>12) {
+            AbToastUtil.showToast(RevisePWDActivity.this,"密码长度不能小于6未且不能超过12位哦~");
+            return false;
+        }
+
+        if (AbStrUtil.isChinese(newpd)) {
+            AbToastUtil.showToast(RevisePWDActivity.this,"密码不能为中文字符哦~");
+            return false;
+        }
+
+        if (AbStrUtil.isEmpty(newpd)) {
+            AbToastUtil.showToast(RevisePWDActivity.this,"新密码不能为空哦~");
+            return false;
+        }
+        if (AbStrUtil.isContainChinese(newpd)) {
+            AbToastUtil.showToast(RevisePWDActivity.this,"密码中不能包含中文字符哦~");
+        }
+
+
+        if (confirmPwd.length()<6||confirmPwd.length()>12) {
+            AbToastUtil.showToast(RevisePWDActivity.this,"确认密码长度不能小于6未且不能超过12位哦~");
+            return false;
+        }
+
+        if (AbStrUtil.isChinese(confirmPwd)) {
+            AbToastUtil.showToast(RevisePWDActivity.this,"确认密码不能为中文字符哦~");
+            return false;
+        }
+
+        if (AbStrUtil.isEmpty(confirmPwd)) {
+            AbToastUtil.showToast(RevisePWDActivity.this,"确认新密码不能为空哦~");
+            return false;
+        }
+        if (AbStrUtil.isContainChinese(confirmPwd)) {
+            AbToastUtil.showToast(RevisePWDActivity.this,"确认密码中不能包含中文字符哦~");
+        }
+
 
 //      判断完成后并符合条件后，将数据放置到参数中
         params.put("oldPwd", oldMD5);//原MD密码
@@ -258,11 +287,12 @@ public class RevisePWDActivity extends AbActivity {
         return true;
     }
 
-    /*
-    * 重写返回键
-    *
-    * */
-//    返回键监听
+    /**
+     * 重写Back返回键
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

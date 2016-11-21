@@ -130,38 +130,21 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                     mAbHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
                         @Override
                         public void onSuccess(int i, String s) {
-                            LogTaskBean dataBean = AbJsonUtil.fromJson(s, LogTaskBean.class);
-                            for (int j = 0; j<dataBean.getData().getLogs().size();j++){
-//                                String str  = dataBean.getData().getLogs().get(j).getAccTime().toString();
-//                                Log.d("2222", "onSuccess: "+str);
-//                           TV_TaskNum, TV_Serial, TV_TransNum, TV_Area, TV_Street,
-//                                TV_GoodsTitle, TV_Weight, TV_RecPerson, TV_RecTel, TV_RecAddr, TV_AccTime,
-//                                        TV_AccUser, TV_PackTime, TV_PackUser, TV_DepTime, TV_DepUser, TV_SendTime,
-//                                        TV_SendUser, TV_DeliTime, TV_DeliUser;
-//                                                              .setText(dataBean.getData().getLogs().get(j).);
-                                TV_TaskNum.setText(dataBean.getData().getLogs().get(j).getTaskNum());
-                                TV_Serial.setText(dataBean.getData().getLogs().get(j).getSerial());
-                                TV_TransNum.setText(dataBean.getData().getLogs().get(j).getTransNum());
-                                TV_Area.setText(dataBean.getData().getLogs().get(j).getArea());
-                                TV_Street.setText(dataBean.getData().getLogs().get(j).getStreet());
-                                TV_GoodsTitle.setText(dataBean.getData().getLogs().get(j).getGoodsTitle());
-                                TV_Weight.setText(dataBean.getData().getLogs().get(j).getWeight());
-                                TV_RecPerson.setText(dataBean.getData().getLogs().get(j).getRecPerson());
-                                TV_RecTel.setText(dataBean.getData().getLogs().get(j).getRecTel());
-                                TV_RecAddr.setText(dataBean.getData().getLogs().get(j).getRecAddr());
-                                TV_AccTime.setText(dataBean.getData().getLogs().get(j).getAccTime());
-                                TV_AccUser.setText(dataBean.getData().getLogs().get(j).getAccUser());
-                                TV_PackTime.setText(dataBean.getData().getLogs().get(j).getPackTime());
-                                TV_PackUser.setText(dataBean.getData().getLogs().get(j).getPackUser());
-                                TV_DepTime .setText(dataBean.getData().getLogs().get(j).getDepTime());
-                                TV_DepUser.setText(dataBean.getData().getLogs().get(j).getDepUser());
-                                TV_SendTime.setText(dataBean.getData().getLogs().get(j).getSendTime());
-                                TV_SendUser.setText(dataBean.getData().getLogs().get(j).getSendUser());
-                                TV_DeliTime .setText(dataBean.getData().getLogs().get(j).getDeliTime());
-                                TV_DeliUser.setText(dataBean.getData().getLogs().get(j).getDeliUser());
-
+                            if (s!=null) {
+                                LogTaskBean dataBean = AbJsonUtil.fromJson(s, LogTaskBean.class);
+                                if (dataBean.getData().getLogs().size()!=0) {
+                                    for (int j = 0; j<dataBean.getData().getLogs().size();j++){
+                                        setView(dataBean, j);
+                                    }
+                                    //显示数据
+                                    SV_waybill.setVisibility(View.VISIBLE);
+                                } else {
+                                    SV_waybill.setVisibility(View.GONE);
+                                    AbToastUtil.showToast(getActivity(),"查询不到此单号！");
+                                }
+                            }else {
+                                AbToastUtil.showToast(getActivity(),"接口获取数据失败！");
                             }
-
                         }
 
                         @Override
@@ -172,8 +155,7 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                         @Override
                         public void onFinish() {
                             AbDialogUtil.removeDialog(getActivity());
-                            //显示数据
-                            SV_waybill.setVisibility(View.VISIBLE);
+
                         }
 
                         @Override
@@ -188,6 +170,35 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                 ED_number.setText("");
                 break;
         }
+    }
+
+
+
+    /**
+     * @param dataBean 解析完成后的数据源实体
+     * @param j        Logs的下标
+     */
+    private void setView(LogTaskBean dataBean, int j) {
+        TV_TaskNum.setText(dataBean.getData().getLogs().get(j).getTaskNum());
+        TV_Serial.setText(dataBean.getData().getLogs().get(j).getSerial());
+        TV_TransNum.setText(dataBean.getData().getLogs().get(j).getTransNum());
+        TV_Area.setText(dataBean.getData().getLogs().get(j).getArea());
+        TV_Street.setText(dataBean.getData().getLogs().get(j).getStreet());
+        TV_GoodsTitle.setText(dataBean.getData().getLogs().get(j).getGoodsTitle());
+        TV_Weight.setText(dataBean.getData().getLogs().get(j).getWeight());
+        TV_RecPerson.setText(dataBean.getData().getLogs().get(j).getRecPerson());
+        TV_RecTel.setText(dataBean.getData().getLogs().get(j).getRecTel());
+        TV_RecAddr.setText(dataBean.getData().getLogs().get(j).getRecAddr());
+        TV_AccTime.setText(dataBean.getData().getLogs().get(j).getAccTime());
+        TV_AccUser.setText(dataBean.getData().getLogs().get(j).getAccUser());
+        TV_PackTime.setText(dataBean.getData().getLogs().get(j).getPackTime());
+        TV_PackUser.setText(dataBean.getData().getLogs().get(j).getPackUser());
+        TV_DepTime .setText(dataBean.getData().getLogs().get(j).getDepTime());
+        TV_DepUser.setText(dataBean.getData().getLogs().get(j).getDepUser());
+        TV_SendTime.setText(dataBean.getData().getLogs().get(j).getSendTime());
+        TV_SendUser.setText(dataBean.getData().getLogs().get(j).getSendUser());
+        TV_DeliTime .setText(dataBean.getData().getLogs().get(j).getDeliTime());
+        TV_DeliUser.setText(dataBean.getData().getLogs().get(j).getDeliUser());
     }
 
 }
