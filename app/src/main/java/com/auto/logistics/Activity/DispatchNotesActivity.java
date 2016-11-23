@@ -73,6 +73,8 @@ public class DispatchNotesActivity extends AbActivity {
                 intent.putExtra("itembean", itemBean);
                 intent.setClass(DispatchNotesActivity.this, DispatchDetailActivity.class);
                 startActivity(intent);
+                logsListBean.remove(position);
+                dispatchAdapter.notifyDataSetChanged();
 
             }
         });

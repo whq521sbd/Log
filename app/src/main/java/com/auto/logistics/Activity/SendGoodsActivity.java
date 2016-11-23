@@ -85,7 +85,7 @@ public class SendGoodsActivity extends AbActivity {
                 AbRequestParams params = new AbRequestParams();
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(SendGoodsActivity.this, "Token"));
                 params.put("TaskNum", logsBean.getTaskNum());
-                params.put("state", "9");
+                params.put("state", "5");
                 mHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                     @Override
                     public void onStart() {
@@ -113,6 +113,9 @@ public class SendGoodsActivity extends AbActivity {
                                     intent.putExtra("logsBean", logsBean);
                                     startActivity(intent);
 
+                                } else if (object.getString("Msg").equals("token已失效")){
+                                    AbToastUtil.showToast(SendGoodsActivity.this,"您的账号在其他客户端登录！");
+                                    startActivity(new Intent(SendGoodsActivity.this, LoginActivity.class));
                                 } else {
 //                                    如果有异常则直接吐司 服务信息
                                     AbToastUtil.showToast(SendGoodsActivity.this, object.getString("Msg"));

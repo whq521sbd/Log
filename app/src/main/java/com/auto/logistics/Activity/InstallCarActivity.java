@@ -106,7 +106,7 @@ public class InstallCarActivity extends AbActivity {
             case R.id.tv_installcommit:
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(InstallCarActivity.this,"Token"));
                 params.put("TaskNum",logsBean.getTaskNum());
-                params.put("state","8");
+                params.put("state","4");
 
                 mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                     @Override
@@ -135,6 +135,9 @@ public class InstallCarActivity extends AbActivity {
                                     Intent intent =  new Intent(InstallCarActivity.this,SendGoodsActivity.class);
                                     intent.putExtra("logsBean",logsBean);
                                     startActivity(intent);
+                                }else if (object.getString("Msg").equals("token已失效")){
+                                    AbToastUtil.showToast(InstallCarActivity.this,"您的账号在其他客户端登录！");
+                                    startActivity(new Intent(InstallCarActivity.this, LoginActivity.class));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

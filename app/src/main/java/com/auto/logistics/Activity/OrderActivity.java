@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
@@ -15,6 +16,7 @@ import com.ab.http.AbStringHttpResponseListener;
 import com.ab.util.AbDialogUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
+import com.auto.logistics.Adapter.OrderAdapter;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
@@ -22,6 +24,8 @@ import com.auto.logistics.Utills.SharedPreferencesSava;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2016/11/3.
@@ -55,8 +59,12 @@ public class OrderActivity extends AbActivity {
     TextView TV_RecAddr;
     @AbIocView(id = R.id.TV_AccTime)
     TextView TV_AccTime;
+
+    @AbIocView(id = R.id.order_listview)
+    ListView order_listview;
     private AbHttpUtil mHttpUtil;
     private LogTaskBean.DataBean.LogsBean logsBean;
+    private ArrayList<LogTaskBean.DataBean.LogsBean> newlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +72,10 @@ public class OrderActivity extends AbActivity {
         setAbContentView(R.layout.orderlayout);
         //首先获得上个页面传过来的bean
         Intent intent = getIntent();
+
+       // newlist = (ArrayList<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("newlist");
+
+
         logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("itembean");
         //给控件设置值
         setView();
@@ -72,10 +84,9 @@ public class OrderActivity extends AbActivity {
 
     }
 
-
     /**
      * @param keyCode
-     * @param event  返回键监听
+     * @param event   返回键监听
      * @return
      */
     @Override
@@ -90,6 +101,10 @@ public class OrderActivity extends AbActivity {
      * 注册控件，设置控件相关信息
      */
     private void setView() {
+
+       // OrderAdapter orderAdapter = new OrderAdapter(OrderActivity.this,newlist);
+      //  order_listview.setAdapter(orderAdapter);
+
         TV_TaskNum.setText(logsBean.getTaskNum());
         TV_Serial.setText(logsBean.getSerial());
         TV_TransNum.setText(logsBean.getTransNum());
@@ -105,8 +120,8 @@ public class OrderActivity extends AbActivity {
 
     /**
      * click 方法
-     * @param v
      *
+     * @param v
      */
     public void clickMe(View v) {
         switch (v.getId()) {
@@ -119,7 +134,7 @@ public class OrderActivity extends AbActivity {
                 Log.d("OrderActivity", "clickMe: " + SharedPreferencesSava.getInstance().getStringValue(OrderActivity.this, "Token").toString());
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(OrderActivity.this, "Token"));
                 params.put("TaskNum", logsBean.getTaskNum().toString());
-                params.put("state", "7");
+                params.put("state", "3");
                 mHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                     @Override
                     public void onSuccess(int i, String s) {
@@ -134,6 +149,9 @@ public class OrderActivity extends AbActivity {
                                     Intent intent = new Intent(OrderActivity.this, InstallCarActivity.class);
                                     intent.putExtra("logsBean", logsBean);
                                     startActivity(intent);
+                                } else if (obj.getString("Msg").equals("token已失效")) {
+                                    AbToastUtil.showToast(OrderActivity.this, "您的账号在其他客户端登录！");
+                                    startActivity(new Intent(OrderActivity.this, LoginActivity.class));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

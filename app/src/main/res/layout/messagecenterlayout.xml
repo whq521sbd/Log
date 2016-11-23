@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -16,22 +16,30 @@
         android:textStyle="bold"
         android:typeface="sans" />
 
-
-    <!--展示区域-->
-    <RelativeLayout
+    <ListView
+        android:id="@+id/LV_MessageListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/messagetitelArea">
-
-        <ListView
-            android:id="@+id/LV_MessageListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@color/colorPrimary"
-            android:dividerHeight="0.6px"
-            android:layoutAnimation="@anim/list_anim_layout"></ListView>
-
-    </RelativeLayout>
+        android:layout_below="@+id/messagetitelArea"
+        android:layout_weight="1"
+        android:divider="@color/colorPrimary"
+        android:dividerHeight="0.6px"
+        android:layoutAnimation="@anim/list_anim_layout"></ListView>
 
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tv_next"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/LV_MessageListView"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bluebuttonstyle"
+        android:gravity="center"
+        android:text="下一步"
+        android:textColor="#fff"
+        android:textSize="25sp" />
+
+</LinearLayout>

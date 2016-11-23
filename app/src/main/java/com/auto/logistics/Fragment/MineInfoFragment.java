@@ -31,6 +31,8 @@ import com.ab.util.AbDialogUtil;
 import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
 import com.auto.logistics.Activity.DispatchNotesActivity;
+import com.auto.logistics.Activity.LoginActivity;
+import com.auto.logistics.Activity.ReachAcitvity;
 import com.auto.logistics.Activity.RevisePWDActivity;
 import com.auto.logistics.JavaBean.HeadBean;
 import com.auto.logistics.JavaBean.LogTaskBean;
@@ -93,6 +95,9 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                             SharedPreferencesSava.getInstance().savaStringValue(getActivity(), "MDpwd", "");
                             getActivity().finish();
                             System.exit(0);
+                        } else if (object.getString("Msg").equals("token已失效")) {
+                            AbToastUtil.showToast(getActivity(), "您的账号在其他客户端登录！");
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
                         }
 
                     } catch (JSONException e) {
@@ -248,9 +253,9 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                         JSONObject object = new JSONObject(s);
                         if (object.getBoolean("Suc")) {
                             AbToastUtil.showToast(getActivity(), "头像修改成功！");
-                        } else {
-                            String msg = object.getString("Msg");
-                            Log.e("MineInfoFragment", msg);
+                        } else if (object.getString("Msg").equals("Token已失效")) {
+                            AbToastUtil.showToast(getActivity(), "您的账号在其他客户端登录！");
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -276,7 +281,6 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                 AbToastUtil.showToast(getActivity(), "头像接口数据联网失败！");
             }
         });
-
     }
 
     // 使用系统当前日期加以调整作为照片的名称
@@ -367,11 +371,16 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                     HeadBean bean = AbJsonUtil.fromJson(s, HeadBean.class);
                     headImgUrl = bean.getData().getAvatar();
                     loader = AbImageLoader.getInstance(getActivity());
-                    if (headImgUrl != null) {
-                        loader.display(IV_Headimg, FinalURL.IMGURL + headImgUrl);
-                        startanima(IV_Headimg);
+                    if (!bean.getMsg().equals("token已失效")) {
+                        if (headImgUrl != null) {
+                            loader.display(IV_Headimg, FinalURL.IMGURL + headImgUrl);
+                            startanima(IV_Headimg);
+                        } else {
+                            AbToastUtil.showToast(getActivity(), "没有头像链接哦~");
+                        }
                     } else {
-                        AbToastUtil.showToast(getActivity(), "没有头像链接哦~");
+                        AbToastUtil.showToast(getActivity(), "账号在另一个终端登录");
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
                     }
                 } else {
                     AbToastUtil.showToast(getActivity(), "没有返回数据！");

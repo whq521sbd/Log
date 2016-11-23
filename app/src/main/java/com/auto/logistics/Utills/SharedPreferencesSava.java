@@ -76,9 +76,9 @@ public class SharedPreferencesSava {
      * @方法名称:savaIntValue
      * @返回void
      */
-    public void savaIntValue(Context context, String spName, String key,
+    public void savaIntValue(Context context, String key,
                              int value) {
-        SharedPreferences preferences = context.getSharedPreferences(spName,
+        SharedPreferences preferences = context.getSharedPreferences("litdate",
                 context.MODE_PRIVATE);
         preferences.edit().putInt(key, value).commit();
     }

@@ -8,20 +8,15 @@ import java.util.List;
  */
 public class LogTaskBean implements Serializable {
 
+
     /**
      * Suc : true
      * Msg :
-     * Data : {"PageSize":1,"CurPage":"1","Logs":[{"TaskNum":"W20161101140901015LD8","Serial":"S20161023112223813BNT","TransNum":"20161023112223813XF4","Area":"市中区","Street":"四里村街道办事处","GoodsTitle":"唐王天津绿白菜","Weight":"37.00","RecPerson":"济南华能大厦采购","RecTel":"18678808192","RecAddr":"济南市泉城路23号","AccTime":"2016-11-01 02:09:16","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单"}]}
+     * Data : {"PageSize":1,"CurPage":"1","Logs":[{"TaskNum":"W201611221528229658TZ","Serial":"S201611221526225244R6","TransNum":"201611221526225718F0","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"惠民韭菜","Weight":"120.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822910Z6F","Serial":"S201611221526225244R6","TransNum":"201611221526225716RX","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"惠民韭菜","Weight":"55.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822829822","Serial":"S201611221526225244R6","TransNum":"20161122152622555FN2","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"红根菠菜","Weight":"53.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822766JD0","Serial":"S201611221526225244R6","TransNum":"2016112215262255584J","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"芥蓝","Weight":"50.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822690N46","Serial":"S201611221526225244R6","TransNum":"201611221526225550H6","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"章丘鲍芹","Weight":"58.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W201611221528226258T2","Serial":"S201611221526225244R6","TransNum":"20161122152622539VRR","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"章丘鲍芹","Weight":"76.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822550R62","Serial":"S201611221526225244R6","TransNum":"201611221526225392N0","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"唐王天津绿白菜","Weight":"89.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822497802","Serial":"S201611221526225244R6","TransNum":"20161122152622617X06","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"唐王天津绿白菜","Weight":"60.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W2016112215282245906P","Serial":"S201611221526225244R6","TransNum":"20161122152622524D8P","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"商河包菜","Weight":"90.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822422480","Serial":"S201611221526225244R6","TransNum":"201611221526226176HF","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"高唐娃娃菜","Weight":"68.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W201611221528223638XX","Serial":"S201611221526225244R6","TransNum":"201611221526226174LH","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"芥蓝","Weight":"50.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W201611221528222896ZX","Serial":"S201611221526225244R6","TransNum":"2016112215262260224N","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"唐王天津绿白菜","Weight":"70.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W201611221528222268N4","Serial":"S201611221526225244R6","TransNum":"201611221526226020PX","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"高唐娃娃菜","Weight":"80.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822108D0J","Serial":"S201611221526225244R6","TransNum":"20161122152622586V2J","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"芥蓝","Weight":"50.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822042J6Z","Serial":"S201611221526225244R6","TransNum":"20161122152622586P48","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"红根菠菜","Weight":"54.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"}]}
      */
 
     private boolean Suc;
     private String Msg;
-    /**
-     * PageSize : 1
-     * CurPage : 1
-     * Logs : [{"TaskNum":"W20161101140901015LD8","Serial":"S20161023112223813BNT","TransNum":"20161023112223813XF4","Area":"市中区","Street":"四里村街道办事处","GoodsTitle":"唐王天津绿白菜","Weight":"37.00","RecPerson":"济南华能大厦采购","RecTel":"18678808192","RecAddr":"济南市泉城路23号","AccTime":"2016-11-01 02:09:16","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单"}]
-     */
-
     private DataBean Data;
 
     public boolean isSuc() {
@@ -49,32 +44,14 @@ public class LogTaskBean implements Serializable {
     }
 
     public static class DataBean {
-        private int PageSize;
-        private String CurPage;
         /**
-         * TaskNum : W20161101140901015LD8
-         * Serial : S20161023112223813BNT
-         * TransNum : 20161023112223813XF4
-         * Area : 市中区
-         * Street : 四里村街道办事处
-         * GoodsTitle : 唐王天津绿白菜
-         * Weight : 37.00
-         * RecPerson : 济南华能大厦采购
-         * RecTel : 18678808192
-         * RecAddr : 济南市泉城路23号
-         * AccTime : 2016-11-01 02:09:16
-         * AccUser : jnksdd
-         * PackTime : 1753-01-01 12:00:00
-         * PackUser :
-         * DepTime : 1753-01-01 12:00:00
-         * DepUser :
-         * SendTime : 1753-01-01 12:00:00
-         * SendUser :
-         * DeliTime : 1753-01-01 12:00:00
-         * DeliUser :
-         * State : 已派单
+         * PageSize : 1
+         * CurPage : 1
+         * Logs : [{"TaskNum":"W201611221528229658TZ","Serial":"S201611221526225244R6","TransNum":"201611221526225718F0","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"惠民韭菜","Weight":"120.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822910Z6F","Serial":"S201611221526225244R6","TransNum":"201611221526225716RX","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"惠民韭菜","Weight":"55.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822829822","Serial":"S201611221526225244R6","TransNum":"20161122152622555FN2","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"红根菠菜","Weight":"53.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822766JD0","Serial":"S201611221526225244R6","TransNum":"2016112215262255584J","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"芥蓝","Weight":"50.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822690N46","Serial":"S201611221526225244R6","TransNum":"201611221526225550H6","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"章丘鲍芹","Weight":"58.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W201611221528226258T2","Serial":"S201611221526225244R6","TransNum":"20161122152622539VRR","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"章丘鲍芹","Weight":"76.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822550R62","Serial":"S201611221526225244R6","TransNum":"201611221526225392N0","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"唐王天津绿白菜","Weight":"89.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822497802","Serial":"S201611221526225244R6","TransNum":"20161122152622617X06","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"唐王天津绿白菜","Weight":"60.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W2016112215282245906P","Serial":"S201611221526225244R6","TransNum":"20161122152622524D8P","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"商河包菜","Weight":"90.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:35","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822422480","Serial":"S201611221526225244R6","TransNum":"201611221526226176HF","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"高唐娃娃菜","Weight":"68.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W201611221528223638XX","Serial":"S201611221526225244R6","TransNum":"201611221526226174LH","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"芥蓝","Weight":"50.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W201611221528222896ZX","Serial":"S201611221526225244R6","TransNum":"2016112215262260224N","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"唐王天津绿白菜","Weight":"70.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W201611221528222268N4","Serial":"S201611221526225244R6","TransNum":"201611221526226020PX","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"高唐娃娃菜","Weight":"80.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822108D0J","Serial":"S201611221526225244R6","TransNum":"20161122152622586V2J","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"芥蓝","Weight":"50.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"},{"TaskNum":"W20161122152822042J6Z","Serial":"S201611221526225244R6","TransNum":"20161122152622586P48","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"红根菠菜","Weight":"54.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-22 03:28:36","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"已派单","Booth":"匡山A区001"}]
          */
 
+        private int PageSize;
+        private String CurPage;
         private List<LogsBean> Logs;
 
         public int getPageSize() {
@@ -102,6 +79,40 @@ public class LogTaskBean implements Serializable {
         }
 
         public static class LogsBean implements Serializable {
+            /**
+             * TaskNum : W201611221528229658TZ
+             * Serial : S201611221526225244R6
+             * TransNum : 201611221526225718F0
+             * Area : 历下区
+             * Street : 千佛山街道办事处
+             * GoodsTitle : 惠民韭菜
+             * Weight : 120.00
+             * RecPerson : 济南翰林大酒店采购
+             * RecTel : 18805310230
+             * RecAddr : 济南市经十路221号
+             * AccTime : 2016-11-22 03:28:35
+             * AccUser : jnksdd
+             * PackTime : 1753-01-01 12:00:00
+             * PackUser :
+             * DepTime : 1753-01-01 12:00:00
+             * DepUser :
+             * SendTime : 1753-01-01 12:00:00
+             * SendUser :
+             * DeliTime : 1753-01-01 12:00:00
+             * DeliUser :
+             * State : 已派单
+             * Booth : 匡山A区001
+             */
+            private int sata;
+
+            public int getSata() {
+                return sata;
+            }
+
+            public void setSata(int sata) {
+                this.sata = sata;
+            }
+
             private String TaskNum;
             private String Serial;
             private String TransNum;
@@ -123,6 +134,7 @@ public class LogTaskBean implements Serializable {
             private String DeliTime;
             private String DeliUser;
             private String State;
+            private String Booth;
 
             public String getTaskNum() {
                 return TaskNum;
@@ -290,6 +302,14 @@ public class LogTaskBean implements Serializable {
 
             public void setState(String State) {
                 this.State = State;
+            }
+
+            public String getBooth() {
+                return Booth;
+            }
+
+            public void setBooth(String Booth) {
+                this.Booth = Booth;
             }
         }
     }

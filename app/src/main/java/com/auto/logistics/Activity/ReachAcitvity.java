@@ -114,7 +114,7 @@ public class ReachAcitvity extends AbActivity {
             case R.id.tv_installcommit:
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this, "Token"));
                 params.put("TaskNum", logsBean.getTaskNum());
-                params.put("state", "9");
+                params.put("state", "6");
                 mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                     @Override
                     public void onStart() {
@@ -141,6 +141,9 @@ public class ReachAcitvity extends AbActivity {
                                 boolean Suc = object.getBoolean("Suc");
                                 if (Suc) {
                                     AbToastUtil.showToast(ReachAcitvity.this, "数据上传成功！返回途中开车请小心~");
+                                }else if (object.getString("Msg").equals("token已失效")){
+                                    AbToastUtil.showToast(ReachAcitvity.this,"您的账号在其他客户端登录！");
+                                    startActivity(new Intent(ReachAcitvity.this, LoginActivity.class));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -178,7 +181,6 @@ public class ReachAcitvity extends AbActivity {
                                         }
                                         break;
                                     case 1:// 从相册选取照片
-                                        tempUri = Uri.fromFile(tempFile);
                                         startPick();
                                         break;
                                 }

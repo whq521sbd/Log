@@ -22,13 +22,13 @@
         android:layout_toLeftOf="@+id/rightarrow">
 
         <TextView
-            android:typeface="sans"
-            android:drawablePadding="2dp"
-            android:drawableLeft="@mipmap/googsname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/googsname"
+            android:drawablePadding="2dp"
             android:text="商品名称："
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:typeface="sans" />
 
         <TextView
             android:id="@+id/tv_GoodsTitle"
@@ -45,22 +45,33 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:layout_toLeftOf="@+id/rightarrow">
+        android:layout_toLeftOf="@+id/rightarrow"
+        android:descendantFocusability="blocksDescendants">
 
         <TextView
-            android:typeface="sans"
-            android:drawablePadding="2dp"
-            android:drawableLeft="@mipmap/weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/weight"
+            android:drawablePadding="2dp"
             android:text="商品重量："
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:typeface="sans" />
 
         <TextView
             android:id="@+id/tv_Weight"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/ck_itemcheck"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:checked="false"
+            android:clickable="false"
+            android:focusable="false" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -74,15 +85,16 @@
         android:layout_toLeftOf="@+id/rightarrow">
 
         <TextView
-            android:typeface="sans"
-            android:drawablePadding="2dp"
-            android:drawableLeft="@mipmap/booth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/booth"
+            android:drawablePadding="2dp"
             android:text="商家摊位："
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:typeface="sans" />
 
         <TextView
+            android:id="@+id/tv_Booth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp" />
