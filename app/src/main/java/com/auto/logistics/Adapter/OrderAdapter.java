@@ -56,7 +56,7 @@ public class OrderAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) ctx
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            view = inflater.inflate(R.layout.message_item, null);
+            view = inflater.inflate(R.layout.order_item, null);
 
             holder = new OrderAdapter.ViewHolder();
             // 每项的视图布是一样的,findview

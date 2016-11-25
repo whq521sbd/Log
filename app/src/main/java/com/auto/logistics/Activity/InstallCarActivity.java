@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.ab.activity.AbActivity;
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
@@ -52,27 +53,28 @@ public class InstallCarActivity extends AbActivity {
     ImageView IV_installUpImg2;
     @AbIocView(id = R.id.IV_installUpImg3)
     ImageView IV_installUpImg3;
-    @AbIocView(id = R.id.IV_installback,click = "click")
-    ImageView  IV_installback;
-    @AbIocView(id = R.id.tv_installcommit,click = "click")
+    @AbIocView(id = R.id.IV_installback, click = "click")
+    ImageView IV_installback;
+    @AbIocView(id = R.id.tv_installcommit, click = "click")
     private TextView tv_installcommit;
     private LogTaskBean.DataBean.LogsBean logsBean;
-    private  int count = 0 ;
+    private int count = 0;
     private Uri tempUri;
     private AbHttpUtil mAbHttpUtil;
-    private  File file1 ,file2,file3;
-   private File tempFile ;
+    private File file1, file2, file3;
+    private File tempFile;
     AbRequestParams params;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.installcarlayout);
-        mAbHttpUtil =  AbHttpUtil.getInstance(InstallCarActivity.this);
+        mAbHttpUtil = AbHttpUtil.getInstance(InstallCarActivity.this);
         mAbHttpUtil.setTimeout(10000);
-        params =  new AbRequestParams();
+        params = new AbRequestParams();
         //首先获取上个页面传过来的数据
         Intent intent = getIntent();
-         logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
+        logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
 //        设置值
         setView();
     }
@@ -82,36 +84,33 @@ public class InstallCarActivity extends AbActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-                finish();
-            }
+            finish();
+        }
         return false;
     }
-
 
 
     //控件赋值
     private void setView() {
         TV_intallGoodsTitle.setText("商品名称：" + logsBean.getGoodsTitle());
         TV_installWeight.setText("重量：" + logsBean.getWeight() + "千克");
-       TV_installArea.setText("送达地点：" + logsBean.getArea() + logsBean.getStreet());
+        TV_installArea.setText("送达地点：" + logsBean.getArea() + logsBean.getStreet());
     }
 
 
-
-
-//点击事件
+    //点击事件
     public void click(View view) {
         switch (view.getId()) {
 //            提交操作
             case R.id.tv_installcommit:
-                params.put("Token", SharedPreferencesSava.getInstance().getStringValue(InstallCarActivity.this,"Token"));
-                params.put("TaskNum",logsBean.getTaskNum());
-                params.put("state","4");
+                params.put("Token", SharedPreferencesSava.getInstance().getStringValue(InstallCarActivity.this, "Token"));
+                params.put("TaskNum", logsBean.getTaskNum());
+                params.put("state", "4");
 
                 mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                     @Override
                     public void onStart() {
-                        AbDialogUtil.showProgressDialog(InstallCarActivity.this,-1,"正在上传数据");
+                        AbDialogUtil.showProgressDialog(InstallCarActivity.this, -1, "正在上传数据");
                     }
 
                     @Override
@@ -121,22 +120,23 @@ public class InstallCarActivity extends AbActivity {
 
                     @Override
                     public void onFailure(int i, String s, Throwable throwable) {
-                        Log.e("1111", "onFailure: "+throwable);
+                        Log.e("1111", "onFailure: " + throwable);
                         AbDialogUtil.removeDialog(InstallCarActivity.this);
-                        AbToastUtil.showToast(InstallCarActivity.this,"上传网络失败,请重试~");
+                        AbToastUtil.showToast(InstallCarActivity.this, "上传网络失败,请重试~");
                     }
+
                     @Override
                     public void onSuccess(int i, String s) {
-                        if (s!= null ){
+                        if (s != null) {
                             try {
                                 JSONObject object = new JSONObject(s);
-                               boolean Suc =   object.getBoolean("Suc");
-                                if (Suc){
-                                    Intent intent =  new Intent(InstallCarActivity.this,SendGoodsActivity.class);
-                                    intent.putExtra("logsBean",logsBean);
+                                boolean Suc = object.getBoolean("Suc");
+                                if (Suc) {
+                                    Intent intent = new Intent(InstallCarActivity.this, SendGoodsActivity.class);
+                                    intent.putExtra("logsBean", logsBean);
                                     startActivity(intent);
-                                }else if (object.getString("Msg").equals("token已失效")){
-                                    AbToastUtil.showToast(InstallCarActivity.this,"您的账号在其他客户端登录！");
+                                } else if (object.getString("Msg").equals("token已失效")) {
+                                    AbToastUtil.showToast(InstallCarActivity.this, "您的账号在其他客户端登录！");
                                     startActivity(new Intent(InstallCarActivity.this, LoginActivity.class));
                                 }
                             } catch (JSONException e) {
@@ -164,8 +164,8 @@ public class InstallCarActivity extends AbActivity {
                                         boolean sdCardExist = Environment.getExternalStorageState()
                                                 .equals(Environment.MEDIA_MOUNTED);
                                         //  创建新文件夹
-                                        File file =  new File(Environment.getExternalStorageDirectory()+"/BJDLogistics");
-                                        if (!file.exists()){
+                                        File file = new File(Environment.getExternalStorageDirectory() + "/BJDLogistics");
+                                        if (!file.exists()) {
                                             file.mkdirs();//不存在就建一个
                                         }
                                         if (sdCardExist) {
@@ -187,18 +187,15 @@ public class InstallCarActivity extends AbActivity {
     }
 
 
-
-
-
-/**
- * 调用照相机之后，缩小比例，裁剪，等相关操作
- * */
+    /**
+     * 调用照相机之后，缩小比例，裁剪，等相关操作
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 102:
-                if (resultCode == RESULT_OK){
-                        startPhotoZoom(tempUri, 1, 1, 500, 500);
+                if (resultCode == RESULT_OK) {
+                    startPhotoZoom(tempUri, 1, 1, 500, 500);
                 }
                 break;
             case 103:
@@ -208,35 +205,35 @@ public class InstallCarActivity extends AbActivity {
                 break;
             case 104:
                 Bitmap bitmap = decodeUriAsBitmap(tempUri);// decode bitmap
-                switch (count){
+                switch (count) {
                     case 1:
                         file1 = tempFile;
 
-                        if (file1.exists()){
-                            params.put("file1",file1);
+                        if (file1.exists()) {
+                            params.put("file1", file1);
                             IV_installUpImg1.setImageBitmap(bitmap);
                             IV_installUpImg1.setVisibility(View.VISIBLE);
                         }
                         break;
                     case 2:
                         file2 = tempFile;
-                        if (file2.exists()){
-                            params.put("file2",file2);
+                        if (file2.exists()) {
+                            params.put("file2", file2);
                             IV_installUpImg2.setImageBitmap(bitmap);
                             IV_installUpImg2.setVisibility(View.VISIBLE);
                         }
                         break;
                     case 3:
                         file3 = tempFile;
-                        if (file3.exists()){
-                            params.put("file3",file3);
+                        if (file3.exists()) {
+                            params.put("file3", file3);
                             IV_installUpImg3.setImageBitmap(bitmap);
                             IV_installUpImg3.setVisibility(View.VISIBLE);
                             IV_installAddImg.setVisibility(View.GONE);
                         }
                         break;
                 }
-            break;
+                break;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -250,11 +247,9 @@ public class InstallCarActivity extends AbActivity {
     }
 
 
-
-
     // 调用系统相机
     protected void startCamera() {
-         tempFile = new File(Environment.getExternalStorageDirectory()+"/BJDLogistics",
+        tempFile = new File(Environment.getExternalStorageDirectory() + "/BJDLogistics",
                 getPhotoFileName());
         tempUri = Uri.fromFile(tempFile);
         // 调用系统的拍照功能
@@ -279,22 +274,21 @@ public class InstallCarActivity extends AbActivity {
     }
 
 
-
-//裁剪照片
+    //裁剪照片
     private void startPhotoZoom(Uri uri, int x, int y, int sizex, int sizey) {
-        tempFile = new File(Environment.getExternalStorageDirectory()+"/BJDLogistics",
+        tempFile = new File(Environment.getExternalStorageDirectory() + "/BJDLogistics",
                 getPhotoFileName());
         tempUri = Uri.fromFile(tempFile);
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
         // crop为true是设置在开启的intent中设置显示的view可以裁剪
         intent.putExtra("crop", true);
-         // aspectX,aspectY是宽高的比例
-         intent.putExtra("aspectX", x);
-         intent.putExtra("aspectY", y);
-         // outputX,outputY是裁剪图片的宽高
-         intent.putExtra("outputX", sizex);
-         intent.putExtra("outputY", sizey);
+        // aspectX,aspectY是宽高的比例
+        intent.putExtra("aspectX", x);
+        intent.putExtra("aspectY", y);
+        // outputX,outputY是裁剪图片的宽高
+        intent.putExtra("outputX", sizex);
+        intent.putExtra("outputY", sizey);
         intent.putExtra("scale", true);
         // 设置是否返回数据
         intent.putExtra("return-data", false);
@@ -306,9 +300,7 @@ public class InstallCarActivity extends AbActivity {
     }
 
 
-
-
-//    转换成bitmap格式
+    //    转换成bitmap格式
     private Bitmap decodeUriAsBitmap(Uri uri) {
         Bitmap bitmap = null;
         try {
@@ -320,7 +312,6 @@ public class InstallCarActivity extends AbActivity {
         }
         return bitmap;
     }
-
 
 
 }

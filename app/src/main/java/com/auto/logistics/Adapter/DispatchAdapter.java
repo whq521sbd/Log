@@ -63,6 +63,7 @@ public class DispatchAdapter extends BaseAdapter {
             holder.tv_GoodsTitle = (TextView) view.findViewById(R.id.tv_GoodsTitle);
             holder.tv_Weight = (TextView) view.findViewById(R.id.tv_Weight);
             holder.rightarrow = (ImageView) view.findViewById(R.id.rightarrow);
+            holder.tv_Booth = (TextView) view.findViewById(R.id.tv_Booth);
 
             view.setTag(holder);
         } else {
@@ -73,15 +74,19 @@ public class DispatchAdapter extends BaseAdapter {
         // 每项的数据是不一样的，setview
         holder.tv_GoodsTitle.setText(dataList.get(position).getGoodsTitle());
         holder.tv_Weight.setText(dataList.get(position).getWeight() + "千克");
+        holder.tv_Booth.setText(dataList.get(position).getBooth());
 //        holder.iv_main_item_sex.setImageDrawable(dataList.get(position).getSex());
         //AbToastUtil.showToast(ctx,dataList.get(position).getRecAddr());
         return view;
     }
+
+
 
     // 用来实现缓存机制
     private static class ViewHolder {
         public TextView tv_GoodsTitle;
         public TextView tv_Weight;
         public ImageView rightarrow;
+        public TextView tv_Booth;
     }
 }

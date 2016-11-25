@@ -125,6 +125,15 @@ public class DispatchBean implements Serializable {
             private String DeliTime;
             private String DeliUser;
             private String State;
+            private String Booth;
+
+            public String getBooth() {
+                return Booth;
+            }
+
+            public void setBooth(String booth) {
+                Booth = booth;
+            }
 
             public String getTaskNum() {
                 return TaskNum;

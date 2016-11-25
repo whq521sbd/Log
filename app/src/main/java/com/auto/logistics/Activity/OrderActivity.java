@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/11/3.
@@ -65,15 +66,27 @@ public class OrderActivity extends AbActivity {
     private AbHttpUtil mHttpUtil;
     private LogTaskBean.DataBean.LogsBean logsBean;
     private ArrayList<LogTaskBean.DataBean.LogsBean> newlist;
+    private ArrayList<String> TaskNumlist = new ArrayList<>();
+    //                添加参数
+    AbRequestParams params = new AbRequestParams();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.orderlayout);
         //首先获得上个页面传过来的bean
-        Intent intent = getIntent();
+       Intent intent = getIntent();
+//
+//        newlist = (ArrayList<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("newlist");
+//        OrderAdapter orderAdapter = new OrderAdapter(OrderActivity.this,newlist);
+//        order_listview.setAdapter(orderAdapter);
+//
 
-       // newlist = (ArrayList<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("newlist");
+//
+//        for (int i=0;i<newlist.size();i++){
+//            String  TaskNum = newlist.get(i).getTaskNum();
+//            params.put("TaskNum",TaskNum);
+//        }
 
 
         logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("itembean");
@@ -101,10 +114,6 @@ public class OrderActivity extends AbActivity {
      * 注册控件，设置控件相关信息
      */
     private void setView() {
-
-       // OrderAdapter orderAdapter = new OrderAdapter(OrderActivity.this,newlist);
-      //  order_listview.setAdapter(orderAdapter);
-
         TV_TaskNum.setText(logsBean.getTaskNum());
         TV_Serial.setText(logsBean.getSerial());
         TV_TransNum.setText(logsBean.getTransNum());
@@ -129,11 +138,9 @@ public class OrderActivity extends AbActivity {
                 finish();
                 break;
             case R.id.tv_confirm:
-//                添加参数
-                AbRequestParams params = new AbRequestParams();
                 Log.d("OrderActivity", "clickMe: " + SharedPreferencesSava.getInstance().getStringValue(OrderActivity.this, "Token").toString());
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(OrderActivity.this, "Token"));
-                params.put("TaskNum", logsBean.getTaskNum().toString());
+              params.put("TaskNum", logsBean.getTaskNum().toString());
                 params.put("state", "3");
                 mHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                     @Override

@@ -75,7 +75,8 @@ public class LoginActivity extends AbActivity {
 //        记住用户名
         ed_user.setText(SharedPreferencesSava.getInstance().getStringValue(LoginActivity.this, "username"));
 //        自动登录功能，判断sp中的密码是否为空，并且是否联网状态
-        if ((!SharedPreferencesSava.getInstance().getStringValue(LoginActivity.this, "MDpwd").equals("")) && NetworkUtils.isNetworkAvailable(this)) {
+        if ((!SharedPreferencesSava.getInstance().getStringValue(LoginActivity.this, "MDpwd").equals("")) &&
+                NetworkUtils.isNetworkAvailable(this)) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
@@ -267,7 +268,7 @@ public class LoginActivity extends AbActivity {
 
     /**
      * @param keyCode
-     * @param event 返回键监听
+     * @param event   返回键监听
      * @return
      */
     @Override

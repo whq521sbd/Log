@@ -36,28 +36,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fl_title"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="80dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/ed_Muser"
+            android:inputType="phone"
+            android:id="@+id/ed_phoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+
             android:background="@null"
             android:drawableLeft="@mipmap/user_img"
             android:drawablePadding="10dp"
             android:hint="手机号" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:background="#ABBFC6" />
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/imgclean1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/cleanall_img" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_below="@+id/ll_phone_layout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="#ABBFC6" />
 
     <RelativeLayout
         android:id="@+id/ll_codelayout"
@@ -66,24 +78,35 @@
         android:layout_below="@+id/ll_phone_layout"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/ed_Mcodepwd"
+            android:inputType="number"
+            android:id="@+id/ed_Identifyingcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
             android:drawableLeft="@mipmap/code_img"
             android:drawablePadding="10dp"
-            android:hint="验证码" />
+            android:hint="验证码"
+            android:minWidth="200dp" />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/imgclean2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/tv_getcode"
+            android:src="@mipmap/cleanall_img" />
 
         <TextView
             android:id="@+id/tv_getcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_weight="1"
             android:text="| 获取验证码"
             android:textColor="#00C3C5"
             android:textSize="18sp" />
@@ -108,25 +131,40 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/ed_MregisterPwd"
+
+            android:id="@+id/ed_NewMregisterPwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@null"
             android:drawableLeft="@mipmap/pwd_img"
             android:drawablePadding="10dp"
             android:hint="新密码"
             android:inputType="textPassword" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:layout_marginTop="10dp"
-            android:background="#ABBFC6" />
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/imgclean3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/tv_getcode"
+            android:src="@mipmap/cleanall_img" />
     </LinearLayout>
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_below="@+id/ll_pwdlayout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="#ABBFC6" />
 
     <LinearLayout
         android:id="@+id/ll_Confirmpwdlayout"
@@ -135,25 +173,40 @@
         android:layout_below="@+id/ll_pwdlayout"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/ed_MconfirmPwd"
+            android:id="@+id/ed_confirmPwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@null"
             android:drawableLeft="@mipmap/pwd_img"
             android:drawablePadding="10dp"
             android:hint="确认密码"
             android:inputType="textPassword" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:layout_marginTop="10dp"
-            android:background="#ABBFC6" />
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/imgclean4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/tv_getcode"
+            android:src="@mipmap/cleanall_img" />
+
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_below="@+id/ll_Confirmpwdlayout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="#ABBFC6" />
 
 
     <TextView
@@ -172,13 +225,14 @@
         android:typeface="sans" />
 
     <CheckBox
-        android:checked="true"
         android:id="@+id/cheked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_resetting"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="14.3dp" />
+        android:layout_marginTop="14.3dp"
+        android:checked="true" />
+
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
@@ -191,13 +245,13 @@
         android:text="我已阅读并同意" />
 
     <TextView
-        android:gravity="bottom"
-        android:layout_alignBottom="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/text"
         android:layout_below="@+id/tv_resetting"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/text"
+        android:gravity="bottom"
         android:text="《用户协议》"
         android:textColor="#00C3C5" />
 </RelativeLayout>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <!--标题区域-->
@@ -35,11 +36,11 @@
 
 
     <ScrollView
-        android:visibility="visible"
         android:id="@+id/SV_waybill"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/dispatch_titleArea">
+        android:layout_below="@+id/dispatch_titleArea"
+        android:visibility="visible">
         <!--控制横竖显示-->
         <LinearLayout
 
@@ -468,15 +469,22 @@
                     android:typeface="sans" />
             </LinearLayout>
 
+            <!--图片展示-->
+
+            <GridView
+                android:id="@+id/GV_dispatchGridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:horizontalSpacing="3dp"
+                android:numColumns="3"
+                android:verticalSpacing="3dp"></GridView>
+
+
         </LinearLayout>
 
+
     </ScrollView>
-
-
-
-
-
-
 
 
 </RelativeLayout>

@@ -3,17 +3,16 @@ package com.auto.logistics.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
@@ -29,6 +28,7 @@ import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,11 +46,6 @@ public class MessageCenterFragment extends Fragment {
     private List<LogTaskBean.DataBean.LogsBean> listlogs;
     private MessageAdapter messageAdapter;
     private LogTaskBean dataBean;
-    private Intent intent = new Intent();
-    private TextView tv_next;
-    private ArrayList<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<>();
-    private int sata = 0;
-    private LogTaskBean.DataBean.LogsBean logsitemBean;
 
     @Nullable
     @Override
@@ -64,70 +59,16 @@ public class MessageCenterFragment extends Fragment {
         return view;
     }
 
-
     //设置控件
     private void setView() {
-
-//添加动画效果
-        TranslateAnimation translate = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-                -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-        translate.setDuration(2000);//动画时间500毫秒
-        translate.setFillAfter(true);//动画出来控件可以点击
-        tv_next.startAnimation(translate);//开始动画
-//点击按钮跳转
-        tv_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.setClass(getActivity(), OrderActivity.class);
-                intent.putExtra("newlist", newlist);
-                startActivity(intent);
-            }
-        });
-
-
         LV_MessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                CheckBox ck_itemcheck = (CheckBox) view.findViewById(R.id.ck_itemcheck);
-
-                listlogs.get(position).setSata(1);
-
-                for (int i = 0; i < listlogs.size(); i++) {
-                    if (listlogs.get(position).getSata() == 1) {
-                        ck_itemcheck.setChecked(true);
-                        logsitemBean = listlogs.get(position);
-                        newlist.add(logsitemBean);
-                        listlogs.get(position).setSata(0);
-                        messageAdapter.notifyDataSetChanged();
-                    } else {
-                        ck_itemcheck.setChecked(false);
-                        newlist.remove(newlist.size());
-                        listlogs.get(position).setSata(1);
-                        messageAdapter.notifyDataSetChanged();
-                    }
-
-                }
-
-//
-//                    if (sata == 1) {
-//                        sata = 0;
-//                        ck_itemcheck.setChecked(true);
-//                        logsitemBean = listlogs.get(position);
-//                        newlist.add(logsitemBean);
-//                    } else {
-//                        sata = 1;
-//                        ck_itemcheck.setChecked(false);
-//
-//                        newlist.remove(newlist.size());//删除最后一个
-//                    }
-
-                //intent.putExtra("itembean", logsitemBean);
-//                intent.setClass(getActivity(), OrderActivity.class);
-//                startActivity(intent);
-//                listlogs.remove(position);
-//                messageAdapter.notifyDataSetChanged();
+                LogTaskBean.DataBean.LogsBean logsitemBean = listlogs.get(position);
+                Intent intent = new Intent();
+                intent.putExtra("itembean", logsitemBean);
+                intent.setClass(getActivity(), OrderActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -135,7 +76,6 @@ public class MessageCenterFragment extends Fragment {
     //初始化listview
     private void initView(View view) {
         LV_MessageListView = (ListView) view.findViewById(R.id.LV_MessageListView);
-        tv_next = (TextView) view.findViewById(R.id.tv_next);
     }
 
     //获取数据
@@ -167,10 +107,9 @@ public class MessageCenterFragment extends Fragment {
                     } else if (dataBean.getMsg().equals("token已失效")) {
                         AbToastUtil.showToast(getActivity(), "您的账号在其他客户端登录！");
                         startActivity(new Intent(getActivity(), LoginActivity.class));
-                        SharedPreferencesSava.getInstance().savaStringValue(getActivity(), "MDpwd", "");
+                        SharedPreferencesSava.getInstance().savaStringValue(getActivity(),"MDpwd","");
                         AbToastUtil.showToast(getActivity(), "数据获取失败，请重试！");
                     }
-
                 } else {
                     AbToastUtil.showToast(getActivity(), "没有返回数据！");
                 }

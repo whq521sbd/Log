@@ -278,6 +278,7 @@ public class RevisePWDActivity extends AbActivity {
         }
         if (AbStrUtil.isContainChinese(confirmPwd)) {
             AbToastUtil.showToast(RevisePWDActivity.this,"确认密码中不能包含中文字符哦~");
+            return false;
         }
 
 
