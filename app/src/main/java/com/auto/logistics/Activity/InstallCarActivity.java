@@ -103,6 +103,8 @@ public class InstallCarActivity extends AbActivity {
         switch (view.getId()) {
 //            提交操作
             case R.id.tv_installcommit:
+
+                if (isLoadImageViews()) {
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(InstallCarActivity.this, "Token"));
                 params.put("TaskNum", logsBean.getTaskNum());
                 params.put("state", "4");
@@ -145,6 +147,7 @@ public class InstallCarActivity extends AbActivity {
                         }
                     }
                 });
+                }
                 break;
             case R.id.IV_installback:// 返回按钮
                 finish();
@@ -314,4 +317,15 @@ public class InstallCarActivity extends AbActivity {
     }
 
 
+    /**
+     * @return 最少上传一张照片
+     */
+    public boolean isLoadImageViews() {
+        if (IV_installUpImg1.getDrawable()==null&&IV_installUpImg2.getDrawable()==null&&IV_installUpImg3.getDrawable()==null){
+            AbToastUtil.showToast(InstallCarActivity.this,"最少上传一张照片哦~");
+            return false;
+        }
+
+        return true;
+    }
 }

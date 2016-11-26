@@ -20,6 +20,7 @@ import com.ab.util.AbDialogUtil;
 import com.ab.util.AbJsonUtil;
 import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
+import com.ab.view.expandtabview.AbTabView1;
 import com.auto.logistics.Activity.LoginActivity;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
@@ -45,6 +46,7 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
             TV_SendUser, TV_DeliTime, TV_DeliUser;
     private ScrollView  SV_waybill;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tranlistlayout, null);
@@ -52,6 +54,7 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
         mAbHttpUtil.setTimeout(10000);
         initView(view);
         setView();
+
         return view;
     }
 
@@ -85,6 +88,9 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
     }
 
     private void setView() {
+
+
+
         TV_query.setOnClickListener(this);
         IV_cleanNum.setOnClickListener(this);
         ED_number.addTextChangedListener(new TextWatcher() {

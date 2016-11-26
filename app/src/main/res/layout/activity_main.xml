@@ -58,7 +58,7 @@
             android:drawableTop="@mipmap/list"
             android:focusable="true"
             android:gravity="center"
-            android:text="运单查询"
+            android:text="我的运单"
             android:textColor="@drawable/textstyle" />
 
 

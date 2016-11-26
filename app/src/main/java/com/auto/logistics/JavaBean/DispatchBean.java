@@ -1,7 +1,6 @@
 package com.auto.logistics.JavaBean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ public class DispatchBean implements Serializable {
     /**
      * Suc : true
      * Msg :
-     * Data : {"PageSize":1,"CurPage":"1","Logs":[{"TaskNum":"W201611070943074554L2","Serial":"S20161023112223813BNT","TransNum":"201610231122238292BN","Area":"市中区","Street":"四里村街道办事处","GoodsTitle":"惠民韭菜","Weight":"38.00","RecPerson":"济南华能大厦采购","RecTel":"18678808192","RecAddr":"济南市泉城路23号","AccTime":"2016-11-07 09:43:08","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"买方收货纠纷"}]}
+     * Data : {"PageSize":1,"CurPage":"1","Logs":[{"TaskNum":"W20161125155925142XT4","Serial":"S20161125155725194R2J","TransNum":"20161125155725209N28","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"新疆核桃","Weight":"20.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-25 03:59:52","AccUser":"370101000002","PackTime":"2016-11-25 04:00:00","PackUser":"370101000002","PackPic":"/UImage/Logistics/201611/20161125040000062.PNG","DepTime":"2016-11-25 04:00:14","DepUser":"370101000002","DepPic":"/UImage/Logistics/201611/2016112504001488H.PNG","SendTime":"2016-11-25 04:00:25","SendUser":"370101000002","SendPic":"/UImage/Logistics/201611/20161125040025PT8.PNG","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"买方收货纠纷","Booth":"匡山C区002"},{"TaskNum":"W201611251559251220P8","Serial":"S20161125155725194R2J","TransNum":"20161125155725209HTF","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"承德杏仁","Weight":"10.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-26 10:01:04","AccUser":"370101000002","PackTime":"2016-11-26 10:01:33","PackUser":"370101000002","PackPic":"/UImage/Logistics/201611/20161126100133L6V.PNG,,/UImage/Logistics/201611/20161126100133N2F.PNG,,/UImage/Logistics/201611/20161126100133TV2.PNG,","DepTime":"2016-11-26 10:01:54","DepUser":"370101000002","DepPic":"/UImage/Logistics/201611/20161126100154TR2.PNG,,/UImage/Logistics/201611/20161126100154B62.PNG,,/UImage/Logistics/201611/20161126100154HJ8.PNG,","SendTime":"2016-11-26 10:02:30","SendUser":"370101000002","SendPic":"/UImage/Logistics/201611/20161126100230402.PNG,,/UImage/Logistics/201611/20161126100230824.PNG,,/UImage/Logistics/201611/201611261002304J8.PNG,","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"买方收货纠纷","Booth":"匡山C区002"}]}
      */
 
     private boolean Suc;
@@ -48,12 +47,12 @@ public class DispatchBean implements Serializable {
         /**
          * PageSize : 1
          * CurPage : 1
-         * Logs : [{"TaskNum":"W201611070943074554L2","Serial":"S20161023112223813BNT","TransNum":"201610231122238292BN","Area":"市中区","Street":"四里村街道办事处","GoodsTitle":"惠民韭菜","Weight":"38.00","RecPerson":"济南华能大厦采购","RecTel":"18678808192","RecAddr":"济南市泉城路23号","AccTime":"2016-11-07 09:43:08","AccUser":"jnksdd","PackTime":"1753-01-01 12:00:00","PackUser":"","DepTime":"1753-01-01 12:00:00","DepUser":"","SendTime":"1753-01-01 12:00:00","SendUser":"","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"买方收货纠纷"}]
+         * Logs : [{"TaskNum":"W20161125155925142XT4","Serial":"S20161125155725194R2J","TransNum":"20161125155725209N28","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"新疆核桃","Weight":"20.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-25 03:59:52","AccUser":"370101000002","PackTime":"2016-11-25 04:00:00","PackUser":"370101000002","PackPic":"/UImage/Logistics/201611/20161125040000062.PNG","DepTime":"2016-11-25 04:00:14","DepUser":"370101000002","DepPic":"/UImage/Logistics/201611/2016112504001488H.PNG","SendTime":"2016-11-25 04:00:25","SendUser":"370101000002","SendPic":"/UImage/Logistics/201611/20161125040025PT8.PNG","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"买方收货纠纷","Booth":"匡山C区002"},{"TaskNum":"W201611251559251220P8","Serial":"S20161125155725194R2J","TransNum":"20161125155725209HTF","Area":"历下区","Street":"千佛山街道办事处","GoodsTitle":"承德杏仁","Weight":"10.00","RecPerson":"济南翰林大酒店采购","RecTel":"18805310230","RecAddr":"济南市经十路221号","AccTime":"2016-11-26 10:01:04","AccUser":"370101000002","PackTime":"2016-11-26 10:01:33","PackUser":"370101000002","PackPic":"/UImage/Logistics/201611/20161126100133L6V.PNG,,/UImage/Logistics/201611/20161126100133N2F.PNG,,/UImage/Logistics/201611/20161126100133TV2.PNG,","DepTime":"2016-11-26 10:01:54","DepUser":"370101000002","DepPic":"/UImage/Logistics/201611/20161126100154TR2.PNG,,/UImage/Logistics/201611/20161126100154B62.PNG,,/UImage/Logistics/201611/20161126100154HJ8.PNG,","SendTime":"2016-11-26 10:02:30","SendUser":"370101000002","SendPic":"/UImage/Logistics/201611/20161126100230402.PNG,,/UImage/Logistics/201611/20161126100230824.PNG,,/UImage/Logistics/201611/201611261002304J8.PNG,","DeliTime":"1753-01-01 12:00:00","DeliUser":"","State":"买方收货纠纷","Booth":"匡山C区002"}]
          */
 
         private int PageSize;
         private String CurPage;
-        private ArrayList<LogsListBean> Logs;
+        private List<LogsListBean> Logs;
 
         public int getPageSize() {
             return PageSize;
@@ -71,37 +70,41 @@ public class DispatchBean implements Serializable {
             this.CurPage = CurPage;
         }
 
-        public ArrayList<LogsListBean> getLogs() {
+        public List<LogsListBean> getLogs() {
             return Logs;
         }
 
-        public void setLogs(ArrayList<LogsListBean> Logs) {
+        public void setLogs(List<LogsListBean> Logs) {
             this.Logs = Logs;
         }
 
         public static class LogsListBean implements Serializable{
             /**
-             * TaskNum : W201611070943074554L2
-             * Serial : S20161023112223813BNT
-             * TransNum : 201610231122238292BN
-             * Area : 市中区
-             * Street : 四里村街道办事处
-             * GoodsTitle : 惠民韭菜
-             * Weight : 38.00
-             * RecPerson : 济南华能大厦采购
-             * RecTel : 18678808192
-             * RecAddr : 济南市泉城路23号
-             * AccTime : 2016-11-07 09:43:08
-             * AccUser : jnksdd
-             * PackTime : 1753-01-01 12:00:00
-             * PackUser :
-             * DepTime : 1753-01-01 12:00:00
-             * DepUser :
-             * SendTime : 1753-01-01 12:00:00
-             * SendUser :
+             * TaskNum : W20161125155925142XT4
+             * Serial : S20161125155725194R2J
+             * TransNum : 20161125155725209N28
+             * Area : 历下区
+             * Street : 千佛山街道办事处
+             * GoodsTitle : 新疆核桃
+             * Weight : 20.00
+             * RecPerson : 济南翰林大酒店采购
+             * RecTel : 18805310230
+             * RecAddr : 济南市经十路221号
+             * AccTime : 2016-11-25 03:59:52
+             * AccUser : 370101000002
+             * PackTime : 2016-11-25 04:00:00
+             * PackUser : 370101000002
+             * PackPic : /UImage/Logistics/201611/20161125040000062.PNG
+             * DepTime : 2016-11-25 04:00:14
+             * DepUser : 370101000002
+             * DepPic : /UImage/Logistics/201611/2016112504001488H.PNG
+             * SendTime : 2016-11-25 04:00:25
+             * SendUser : 370101000002
+             * SendPic : /UImage/Logistics/201611/20161125040025PT8.PNG
              * DeliTime : 1753-01-01 12:00:00
              * DeliUser :
              * State : 买方收货纠纷
+             * Booth : 匡山C区002
              */
 
             private String TaskNum;
@@ -118,22 +121,17 @@ public class DispatchBean implements Serializable {
             private String AccUser;
             private String PackTime;
             private String PackUser;
+            private String PackPic;
             private String DepTime;
             private String DepUser;
+            private String DepPic;
             private String SendTime;
             private String SendUser;
+            private String SendPic;
             private String DeliTime;
             private String DeliUser;
             private String State;
             private String Booth;
-
-            public String getBooth() {
-                return Booth;
-            }
-
-            public void setBooth(String booth) {
-                Booth = booth;
-            }
 
             public String getTaskNum() {
                 return TaskNum;
@@ -247,6 +245,14 @@ public class DispatchBean implements Serializable {
                 this.PackUser = PackUser;
             }
 
+            public String getPackPic() {
+                return PackPic;
+            }
+
+            public void setPackPic(String PackPic) {
+                this.PackPic = PackPic;
+            }
+
             public String getDepTime() {
                 return DepTime;
             }
@@ -263,6 +269,14 @@ public class DispatchBean implements Serializable {
                 this.DepUser = DepUser;
             }
 
+            public String getDepPic() {
+                return DepPic;
+            }
+
+            public void setDepPic(String DepPic) {
+                this.DepPic = DepPic;
+            }
+
             public String getSendTime() {
                 return SendTime;
             }
@@ -277,6 +291,14 @@ public class DispatchBean implements Serializable {
 
             public void setSendUser(String SendUser) {
                 this.SendUser = SendUser;
+            }
+
+            public String getSendPic() {
+                return SendPic;
+            }
+
+            public void setSendPic(String SendPic) {
+                this.SendPic = SendPic;
             }
 
             public String getDeliTime() {
@@ -301,6 +323,14 @@ public class DispatchBean implements Serializable {
 
             public void setState(String State) {
                 this.State = State;
+            }
+
+            public String getBooth() {
+                return Booth;
+            }
+
+            public void setBooth(String Booth) {
+                this.Booth = Booth;
             }
         }
     }

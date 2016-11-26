@@ -54,9 +54,16 @@ public class MessageCenterFragment extends Fragment {
         mAbHttpUtil = AbHttpUtil.getInstance(getActivity());
         params = new AbRequestParams();
         initView(view);
+
+        return view;
+    }
+
+
+    @Override
+    public void onStart() {
         getData();
         setView();
-        return view;
+        super.onStart();
     }
 
     //设置控件

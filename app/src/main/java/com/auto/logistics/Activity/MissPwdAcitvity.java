@@ -192,7 +192,7 @@ public class MissPwdAcitvity extends AbActivity {
 //                点击后获取验证码并设置60秒倒计时，倒计时期间，设置按键不可用
                 CountDownTimerUtils countDownTimerUtils = new CountDownTimerUtils(tv_getcode, 60000, 1000);
                 countDownTimerUtils.start();
-                getPhoneNumber();//获得手机号
+               // getPhoneNumber();//获得手机号
                 requestIDcode();//请求获取验证码
                 break;
             case R.id.tv_Rback:
@@ -229,19 +229,19 @@ public class MissPwdAcitvity extends AbActivity {
 
     }
 
-    /**
-     * 获取手机号码
-     * @return telNumber 获得手机号
-     */
-    private String getPhoneNumber() {
-
-        TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-//        String deviceid = tm.getDeviceId(); //获取智能设备唯一编号
-        String telNumber = tm.getLine1Number();//获取本机号码
-//        String IMEI = tm.getSimSerialNumber();//获得SIM卡的序号
-//        String IMSI = tm.getSubscriberId();//得到用户Id
-        return telNumber;
-    }
+//    /**
+//     * 获取手机号码
+//     * @return telNumber 获得手机号
+//     */
+//    private String getPhoneNumber() {
+//
+//        TelephonyManager tm = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+////        String deviceid = tm.getDeviceId(); //获取智能设备唯一编号
+//        String telNumber = tm.getLine1Number();//获取本机号码
+////        String IMEI = tm.getSimSerialNumber();//获得SIM卡的序号
+////        String IMSI = tm.getSubscriberId();//得到用户Id
+//        return telNumber;
+//    }
 
 
     private Boolean check() {

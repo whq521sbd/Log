@@ -112,6 +112,7 @@ public class ReachAcitvity extends AbActivity {
         switch (view.getId()) {
 //            提交操作
             case R.id.tv_installcommit:
+                if (isLoadImage()) {
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this, "Token"));
                 params.put("TaskNum", logsBean.getTaskNum());
                 params.put("state", "6");
@@ -151,6 +152,7 @@ public class ReachAcitvity extends AbActivity {
                         }
                     }
                 });
+                }
                 break;
             case R.id.IV_installback:// 返回按钮
                 finish();
@@ -340,4 +342,11 @@ public class ReachAcitvity extends AbActivity {
     }
 
 
+    public boolean isLoadImage() {
+        if (IV_installUpImg1.getDrawable()==null&&IV_installUpImg2.getDrawable()==null&&IV_installUpImg3.getDrawable()==null){
+            AbToastUtil.showToast(ReachAcitvity.this,"最少上传一张照片哦~");
+            return false;
+        }
+        return true;
+    }
 }

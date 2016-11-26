@@ -2,16 +2,22 @@ package com.auto.logistics.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
+import com.ab.image.AbImageLoader;
+import com.ab.util.AbStrUtil;
 import com.ab.view.ioc.AbIocView;
 import com.auto.logistics.JavaBean.DispatchBean;
 import com.auto.logistics.R;
+import com.auto.logistics.Utills.FinalURL;
 
 /**
  * Created by Administrator on 2016/11/18.
@@ -59,10 +65,32 @@ public class DispatchDetailActivity extends AbActivity {
     TextView TV_DeliTime;
     @AbIocView(id = R.id.TV_DeliUser)
     TextView TV_DeliUser;
-    @AbIocView(id = R.id.GV_dispatchGridview)
-    GridView GV_dispatchGridview;
+    @AbIocView(id = R.id.IV_pickPic0)
+    ImageView IV_pickPic0;
+    @AbIocView(id = R.id.IV_pickPic1)
+    ImageView IV_pickPic1;
+    @AbIocView(id = R.id.IV_pickPic2)
+    ImageView IV_pickPic2;
+    @AbIocView(id= R.id.IV_sendPic0)
+    ImageView IV_sendPic0;
+    @AbIocView(id= R.id.IV_sendPic1)
+    ImageView IV_sendPic1;
+    @AbIocView(id= R.id.IV_sendPic2)
+    ImageView IV_sendPic2;
+    @AbIocView(id = R.id.IV_depPics0)
+    ImageView IV_depPics0;
+    @AbIocView(id = R.id.IV_depPics1)
+    ImageView IV_depPics1;
+    @AbIocView(id = R.id.IV_depPics2)
+    ImageView IV_depPics2;
 
-    DispatchBean.DataBean.LogsListBean logsListBean;
+
+
+    private DispatchBean.DataBean.LogsListBean logsListBean;
+    private String[] pickPics;
+    private String[] sendPics;
+    private String[] depPics;
+    private AbImageLoader abImageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +98,8 @@ public class DispatchDetailActivity extends AbActivity {
         setAbContentView(R.layout.dispatchdetaillayout);
         Intent intent = getIntent();
         logsListBean = (DispatchBean.DataBean.LogsListBean) intent.getSerializableExtra("itembean");
+        abImageLoader = AbImageLoader.getInstance(this);
+
         setView();
     }
 
@@ -94,6 +124,129 @@ public class DispatchDetailActivity extends AbActivity {
         TV_SendUser.setText(logsListBean.getSendUser());
         TV_DeliTime.setText(logsListBean.getDeliTime());
         TV_DeliUser.setText(logsListBean.getDeliUser());
+        String pickPic = logsListBean.getPackPic();
+        String depPic = logsListBean.getDepPic();
+        String sendPic = logsListBean.getSendPic();
+
+        pickPics = pickPic.split(",,");//装车图片地址
+        sendPics = sendPic.split(",,");//送货图片地址
+        depPics = depPic.split(",,");//到达图片地址
+
+
+
+        for (int i=0;i<pickPics.length;i++){
+            if (pickPics.length==1){
+                abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0]);
+                IV_pickPic0.setVisibility(View.VISIBLE);
+                startAction(IV_pickPic0);
+
+
+            }else if (pickPics.length==2){
+                abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0]);
+                abImageLoader.display(IV_pickPic1,FinalURL.IMGURL+pickPics[1]);
+                IV_pickPic0.setVisibility(View.VISIBLE);
+                IV_pickPic1.setVisibility(View.VISIBLE);
+
+                startAction(IV_pickPic0);
+                startAction(IV_pickPic1);
+
+
+            }else if (pickPics.length==3){
+                abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0]);
+                abImageLoader.display(IV_pickPic1,FinalURL.IMGURL+pickPics[1]);
+                abImageLoader.display(IV_pickPic2,FinalURL.IMGURL+pickPics[2].substring(0,pickPics[2].length()-1));
+
+                IV_pickPic0.setVisibility(View.VISIBLE);
+                IV_pickPic1.setVisibility(View.VISIBLE);
+                IV_pickPic2.setVisibility(View.VISIBLE);
+
+                startAction(IV_pickPic0);
+                startAction(IV_pickPic1);
+                startAction(IV_pickPic2);
+
+            }
+        }
+
+
+
+
+        for (int i=0;i<sendPics.length;i++){
+            if (sendPics.length==1){
+                abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0]);
+                IV_sendPic0.setVisibility(View.VISIBLE);
+                startAction(IV_sendPic0);
+
+            }else if (pickPics.length==2){
+                abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0]);
+                abImageLoader.display(IV_sendPic1,FinalURL.IMGURL+sendPics[1]);
+                IV_sendPic0.setVisibility(View.VISIBLE);
+                IV_sendPic1.setVisibility(View.VISIBLE);
+
+                startAction(IV_sendPic0);
+                startAction(IV_sendPic1);
+
+            }else if (pickPics.length==3){
+                abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0]);
+                abImageLoader.display(IV_sendPic1,FinalURL.IMGURL+sendPics[1]);
+                abImageLoader.display(IV_sendPic2,FinalURL.IMGURL+sendPics[2].substring(0,sendPics[2].length()-1));
+                IV_sendPic0.setVisibility(View.VISIBLE);
+                IV_sendPic1.setVisibility(View.VISIBLE);
+                IV_sendPic2.setVisibility(View.VISIBLE);
+
+                startAction(IV_sendPic0);
+                startAction(IV_sendPic1);
+                startAction(IV_sendPic2);
+
+
+            }
+        }
+
+
+
+
+
+        for (int i=0;i<depPics.length;i++){
+            if (depPics.length==1){
+                abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0]);
+                IV_depPics0.setVisibility(View.VISIBLE);
+
+                startAction(IV_depPics0);
+
+
+            }else if (depPics.length==2){
+                abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0]);
+                abImageLoader.display(IV_depPics1,FinalURL.IMGURL+depPics[1]);
+                IV_depPics0.setVisibility(View.VISIBLE);
+                IV_depPics1.setVisibility(View.VISIBLE);
+
+                startAction(IV_depPics0);
+                startAction(IV_depPics1);
+
+            }else if (depPics.length==3){
+                abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0]);
+                abImageLoader.display(IV_depPics1,FinalURL.IMGURL+depPics[1]);
+                abImageLoader.display(IV_depPics2,FinalURL.IMGURL+depPics[2].substring(0,depPics[2].length()-1));
+                IV_depPics0.setVisibility(View.VISIBLE);
+                IV_depPics1.setVisibility(View.VISIBLE);
+                IV_depPics2.setVisibility(View.VISIBLE);
+
+                startAction(IV_depPics0);
+                startAction(IV_depPics1);
+                startAction(IV_depPics2);
+
+            }
+        }
+
+
+
+    }
+
+    private void startAction(View view) {
+        AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
+        animation.setDuration(3000);
+        animation.setRepeatMode(Animation.REVERSE);
+        view.setAnimation(animation);
+        animation.startNow();
     }
 
 

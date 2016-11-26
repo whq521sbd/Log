@@ -95,17 +95,24 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/vp_ViewPager"
         android:background="#fff"
+        android:gravity="center_vertical"
         android:padding="3dp"
         android:text=" | 运单详情"
         android:textColor="#45494A"
         android:typeface="sans" />
+
+  <TabHost
+      android:layout_width="match_parent"
+      android:layout_height="30dp"></TabHost>
+
+
     <!--运单列表区域waybill-->
     <ScrollView
-        android:visibility="gone"
         android:id="@+id/SV_waybill"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/main_text">
+        android:layout_below="@+id/main_text"
+        android:visibility="gone">
         <!--控制横竖显示-->
         <LinearLayout
 

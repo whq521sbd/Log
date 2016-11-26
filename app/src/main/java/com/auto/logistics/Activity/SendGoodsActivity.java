@@ -139,6 +139,7 @@ public class SendGoodsActivity extends AbActivity {
                 finish();
                 break;
             case R.id.tv_sendgoods:
+                if (isLoadImage()) {
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(SendGoodsActivity.this, "Token"));
                 params.put("TaskNum", logsBean.getTaskNum());
                 params.put("state", "5");
@@ -182,7 +183,7 @@ public class SendGoodsActivity extends AbActivity {
                         }
                     }
                 });
-
+                }
 
                 break;
         }
@@ -343,4 +344,11 @@ public class SendGoodsActivity extends AbActivity {
     }
 
 
+    public boolean isLoadImage() {
+        if (IV_installUpImg1.getDrawable()==null&&IV_installUpImg2.getDrawable()==null&&IV_installUpImg3.getDrawable()==null){
+            AbToastUtil.showToast(SendGoodsActivity.this,"最少上传一张照片哦~");
+            return false;
+        }
+        return true;
+    }
 }

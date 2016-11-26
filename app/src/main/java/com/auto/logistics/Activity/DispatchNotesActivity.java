@@ -87,12 +87,14 @@ public class DispatchNotesActivity extends AbActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.TV_Qurey:
+                LV_DisListView.setVisibility(View.VISIBLE);
                 DP_DatePicker.setVisibility(View.GONE);
                 getData();
                 break;
 
 
             case R.id.TV_Dataselect:
+                LV_DisListView.setVisibility(View.GONE);
                 DP_DatePicker.setVisibility(View.VISIBLE);
                 initData();
                 break;
@@ -101,7 +103,6 @@ public class DispatchNotesActivity extends AbActivity {
             case R.id.IV_dispatchgoback:
                 finish();
                 break;
-
 
         }
 
@@ -120,9 +121,9 @@ public class DispatchNotesActivity extends AbActivity {
         DP_DatePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                TV_Dataselect.setText(year + "年" + monthOfYear + "月" + dayOfMonth + "日");
+                TV_Dataselect.setText(year + "年" + (monthOfYear+1) + "月" + dayOfMonth + "日");
 
-                data = year + "-" + monthOfYear + "-" + dayOfMonth;
+                data = year + "-" + (monthOfYear+1) + "-" + dayOfMonth;
 
                 params.put("queryTime", data);
             }
@@ -130,7 +131,6 @@ public class DispatchNotesActivity extends AbActivity {
 
 
     }
-
 
     /*
     *
@@ -153,13 +153,19 @@ public class DispatchNotesActivity extends AbActivity {
                         try {
 //                            由于返回字段，有可能没有logs字段，所以，判定如果没有logs字段，就没有数据信息，手动抛异常
                             for (int j = 0; j < dispatchBean.getData().getLogs().size(); j++) {
-                                logsListBean = dispatchBean.getData().getLogs();
+                                logsListBean = (ArrayList<DispatchBean.DataBean.LogsListBean>) dispatchBean.getData().getLogs();
                             }
+                            if (logsListBean!=null){
                             dispatchAdapter = new DispatchAdapter(DispatchNotesActivity.this, logsListBean);
                             LV_DisListView.setAdapter(dispatchAdapter);
+                            }else {
+                                AbToastUtil.showToast(DispatchNotesActivity.this,"没有数据~");
+                            }
                         } catch (Exception e) {
-                            logsListBean.clear();//清空历史数据
-                            dispatchAdapter.notifyDataSetChanged();//适配器刷新数据
+                            if (logsListBean!=null){
+                                logsListBean.clear();//清空历史数据
+                                dispatchAdapter.notifyDataSetChanged();//适配器刷新数据
+                            }
                             AbToastUtil.showToast(DispatchNotesActivity.this, "此日期没有数据！");
                             e.printStackTrace();
                         }
