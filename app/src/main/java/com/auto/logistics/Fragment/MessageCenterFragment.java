@@ -166,7 +166,7 @@ public class MessageCenterFragment extends Fragment {
                     AbToastUtil.showToast(getActivity(), "没有返回数据！");
                 }
             }
-1
+
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {//失败
