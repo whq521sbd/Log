@@ -1,15 +1,16 @@
 package com.auto.logistics.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -20,16 +21,19 @@ import com.ab.util.AbDialogUtil;
 import com.ab.util.AbJsonUtil;
 import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
-import com.ab.view.expandtabview.AbTabView1;
-import com.auto.logistics.Activity.LoginActivity;
+import com.auto.logistics.Activity.DispatchNotesActivity;
+import com.auto.logistics.Activity.WaybillStateNotes;
+import com.auto.logistics.JavaBean.DispatchBean;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/10/21.
@@ -46,6 +50,8 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
             TV_SendUser, TV_DeliTime, TV_DeliUser;
     private ScrollView  SV_waybill;
 
+    private LinearLayout LL_waybillSataArea,LL_orders,LL_loading,LL_depart,LL_arrive,LL_finish;
+    private AbRequestParams params = new AbRequestParams();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,13 +60,19 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
         mAbHttpUtil.setTimeout(10000);
         initView(view);
         setView();
-
         return view;
     }
 
 
 
     private void initView(View view) {
+        LL_waybillSataArea = (LinearLayout) view.findViewById(R.id.LL_waybillSataArea);
+        LL_orders = (LinearLayout) view.findViewById(R.id.LL_orders);
+        LL_loading = (LinearLayout) view.findViewById(R.id.LL_loading);
+        LL_depart = (LinearLayout) view.findViewById(R.id.LL_depart);
+        LL_arrive = (LinearLayout) view.findViewById(R.id.LL_arrive);
+        LL_finish = (LinearLayout) view.findViewById(R.id.LL_finish);
+
         TV_query = (TextView) view.findViewById(R.id.TV_query);
         ED_number = (EditText) view.findViewById(R.id.ED_number);
         IV_cleanNum = (ImageView) view.findViewById(R.id.IV_cleanNum);
@@ -89,7 +101,11 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
 
     private void setView() {
 
-
+        LL_orders.setOnClickListener(this);
+        LL_loading.setOnClickListener(this);
+        LL_depart.setOnClickListener(this);
+        LL_arrive.setOnClickListener(this);
+        LL_finish.setOnClickListener(this);
 
         TV_query.setOnClickListener(this);
         IV_cleanNum.setOnClickListener(this);
@@ -111,22 +127,36 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                 } else {
                     IV_cleanNum.setVisibility(View.GONE);
                 }
-
             }
         });
     }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.LL_orders:
+                requestData(3);
+            break;
+            case R.id.LL_loading :
+                requestData(4);
+            break;
+            case R.id.LL_depart:
+                requestData(5);
+            break;
+            case R.id.LL_arrive:
+                requestData(6);
+            break;
+            case R.id.LL_finish:
+                startActivity(new Intent(getActivity(),DispatchNotesActivity.class));
+            break;
             case R.id.TV_query://查询按钮
-                AbRequestParams params = new AbRequestParams();
+
                 String TransNumber = ED_number.getText().toString().trim();
                 if (AbStrUtil.isEmpty(TransNumber)) {
                     AbToastUtil.showToast(getActivity(), "运单编号不能为空哦~");
                 } else {
+                    LL_waybillSataArea.setVisibility(View.GONE);
                     params.put("TaskNum", TransNumber);
                     params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
-                    Log.d("111", "onClick: " + SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
                     Date date = new Date();
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String time = format.format(date);
@@ -177,6 +207,52 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                 break;
         }
     }
+
+    private void requestData(int state ) {
+        params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
+        Date date = new Date();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = format.format(date);
+        params.put("queryTime", time);
+        params.put("curPage", "1");
+        params.put("state", state);
+        mAbHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
+            @Override
+            public void onSuccess(int i, String s) {
+                if (s!=null) {
+                    DispatchBean dispatchBean = AbJsonUtil.fromJson(s, DispatchBean.class);
+                    if (dispatchBean.getData().getLogs().size()!=0) {
+                        List<DispatchBean.DataBean.LogsListBean> logsListBean = dispatchBean.getData().getLogs();
+                        Intent intent = new Intent(getActivity(), WaybillStateNotes.class);
+                        intent.putExtra("logsListBean", (Serializable) logsListBean);
+                        startActivity(intent);
+                    } else {
+                        AbToastUtil.showToast(getActivity(),"查询不到此单号！");
+                    }
+                }else {
+                    AbToastUtil.showToast(getActivity(),"接口获取数据失败！");
+                }
+            }
+
+            @Override
+            public void onStart() {
+                AbDialogUtil.showProgressDialog(getActivity(),-1,"正在查询订单...");
+            }
+
+            @Override
+            public void onFinish() {
+                AbDialogUtil.removeDialog(getActivity());
+
+            }
+
+            @Override
+            public void onFailure(int i, String s, Throwable throwable) {
+                AbDialogUtil.removeDialog(getActivity());
+                AbToastUtil.showToast(getActivity(), "查询失败，请重试~");
+            }
+        });
+    }
+
 
 
 

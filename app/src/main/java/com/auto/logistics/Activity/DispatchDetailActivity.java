@@ -129,113 +129,114 @@ public class DispatchDetailActivity extends AbActivity {
         String sendPic = logsListBean.getSendPic();
 
         pickPics = pickPic.split(",,");//装车图片地址
+//AbStrUtil.isEmpty(pickPic)
+        if (!pickPic.equals("")){
+            for (int i=0;i<pickPics.length;i++){
+                if (pickPics.length==1){
+                    abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0].substring(0,pickPics[0].length()-1));
+                    IV_pickPic0.setVisibility(View.VISIBLE);
+                    startAction(IV_pickPic0);
+                    break;
+
+                }else if (pickPics.length==2){
+                    abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0]);
+                    abImageLoader.display(IV_pickPic1,FinalURL.IMGURL+pickPics[1].substring(0,pickPics[1].length()-1));
+                    IV_pickPic0.setVisibility(View.VISIBLE);
+                    IV_pickPic1.setVisibility(View.VISIBLE);
+
+                    startAction(IV_pickPic0);
+                    startAction(IV_pickPic1);
+                    break;
+
+                }else if (pickPics.length==3){
+                    abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0]);
+                    abImageLoader.display(IV_pickPic1,FinalURL.IMGURL+pickPics[1]);
+                    abImageLoader.display(IV_pickPic2,FinalURL.IMGURL+pickPics[2].substring(0,pickPics[2].length()-1));
+
+                    IV_pickPic0.setVisibility(View.VISIBLE);
+                    IV_pickPic1.setVisibility(View.VISIBLE);
+                    IV_pickPic2.setVisibility(View.VISIBLE);
+
+                    startAction(IV_pickPic0);
+                    startAction(IV_pickPic1);
+                    startAction(IV_pickPic2);
+                    break;
+
+                }
+            }
+        }
+
         sendPics = sendPic.split(",,");//送货图片地址
+
+        if (!sendPic.equals("")){
+            for (int i=0;i<sendPics.length;i++){
+                if (sendPics.length==1){
+                    abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0].substring(0,sendPics[0].length()-1));
+                    IV_sendPic0.setVisibility(View.VISIBLE);
+                    startAction(IV_sendPic0);
+                    break;
+                }else if (pickPics.length==2){
+                    abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0]);
+                    abImageLoader.display(IV_sendPic1,FinalURL.IMGURL+sendPics[1].substring(0,sendPics[1].length()-1));
+                    IV_sendPic0.setVisibility(View.VISIBLE);
+                    IV_sendPic1.setVisibility(View.VISIBLE);
+
+                    startAction(IV_sendPic0);
+                    startAction(IV_sendPic1);
+                    break;
+                }else if (pickPics.length==3){
+                    abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0]);
+                    abImageLoader.display(IV_sendPic1,FinalURL.IMGURL+sendPics[1]);
+                    abImageLoader.display(IV_sendPic2,FinalURL.IMGURL+sendPics[2].substring(0,sendPics[2].length()-1));
+                    IV_sendPic0.setVisibility(View.VISIBLE);
+                    IV_sendPic1.setVisibility(View.VISIBLE);
+                    IV_sendPic2.setVisibility(View.VISIBLE);
+
+                    startAction(IV_sendPic0);
+                    startAction(IV_sendPic1);
+                    startAction(IV_sendPic2);
+                    break;
+
+                }
+            }
+        }else {}
+
         depPics = depPic.split(",,");//到达图片地址
+        if (!depPic.equals("")){
+            for (int i=0;i<depPics.length;i++){
+                if (depPics.length==1){
+                    abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0].substring(0,depPics[0].length()-1));
+                    IV_depPics0.setVisibility(View.VISIBLE);
 
+                    startAction(IV_depPics0);
+                    break;
 
+                }else if (depPics.length==2){
+                    abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0]);
+                    abImageLoader.display(IV_depPics1,FinalURL.IMGURL+depPics[1].substring(0,depPics[1].length()-1));
+                    IV_depPics0.setVisibility(View.VISIBLE);
+                    IV_depPics1.setVisibility(View.VISIBLE);
 
-        for (int i=0;i<pickPics.length;i++){
-            if (pickPics.length==1){
-                abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0]);
-                IV_pickPic0.setVisibility(View.VISIBLE);
-                startAction(IV_pickPic0);
+                    startAction(IV_depPics0);
+                    startAction(IV_depPics1);
+                    break;
+                }else if (depPics.length==3){
+                    abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0]);
+                    abImageLoader.display(IV_depPics1,FinalURL.IMGURL+depPics[1]);
+                    abImageLoader.display(IV_depPics2,FinalURL.IMGURL+depPics[2].substring(0,depPics[2].length()-1));
+                    IV_depPics0.setVisibility(View.VISIBLE);
+                    IV_depPics1.setVisibility(View.VISIBLE);
+                    IV_depPics2.setVisibility(View.VISIBLE);
 
-
-            }else if (pickPics.length==2){
-                abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0]);
-                abImageLoader.display(IV_pickPic1,FinalURL.IMGURL+pickPics[1]);
-                IV_pickPic0.setVisibility(View.VISIBLE);
-                IV_pickPic1.setVisibility(View.VISIBLE);
-
-                startAction(IV_pickPic0);
-                startAction(IV_pickPic1);
-
-
-            }else if (pickPics.length==3){
-                abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0]);
-                abImageLoader.display(IV_pickPic1,FinalURL.IMGURL+pickPics[1]);
-                abImageLoader.display(IV_pickPic2,FinalURL.IMGURL+pickPics[2].substring(0,pickPics[2].length()-1));
-
-                IV_pickPic0.setVisibility(View.VISIBLE);
-                IV_pickPic1.setVisibility(View.VISIBLE);
-                IV_pickPic2.setVisibility(View.VISIBLE);
-
-                startAction(IV_pickPic0);
-                startAction(IV_pickPic1);
-                startAction(IV_pickPic2);
-
+                    startAction(IV_depPics0);
+                    startAction(IV_depPics1);
+                    startAction(IV_depPics2);
+                    break;
+                }
             }
+
         }
 
-
-
-
-        for (int i=0;i<sendPics.length;i++){
-            if (sendPics.length==1){
-                abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0]);
-                IV_sendPic0.setVisibility(View.VISIBLE);
-                startAction(IV_sendPic0);
-
-            }else if (pickPics.length==2){
-                abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0]);
-                abImageLoader.display(IV_sendPic1,FinalURL.IMGURL+sendPics[1]);
-                IV_sendPic0.setVisibility(View.VISIBLE);
-                IV_sendPic1.setVisibility(View.VISIBLE);
-
-                startAction(IV_sendPic0);
-                startAction(IV_sendPic1);
-
-            }else if (pickPics.length==3){
-                abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0]);
-                abImageLoader.display(IV_sendPic1,FinalURL.IMGURL+sendPics[1]);
-                abImageLoader.display(IV_sendPic2,FinalURL.IMGURL+sendPics[2].substring(0,sendPics[2].length()-1));
-                IV_sendPic0.setVisibility(View.VISIBLE);
-                IV_sendPic1.setVisibility(View.VISIBLE);
-                IV_sendPic2.setVisibility(View.VISIBLE);
-
-                startAction(IV_sendPic0);
-                startAction(IV_sendPic1);
-                startAction(IV_sendPic2);
-
-
-            }
-        }
-
-
-
-
-
-        for (int i=0;i<depPics.length;i++){
-            if (depPics.length==1){
-                abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0]);
-                IV_depPics0.setVisibility(View.VISIBLE);
-
-                startAction(IV_depPics0);
-
-
-            }else if (depPics.length==2){
-                abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0]);
-                abImageLoader.display(IV_depPics1,FinalURL.IMGURL+depPics[1]);
-                IV_depPics0.setVisibility(View.VISIBLE);
-                IV_depPics1.setVisibility(View.VISIBLE);
-
-                startAction(IV_depPics0);
-                startAction(IV_depPics1);
-
-            }else if (depPics.length==3){
-                abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0]);
-                abImageLoader.display(IV_depPics1,FinalURL.IMGURL+depPics[1]);
-                abImageLoader.display(IV_depPics2,FinalURL.IMGURL+depPics[2].substring(0,depPics[2].length()-1));
-                IV_depPics0.setVisibility(View.VISIBLE);
-                IV_depPics1.setVisibility(View.VISIBLE);
-                IV_depPics2.setVisibility(View.VISIBLE);
-
-                startAction(IV_depPics0);
-                startAction(IV_depPics1);
-                startAction(IV_depPics2);
-
-            }
-        }
 
 
 

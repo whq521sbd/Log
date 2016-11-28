@@ -36,6 +36,7 @@
             android:typeface="sans" />
 
         <EditText
+            android:gravity="center_vertical"
             android:id="@+id/ED_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,7 +48,7 @@
             android:hint="请提供运单编号"
             android:imeOptions="actionDone"
             android:inputType="textCapWords"
-            android:paddingLeft="2dp"
+            android:paddingLeft="10dp"
             android:selectAllOnFocus="true"
             android:textSize="14sp"
             android:typeface="monospace" />
@@ -100,10 +101,196 @@
         android:text=" | 运单详情"
         android:textColor="#45494A"
         android:typeface="sans" />
+    <!--运单状态查询区域-->
+    <LinearLayout
+        android:id="@+id/LL_waybillSataArea"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/main_text">
+        <!--单个item-->
+        <LinearLayout
+            android:id="@+id/LL_orders"
+            android:padding="5dp"
+            android:background="#fff"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-  <TabHost
-      android:layout_width="match_parent"
-      android:layout_height="30dp"></TabHost>
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@mipmap/orders"
+                android:drawablePadding="4dp"
+                android:padding="7dp"
+                android:text="已接单"
+                android:typeface="sans"
+                android:id="@+id/textView3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/rightarrow" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/LL_loading"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#fff"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@mipmap/loading"
+                android:drawablePadding="4dp"
+                android:padding="7dp"
+                android:text="已装车"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/rightarrow" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/LL_depart"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#fff"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@mipmap/depart"
+                android:drawablePadding="4dp"
+                android:padding="7dp"
+                android:text="已出发"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/rightarrow" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/LL_arrive"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#fff"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@mipmap/arrive"
+                android:drawablePadding="4dp"
+                android:padding="7dp"
+                android:text="已送到"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/rightarrow" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/LL_finish"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#fff"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@mipmap/finish"
+                android:drawablePadding="4dp"
+                android:padding="7dp"
+                android:text="已完成"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:typeface="sans" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/rightarrow" />
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 
     <!--运单列表区域waybill-->
@@ -115,7 +302,6 @@
         android:visibility="gone">
         <!--控制横竖显示-->
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">

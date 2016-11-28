@@ -101,9 +101,9 @@
         <activity
             android:name=".Activity.DispatchDetailActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activity.LoginActivityTestDemoLoginActivityTestDemo"
-            android:label="@string/title_activity_login_test_demo"></activity>
+        <!--运单状态详情-->
+        <activity android:name=".Activity.WaybillStateNotes"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -91,15 +91,11 @@ public class DispatchNotesActivity extends AbActivity {
                 DP_DatePicker.setVisibility(View.GONE);
                 getData();
                 break;
-
-
             case R.id.TV_Dataselect:
                 LV_DisListView.setVisibility(View.GONE);
                 DP_DatePicker.setVisibility(View.VISIBLE);
                 initData();
                 break;
-
-
             case R.id.IV_dispatchgoback:
                 finish();
                 break;
