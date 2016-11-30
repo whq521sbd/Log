@@ -64,7 +64,10 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
     }
 
 
-
+    /**
+     * 初始化控件
+     * @param view
+     */
     private void initView(View view) {
         LL_waybillSataArea = (LinearLayout) view.findViewById(R.id.LL_waybillSataArea);
         LL_orders = (LinearLayout) view.findViewById(R.id.LL_orders);
@@ -99,6 +102,9 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
         SV_waybill = (ScrollView) view.findViewById(R.id.SV_waybill);
     }
 
+    /**
+     * 绑定控件
+     */
     private void setView() {
 
         LL_orders.setOnClickListener(this);
@@ -130,6 +136,11 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
             }
         });
     }
+
+    /**
+     * 点击事件
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -208,6 +219,10 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    /**
+     *  item 根据状态码查询端口
+     * @param state  物流状态
+     */
     private void requestData(int state ) {
         params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
         Date date = new Date();

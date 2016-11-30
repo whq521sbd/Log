@@ -113,7 +113,7 @@
         <LinearLayout
             android:id="@+id/LL_orders"
             android:padding="5dp"
-            android:background="#fff"
+            android:background="@drawable/click"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -150,7 +150,7 @@
             android:id="@+id/LL_loading"
             android:padding="5dp"
             android:layout_marginTop="5dp"
-            android:background="#fff"
+            android:background="@drawable/click"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -186,7 +186,7 @@
             android:id="@+id/LL_depart"
             android:padding="5dp"
             android:layout_marginTop="5dp"
-            android:background="#fff"
+            android:background="@drawable/click"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -222,7 +222,7 @@
             android:id="@+id/LL_arrive"
             android:padding="5dp"
             android:layout_marginTop="5dp"
-            android:background="#fff"
+            android:background="@drawable/click"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -258,7 +258,7 @@
             android:id="@+id/LL_finish"
             android:padding="5dp"
             android:layout_marginTop="5dp"
-            android:background="#fff"
+            android:background="@drawable/click"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

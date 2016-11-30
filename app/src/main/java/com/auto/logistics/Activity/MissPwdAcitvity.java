@@ -41,6 +41,10 @@ public class MissPwdAcitvity extends AbActivity {
     EditText ed_NewMregisterPwd;
     @AbIocView(id = R.id.ed_confirmPwd)
     EditText ed_confirmPwd;
+    @AbIocView(id = R.id.ed_IdNumber)
+    EditText ed_IdNumber;
+    @AbIocView(id = R.id.imgclean0,click = "click")
+    ImageView imgclean0;
     @AbIocView(id = R.id.imgclean1, click = "click")
     ImageView imgclean1;
     @AbIocView(id = R.id.imgclean2, click = "click")
@@ -64,6 +68,29 @@ public class MissPwdAcitvity extends AbActivity {
     }
 
     private void setView() {
+//        身份证输入观察者
+
+        ed_IdNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()>0) {
+                    imgclean0.setVisibility(View.VISIBLE);
+                } else {
+                    imgclean0.setVisibility(View.GONE);
+                }
+            }
+        });
+
 //        手机号输入观察者
         ed_phoneNumber.addTextChangedListener(new TextWatcher() {
             @Override
@@ -174,6 +201,9 @@ public class MissPwdAcitvity extends AbActivity {
                 if (check()) {
                     getData();
                 }
+                break;
+            case R.id.imgclean0:
+                ed_IdNumber.setText("");
                 break;
             case R.id.imgclean1:
                 ed_phoneNumber.setText("");

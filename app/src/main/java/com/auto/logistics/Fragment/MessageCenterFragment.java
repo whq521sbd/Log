@@ -115,7 +115,7 @@ public class MessageCenterFragment extends Fragment {
             }
         });
     }
-
+//动画
     private void startAction(View view) {
         TranslateAnimation translateAnimation =new TranslateAnimation(0,100,0,0);
         translateAnimation.setDuration(2000);

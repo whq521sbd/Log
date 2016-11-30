@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
     android:background="#F4F4F4">
 
 
@@ -34,6 +36,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/IV_Headimg"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
@@ -42,9 +45,17 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/headimgstyle" />
 
+                <com.auto.logistics.DiyView.CircleImageView
+                    android:background="@color/colorPrimary"
+                    android:id="@+id/IV_Headimg2"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    app:border_width="2dp"
+                    app:border_color="#fff"/>
 
                 <TextView
-
                     android:id="@+id/TV_MineUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -185,7 +196,7 @@
                     android:drawableLeft="@mipmap/tel"
                     android:drawablePadding="4dp"
                     android:padding="5dp"
-                    android:text="联系方式"
+                    android:text="修改手机"
                     android:typeface="sans" />
 
 

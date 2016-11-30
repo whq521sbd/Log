@@ -11,7 +11,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ab.cache.AbDiskBaseCache;
 import com.ab.fragment.AbAlertDialogFragment;
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
@@ -32,10 +30,9 @@ import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
 import com.auto.logistics.Activity.DispatchNotesActivity;
 import com.auto.logistics.Activity.LoginActivity;
-import com.auto.logistics.Activity.ReachAcitvity;
 import com.auto.logistics.Activity.RevisePWDActivity;
+import com.auto.logistics.DiyView.CircleImageView;
 import com.auto.logistics.JavaBean.HeadBean;
-import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
@@ -63,6 +60,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     private LinearLayout LL_revisePWD, LL_dispatchNotes;
     private AbImageLoader loader;
     private String headImgUrl;
+    private CircleImageView IV_Headimg2;
 
     @Nullable
     @Override
@@ -127,6 +125,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     * 初始化控件
     * */
     private void initView(View view) {
+        IV_Headimg2 = (CircleImageView) view.findViewById(R.id.IV_Headimg2);
         TV_exit = (TextView) view.findViewById(R.id.TV_exit);
         IV_Headimg = (ImageView) view.findViewById(R.id.IV_Headimg);
         TV_MineUserName = (TextView) view.findViewById(R.id.TV_MineUserName);
@@ -140,6 +139,10 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     * 设置控件
     * */
     private void setView() {
+
+
+
+
 //        tv_phone.setText(LogsBean.getRecTel());
         TV_exit.setOnClickListener(this);
         IV_Headimg.setOnClickListener(this);
@@ -373,8 +376,10 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                     loader = AbImageLoader.getInstance(getActivity());
                     if (!bean.getMsg().equals("token已失效")) {
                         if (headImgUrl != null) {
-                            loader.display(IV_Headimg, FinalURL.IMGURL + headImgUrl);
-                            startanima(IV_Headimg);
+                            //loader.display(IV_Headimg, FinalURL.IMGURL + headImgUrl);
+                            loader.display(IV_Headimg2, FinalURL.IMGURL + headImgUrl);
+                            //startanima(IV_Headimg);
+                            startanima(IV_Headimg2);
                         } else {
                             AbToastUtil.showToast(getActivity(), "没有头像链接哦~");
                         }

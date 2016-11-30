@@ -32,7 +32,7 @@
 
 
     <LinearLayout
-        android:id="@+id/ll_phone_layout"
+        android:id="@+id/ll_ID_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fl_title"
@@ -42,24 +42,64 @@
         android:orientation="horizontal">
 
         <EditText
-            android:inputType="phone"
+            android:id="@+id/ed_IdNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableLeft="@mipmap/idnumber"
+            android:drawablePadding="10dp"
+            android:hint="身份证"
+            android:inputType="phone" />
+
+        <ImageView
+            android:id="@+id/imgclean0"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/cleanall_img"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:id="@+id/noline"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_below="@+id/ll_ID_layout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#ABBFC6" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_phone_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/noline"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <EditText
             android:id="@+id/ed_phoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
             android:background="@null"
-            android:drawableLeft="@mipmap/user_img"
+            android:drawableLeft="@mipmap/phone"
             android:drawablePadding="10dp"
-            android:hint="手机号" />
+            android:hint="手机号"
+            android:inputType="phone" />
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/imgclean1"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/cleanall_img" />
+            android:src="@mipmap/cleanall_img"
+            android:visibility="gone" />
     </LinearLayout>
 
     <TextView
@@ -82,7 +122,6 @@
         android:orientation="horizontal">
 
         <EditText
-            android:inputType="number"
             android:id="@+id/ed_Identifyingcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,17 +129,18 @@
             android:drawableLeft="@mipmap/code_img"
             android:drawablePadding="10dp"
             android:hint="验证码"
+            android:inputType="number"
             android:minWidth="200dp" />
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/imgclean2"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/tv_getcode"
-            android:src="@mipmap/cleanall_img" />
+            android:src="@mipmap/cleanall_img"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_getcode"
@@ -146,14 +186,14 @@
             android:inputType="textPassword" />
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/imgclean3"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/tv_getcode"
-            android:src="@mipmap/cleanall_img" />
+            android:src="@mipmap/cleanall_img"
+            android:visibility="gone" />
     </LinearLayout>
 
 
@@ -188,14 +228,14 @@
             android:inputType="textPassword" />
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/imgclean4"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/tv_getcode"
-            android:src="@mipmap/cleanall_img" />
+            android:src="@mipmap/cleanall_img"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -216,7 +256,7 @@
         android:layout_below="@+id/ll_Confirmpwdlayout"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/bluebuttonstyle"
         android:gravity="center"
         android:text="重置"
@@ -245,6 +285,7 @@
         android:text="我已阅读并同意" />
 
     <TextView
+        android:id="@+id/tttttt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/text"
@@ -254,4 +295,18 @@
         android:gravity="bottom"
         android:text="《用户协议》"
         android:textColor="#00C3C5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tttttt"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/chat"
+        android:text="明天晚上回家吃饭，你不用管我了，
+        123465465152132132132121212121
+        3255fdfdfs2
+        132132123135152123"
+        android:textColor="#fff"
+        android:visibility="gone" />
+
 </RelativeLayout>
