@@ -103,7 +103,6 @@ public class InstallCarActivity extends AbActivity {
         switch (view.getId()) {
 //            提交操作
             case R.id.tv_installcommit:
-
                 if (isLoadImageViews()) {
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(InstallCarActivity.this, "Token"));
                 params.put("TaskNum", logsBean.getTaskNum());

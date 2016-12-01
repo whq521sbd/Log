@@ -3,10 +3,7 @@
 
     <!-- 圆角 -->
     <corners
-        android:topLeftRadius="5dp"
-        android:topRightRadius="5dp"
-        android:bottomLeftRadius="5dp"
-        android:bottomRightRadius="5dp"/><!-- 设置圆角半径 -->
+        android:radius="180dp" /><!-- 设置圆角半径 -->
 
 
 
@@ -14,9 +11,8 @@
 
     <!-- 大小 -->
     <size
-        android:width="51dp"
-        android:height="51dp"/><!-- 宽度和高度 -->
-
+        android:width="80dp"
+        android:height="80dp"/><!-- 宽度和高度 -->
 
     <!-- 描边 -->
     <stroke

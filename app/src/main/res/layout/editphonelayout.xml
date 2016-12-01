@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:padding="15dp"
-            android:text="重置密码"
+            android:text="重置手机号"
             android:textColor="#fff"
             android:textSize="20sp"
             android:typeface="sans" />
@@ -174,15 +174,14 @@
         android:orientation="horizontal">
 
         <EditText
-
-            android:id="@+id/ed_NewMregisterPwd"
+            android:id="@+id/ed_NewPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:drawableLeft="@mipmap/pwd_img"
+            android:drawableLeft="@mipmap/phone"
             android:drawablePadding="10dp"
-            android:hint="新密码"
+            android:hint="新手机"
             android:inputType="textPassword" />
 
         <ImageView
@@ -207,6 +206,7 @@
         android:background="#ABBFC6" />
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/ll_Confirmpwdlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

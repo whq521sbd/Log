@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.animation.Animation;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 
 import com.ab.activity.AbActivity;
 import com.auto.logistics.R;
+
+import java.io.File;
 
 /**
  * Created by Administrator on 2016/10/20.
@@ -64,6 +67,11 @@ public class GuideActivity extends AbActivity {
      */
     private void initview() {
         RL_guidelayout = (RelativeLayout) findViewById(R.id.RL_guidelayout);
+        //  创建新文件夹
+        File file = new File(Environment.getExternalStorageDirectory() + "/BJDLogistics");
+        if (!file.exists()) {
+            file.mkdirs();//不存在就建一个
+        }
     }
 
 }

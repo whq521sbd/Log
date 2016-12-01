@@ -104,6 +104,9 @@
         <!--运单状态详情-->
         <activity android:name=".Activity.WaybillStateNotes"
             android:screenOrientation="portrait"/>
+        <!--修改手机号-->
+        <activity android:name=".Activity.EditPhoneActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

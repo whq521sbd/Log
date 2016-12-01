@@ -29,6 +29,7 @@ import com.ab.util.AbDialogUtil;
 import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
 import com.auto.logistics.Activity.DispatchNotesActivity;
+import com.auto.logistics.Activity.EditPhoneActivity;
 import com.auto.logistics.Activity.LoginActivity;
 import com.auto.logistics.Activity.RevisePWDActivity;
 import com.auto.logistics.DiyView.CircleImageView;
@@ -51,13 +52,12 @@ import java.util.Date;
 
 public class MineInfoFragment extends Fragment implements View.OnClickListener {
     private TextView TV_exit;
-    private ImageView IV_Headimg;
     private AbRequestParams params;
     private AbHttpUtil mHttpUtil;
     private TextView TV_MineUserName;
     private File tempFile;
     private Uri tempUri;
-    private LinearLayout LL_revisePWD, LL_dispatchNotes;
+    private LinearLayout LL_revisePWD, LL_dispatchNotes,LL_editphone;
     private AbImageLoader loader;
     private String headImgUrl;
     private CircleImageView IV_Headimg2;
@@ -125,9 +125,10 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     * 初始化控件
     * */
     private void initView(View view) {
+        LL_editphone = (LinearLayout) view.findViewById(R.id.LL_editphone);
         IV_Headimg2 = (CircleImageView) view.findViewById(R.id.IV_Headimg2);
         TV_exit = (TextView) view.findViewById(R.id.TV_exit);
-        IV_Headimg = (ImageView) view.findViewById(R.id.IV_Headimg);
+       // IV_Headimg = (ImageView) view.findViewById(R.id.IV_Headimg);
         TV_MineUserName = (TextView) view.findViewById(R.id.TV_MineUserName);
         LL_revisePWD = (LinearLayout) view.findViewById(R.id.LL_revisePWD);
         LL_dispatchNotes = (LinearLayout) view.findViewById(R.id.LL_dispatchNotes);
@@ -139,16 +140,14 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     * 设置控件
     * */
     private void setView() {
-
-
-
-
+        IV_Headimg2.setOnClickListener(this);
 //        tv_phone.setText(LogsBean.getRecTel());
         TV_exit.setOnClickListener(this);
-        IV_Headimg.setOnClickListener(this);
+       // IV_Headimg.setOnClickListener(this);
         TV_MineUserName.setText(SharedPreferencesSava.getInstance().getStringValue(getActivity(), "username"));
         LL_revisePWD.setOnClickListener(this);
         LL_dispatchNotes.setOnClickListener(this);
+        LL_editphone.setOnClickListener(this);
     }
 
 
@@ -158,6 +157,9 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.LL_editphone:
+            startActivity(new Intent(getActivity(), EditPhoneActivity.class));
+                break;
             case R.id.LL_dispatchNotes:
                 startActivity(new Intent(getActivity(), DispatchNotesActivity.class));
                 break;
@@ -177,7 +179,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                     }
                 });
                 break;
-            case R.id.IV_Headimg:
+            case R.id.IV_Headimg2:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("请选择头像")
                         .setItems(new String[]{"拍照上传", "本地相册"}, new DialogInterface.OnClickListener() {
@@ -228,7 +230,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                 break;
             case 104:
                 Bitmap bitmap = decodeUriAsBitmap(tempUri);// decode bitmap
-                IV_Headimg.setImageBitmap(bitmap);
+                IV_Headimg2.setImageBitmap(bitmap);
                 if (tempFile.exists()) {
 //                    头像文件添加到参数中
                     params.put("HeadImg", tempFile);
@@ -286,12 +288,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    // 使用系统当前日期加以调整作为照片的名称
-    private String getPhotoFileName() {
-        Date date = new Date(System.currentTimeMillis());
-        SimpleDateFormat sdf = new SimpleDateFormat("'PNG'_yyyyMMdd_HHmmss");
-        return sdf.format(date) + ".png";
-    }
+
 
 
     // 调用系统相机
@@ -309,6 +306,13 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         // 如果指定，则Bitmap bmp = (Bitmap) data.getExtras().get("data"); 为null
         intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);// 将照片存储到指定位置，否则会比较模糊
         startActivityForResult(intent, 102);
+    }
+
+    // 使用系统当前日期加以调整作为照片的名称
+    private String getPhotoFileName() {
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("'PNG'_yyyyMMdd_HHmmss");
+        return sdf.format(date) + ".png";
     }
 
 

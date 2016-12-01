@@ -46,7 +46,7 @@
                     android:background="@drawable/headimgstyle" />
 
                 <com.auto.logistics.DiyView.CircleImageView
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/headimgstyle"
                     android:id="@+id/IV_Headimg2"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="100dp"
@@ -181,10 +181,11 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LL_editphone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="#fff"
+                android:background="@drawable/click"
                 android:clickable="true"
                 android:orientation="horizontal"
                 android:padding="10dp">

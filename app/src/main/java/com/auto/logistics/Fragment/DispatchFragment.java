@@ -192,7 +192,7 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
     private void alphaAnmation(FrameLayout frame) {
 //        透明度动画
         AlphaAnimation animation =new AlphaAnimation(0.1f,1.0f);
-        animation.setDuration(1000);
+        animation.setDuration(500);
         animation.setRepeatCount(3);
         animation.setRepeatMode(Animation.REVERSE);
         frame.setAnimation(animation);

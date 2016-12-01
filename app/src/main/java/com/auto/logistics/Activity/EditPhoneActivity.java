@@ -1,8 +1,6 @@
 package com.auto.logistics.Activity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -24,10 +22,10 @@ import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 
 /**
- * Created by Administrator on 2016/10/20.
+ * Created by Administrator on 2016/11/30.
  */
 
-public class MissPwdAcitvity extends AbActivity {
+public class EditPhoneActivity extends AbActivity {
 
     @AbIocView(id = R.id.tv_Rback, click = "click")
     private ImageView tv_Rback;
@@ -37,10 +35,9 @@ public class MissPwdAcitvity extends AbActivity {
     EditText ed_phoneNumber;
     @AbIocView(id = R.id.ed_Identifyingcode)
     EditText ed_Identifyingcode;
-    @AbIocView(id = R.id.ed_NewMregisterPwd)
-    EditText ed_NewMregisterPwd;
-    @AbIocView(id = R.id.ed_confirmPwd)
-    EditText ed_confirmPwd;
+    @AbIocView(id = R.id.ed_NewPhone)
+    EditText ed_NewPhone;
+
     @AbIocView(id = R.id.ed_IdNumber)
     EditText ed_IdNumber;
     @AbIocView(id = R.id.imgclean0, click = "click")
@@ -51,8 +48,7 @@ public class MissPwdAcitvity extends AbActivity {
     ImageView imgclean2;
     @AbIocView(id = R.id.imgclean3, click = "click")
     ImageView imgclean3;
-    @AbIocView(id = R.id.imgclean4, click = "click")
-    ImageView imgclean4;
+
     @AbIocView(id = R.id.tv_resetting, click = "click")
     TextView tv_resetting;
     private AbHttpUtil mAbHttpUtil;
@@ -61,7 +57,7 @@ public class MissPwdAcitvity extends AbActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAbContentView(R.layout.misspwdlayout);
+        setAbContentView(R.layout.editphonelayout);
         mAbHttpUtil = AbHttpUtil.getInstance(this);
         params = new AbRequestParams();
         setView();
@@ -139,7 +135,7 @@ public class MissPwdAcitvity extends AbActivity {
         });
 
 //      新密码输入观察者
-        ed_NewMregisterPwd.addTextChangedListener(new TextWatcher() {
+        ed_NewPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -157,31 +153,6 @@ public class MissPwdAcitvity extends AbActivity {
                     imgclean3.setVisibility(View.VISIBLE);
                 } else {
                     imgclean3.setVisibility(View.GONE);
-                }
-
-
-            }
-        });
-
-//      确认密码观察者
-        ed_confirmPwd.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (s.length() > 0) {
-                    imgclean4.setVisibility(View.VISIBLE);
-                } else {
-                    imgclean4.setVisibility(View.GONE);
                 }
 
 
@@ -209,10 +180,7 @@ public class MissPwdAcitvity extends AbActivity {
                 ed_Identifyingcode.setText("");
                 break;
             case R.id.imgclean3:
-                ed_NewMregisterPwd.setText("");
-                break;
-            case R.id.imgclean4:
-                ed_confirmPwd.setText("");
+                ed_NewPhone.setText("");
                 break;
 
             case R.id.tv_getcode:
@@ -263,16 +231,16 @@ public class MissPwdAcitvity extends AbActivity {
     private boolean checkphone() {
         String phoneNum = ed_phoneNumber.getText().toString().trim();
         if (AbStrUtil.isChinese(phoneNum)){
-            AbToastUtil.showToast(MissPwdAcitvity.this, "手机号不能为中文哦~");
+            AbToastUtil.showToast(EditPhoneActivity.this, "手机号不能为中文哦~");
             return false;
         }
         if (AbStrUtil.isEmpty(phoneNum)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "手机号不能为空哦~");
+            AbToastUtil.showToast(EditPhoneActivity.this, "手机号不能为空哦~");
             return false;
         }
 
         if (phoneNum.length() < 11 || phoneNum.length() > 11) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "手机号不正确哦~");
+            AbToastUtil.showToast(EditPhoneActivity.this, "手机号不正确哦~");
             return false;
         }
         return true;
@@ -280,86 +248,62 @@ public class MissPwdAcitvity extends AbActivity {
 
 
     /**
-     * 重置密码前检查 密码，确认密码，身份证，验证码等信息
+     * 重置密码前检查 新手机好，身份证，验证码等信息
      * @return true 验证通过，否则验证失败
      */
     private Boolean checkPwd() {
 
-        String newpwd = ed_NewMregisterPwd.getText().toString().trim();
-        String confirpwd = ed_confirmPwd.getText().toString().trim();
+        String newPhone = ed_NewPhone.getText().toString().trim();
 
         String idcode = ed_Identifyingcode.getText().toString().trim();
         String IdNumber = ed_IdNumber.getText().toString().trim();
 
         if (AbStrUtil.isEmpty(IdNumber)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "身份证号码不能为空哦~");
+            AbToastUtil.showToast(EditPhoneActivity.this, "身份证号码不能为空哦~");
             return false;
         }
 
         if (AbStrUtil.isChinese(IdNumber)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "身份证号码不能为中文哦~");
+            AbToastUtil.showToast(EditPhoneActivity.this, "身份证号码不能为中文哦~");
             return false;
         }
 
         if (IdNumber.length() < 18 || IdNumber.length() > 18) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "请输入正确的身份证号码哦~");
+            AbToastUtil.showToast(EditPhoneActivity.this, "请输入正确的身份证号码哦~");
             return false;
         }
 
         if (AbStrUtil.isEmpty(idcode)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "验证码不能为空哦~");
+            AbToastUtil.showToast(EditPhoneActivity.this, "验证码不能为空哦~");
             return false;
         }
 
         if (idcode.length() < 6 || idcode.length() > 6) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "验证码输入位数不正确哦~");
+            AbToastUtil.showToast(EditPhoneActivity.this, "验证码输入位数不正确哦~");
             return false;
         }
 
-        if (!newpwd.equals(confirpwd)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "两次新密码不一致哦~");
+
+        if (newPhone.length() < 11 || newPhone.length() > 11) {
+            AbToastUtil.showToast(EditPhoneActivity.this, "输入的新手机号不正确哦~");
             return false;
         }
 
-        if (newpwd.length() < 6 || newpwd.length() > 12) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "密码长度不能小于6未且不能超过12位哦~");
+        if (AbStrUtil.isChinese(newPhone)) {
+            AbToastUtil.showToast(EditPhoneActivity.this, "新手机号不能为中文字符哦~");
             return false;
         }
 
-        if (AbStrUtil.isChinese(newpwd)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "密码不能为中文字符哦~");
+        if (AbStrUtil.isEmpty(newPhone)) {
+            AbToastUtil.showToast(EditPhoneActivity.this, "新手机号不能为空哦~");
             return false;
         }
-
-        if (AbStrUtil.isEmpty(newpwd)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "新密码不能为空哦~");
-            return false;
-        }
-        if (AbStrUtil.isContainChinese(newpwd)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "密码中不能包含中文字符哦~");
+        if (AbStrUtil.isContainChinese(newPhone)) {
+            AbToastUtil.showToast(EditPhoneActivity.this, "新手机中不能包含中文字符哦~");
         }
 
 
-        if (confirpwd.length() < 6 || confirpwd.length() > 12) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "确认密码长度不能小于6未且不能超过12位哦~");
-            return false;
-        }
 
-        if (AbStrUtil.isChinese(confirpwd)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "确认密码不能为中文字符哦~");
-            return false;
-        }
-
-        if (AbStrUtil.isEmpty(confirpwd)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "确认新密码不能为空哦~");
-            return false;
-        }
-        if (AbStrUtil.isContainChinese(confirpwd)) {
-            AbToastUtil.showToast(MissPwdAcitvity.this, "确认密码中不能包含中文字符哦~");
-            return false;
-        }
-
-        String confirMd5 = AbMd5.MD5(confirpwd);
 
         return true;
     }
@@ -368,7 +312,7 @@ public class MissPwdAcitvity extends AbActivity {
      * 请求网络，修改密码
      */
     public void getData() {
-        params.put("Token", SharedPreferencesSava.getInstance().getStringValue(MissPwdAcitvity.this, "Token"));
+        params.put("Token", SharedPreferencesSava.getInstance().getStringValue(EditPhoneActivity.this, "Token"));
 
         mAbHttpUtil.post(FinalURL.URL + "", params, new AbStringHttpResponseListener() {
             @Override
