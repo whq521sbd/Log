@@ -107,6 +107,15 @@
         <!--修改手机号-->
         <activity android:name=".Activity.EditPhoneActivity"
             android:screenOrientation="portrait"/>
+        <!--消息轮询服务-->
+        <service android:name=".Service.MessageService"/>
+        <!--用于接收轮询消息的广播-->
+        <receiver android:name=".BroadcastReceiver.MessageBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.auto.logistics.messagereceiver"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

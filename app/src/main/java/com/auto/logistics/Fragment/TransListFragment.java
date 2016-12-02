@@ -49,8 +49,8 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
             TV_AccUser, TV_PackTime, TV_PackUser, TV_DepTime, TV_DepUser, TV_SendTime,
             TV_SendUser, TV_DeliTime, TV_DeliUser;
     private ScrollView  SV_waybill;
-
-    private LinearLayout LL_waybillSataArea,LL_orders,LL_loading,LL_depart,LL_arrive,LL_finish;
+    private LinearLayout LL_waybillSataArea;
+    private TextView LL_orders,LL_loading,LL_depart,LL_arrive,LL_finish;
     private AbRequestParams params = new AbRequestParams();
 
     @Override
@@ -61,6 +61,7 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
         initView(view);
         setView();
         return view;
+
     }
 
 
@@ -70,12 +71,11 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
      */
     private void initView(View view) {
         LL_waybillSataArea = (LinearLayout) view.findViewById(R.id.LL_waybillSataArea);
-        LL_orders = (LinearLayout) view.findViewById(R.id.LL_orders);
-        LL_loading = (LinearLayout) view.findViewById(R.id.LL_loading);
-        LL_depart = (LinearLayout) view.findViewById(R.id.LL_depart);
-        LL_arrive = (LinearLayout) view.findViewById(R.id.LL_arrive);
-        LL_finish = (LinearLayout) view.findViewById(R.id.LL_finish);
-
+        LL_orders = (TextView) view.findViewById(R.id.LL_orders);
+        LL_loading = (TextView) view.findViewById(R.id.LL_loading);
+        LL_depart = (TextView) view.findViewById(R.id.LL_depart);
+        LL_arrive = (TextView) view.findViewById(R.id.LL_arrive);
+        LL_finish = (TextView) view.findViewById(R.id.LL_finish);
         TV_query = (TextView) view.findViewById(R.id.TV_query);
         ED_number = (EditText) view.findViewById(R.id.ED_number);
         IV_cleanNum = (ImageView) view.findViewById(R.id.IV_cleanNum);
@@ -106,13 +106,11 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
      * 绑定控件
      */
     private void setView() {
-
         LL_orders.setOnClickListener(this);
         LL_loading.setOnClickListener(this);
         LL_depart.setOnClickListener(this);
         LL_arrive.setOnClickListener(this);
         LL_finish.setOnClickListener(this);
-
         TV_query.setOnClickListener(this);
         IV_cleanNum.setOnClickListener(this);
         ED_number.addTextChangedListener(new TextWatcher() {
@@ -215,6 +213,8 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.IV_cleanNum://清除数据
                 ED_number.setText("");
+                LL_waybillSataArea.setVisibility(View.VISIBLE);
+                SV_waybill.setVisibility(View.GONE);
                 break;
         }
     }
@@ -223,7 +223,7 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
      *  item 根据状态码查询端口
      * @param state  物流状态
      */
-    private void requestData(int state ) {
+    private void requestData(final int state ) {
         params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
         Date date = new Date();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -240,6 +240,7 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                         List<DispatchBean.DataBean.LogsListBean> logsListBean = dispatchBean.getData().getLogs();
                         Intent intent = new Intent(getActivity(), WaybillStateNotes.class);
                         intent.putExtra("logsListBean", (Serializable) logsListBean);
+                        intent.putExtra("state",state);
                         startActivity(intent);
                     } else {
                         AbToastUtil.showToast(getActivity(),"查询不到此单号！");

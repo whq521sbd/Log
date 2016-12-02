@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ab.activity.AbActivity;
 import com.ab.image.AbImageLoader;
 import com.ab.util.AbStrUtil;
+import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
 import com.auto.logistics.JavaBean.DispatchBean;
 import com.auto.logistics.R;
@@ -83,14 +84,15 @@ public class DispatchDetailActivity extends AbActivity {
     ImageView IV_depPics1;
     @AbIocView(id = R.id.IV_depPics2)
     ImageView IV_depPics2;
-
-
+    @AbIocView(id = R.id.tv_next,click = "click")
+    TextView tv_next;
 
     private DispatchBean.DataBean.LogsListBean logsListBean;
     private String[] pickPics;
     private String[] sendPics;
     private String[] depPics;
     private AbImageLoader abImageLoader;
+    private  int state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,10 +100,14 @@ public class DispatchDetailActivity extends AbActivity {
         setAbContentView(R.layout.dispatchdetaillayout);
         Intent intent = getIntent();
         logsListBean = (DispatchBean.DataBean.LogsListBean) intent.getSerializableExtra("itembean");
+        state = intent.getIntExtra("state",-1);
         abImageLoader = AbImageLoader.getInstance(this);
 
         setView();
     }
+
+
+
 
     private void setView() {
         TV_TaskNum.setText(logsListBean.getTaskNum());
@@ -199,7 +205,7 @@ public class DispatchDetailActivity extends AbActivity {
 
                 }
             }
-        }else {}
+        }
 
         depPics = depPic.split(",,");//到达图片地址
         if (!depPic.equals("")){
@@ -253,6 +259,37 @@ public class DispatchDetailActivity extends AbActivity {
 
     public void click(View view) {
         switch (view.getId()) {
+            case R.id.tv_next:
+                switch (state){
+                    case -1:
+                        AbToastUtil.showToast(DispatchDetailActivity.this,"-1111111111");
+                        break;
+                    case 3:
+                        Intent intent = new Intent();
+                        intent.putExtra("logsBean",logsListBean);
+                        intent.setClass(DispatchDetailActivity.this,InstallCarActivity.class);
+                        startActivity(intent);
+                        AbToastUtil.showToast(DispatchDetailActivity.this,"33333");
+                        break;
+                    case 4:
+                        intent = new Intent();
+                        //intent.putExtra("itemBean",logsListBean);
+                        intent.setClass(DispatchDetailActivity.this,SendGoodsActivity.class);
+                        startActivity(intent);
+                        AbToastUtil.showToast(DispatchDetailActivity.this,"44444");
+                        break;
+                    case 5:
+                        intent = new Intent();
+                        //intent.putExtra("itemBean",logsListBean);
+                        intent.setClass(DispatchDetailActivity.this,ReachAcitvity.class);
+                        startActivity(intent);
+                        AbToastUtil.showToast(DispatchDetailActivity.this,"55555");
+                        break;
+                    case 6:
+                        AbToastUtil.showToast(DispatchDetailActivity.this,"66666");
+                        break;
+                }
+                break;
             case R.id.IV_dispatchdetaillback:
                 finish();
                 break;

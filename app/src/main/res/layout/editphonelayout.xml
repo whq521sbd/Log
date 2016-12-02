@@ -62,13 +62,13 @@
     </LinearLayout>
 
     <TextView
-        android:layout_marginTop="5dp"
         android:id="@+id/noline"
         android:layout_width="match_parent"
         android:layout_height="2px"
         android:layout_below="@+id/ll_ID_layout"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
         android:background="#ABBFC6" />
 
 
@@ -164,7 +164,7 @@
 
 
     <LinearLayout
-        android:id="@+id/ll_pwdlayout"
+        android:id="@+id/ll_newPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line1"
@@ -182,7 +182,7 @@
             android:drawableLeft="@mipmap/phone"
             android:drawablePadding="10dp"
             android:hint="新手机"
-            android:inputType="textPassword" />
+            android:inputType="phone" />
 
         <ImageView
             android:id="@+id/imgclean3"
@@ -196,17 +196,58 @@
     </LinearLayout>
 
 
+    <RelativeLayout
+        android:id="@+id/newCodeArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_newPhone"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/ed_newIdCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawableLeft="@mipmap/code_img"
+            android:drawablePadding="10dp"
+            android:hint="新手机验证码"
+            android:inputType="number"
+            android:minWidth="200dp" />
+
+        <ImageView
+            android:id="@+id/imgclean4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/tv_GetNewCode"
+            android:src="@mipmap/cleanall_img"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_GetNewCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="| 获取验证码"
+            android:textColor="#00C3C5"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:layout_below="@+id/ll_pwdlayout"
+        android:layout_below="@+id/newCodeArea"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:background="#ABBFC6" />
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/ll_Confirmpwdlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -214,7 +255,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/ed_confirmPwd"
@@ -228,7 +270,6 @@
             android:inputType="textPassword" />
 
         <ImageView
-            android:id="@+id/imgclean4"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
@@ -242,7 +283,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:layout_below="@+id/ll_Confirmpwdlayout"
+        android:layout_below="@+id/ll_newPhone"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
@@ -253,7 +294,7 @@
         android:id="@+id/tv_resetting"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/ll_Confirmpwdlayout"
+        android:layout_below="@+id/newCodeArea"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="25dp"
@@ -265,17 +306,16 @@
         android:typeface="sans" />
 
     <CheckBox
-        android:visibility="gone"
         android:id="@+id/cheked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_resetting"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="14.3dp"
-        android:checked="true" />
+        android:checked="true"
+        android:visibility="gone" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -284,10 +324,10 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/cheked"
-        android:text="我已阅读并同意" />
+        android:text="我已阅读并同意"
+        android:visibility="gone" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/tttttt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -297,8 +337,8 @@
         android:layout_toRightOf="@+id/text"
         android:gravity="bottom"
         android:text="《用户协议》"
-        android:textColor="#00C3C5" />
-
+        android:textColor="#00C3C5"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

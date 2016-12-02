@@ -60,6 +60,8 @@ public class OrderActivity extends AbActivity {
     TextView TV_RecAddr;
     @AbIocView(id = R.id.TV_AccTime)
     TextView TV_AccTime;
+    @AbIocView(id = R.id.TV_Booth)
+    TextView TV_Booth;
 
     @AbIocView(id = R.id.order_listview)
     ListView order_listview;
@@ -114,6 +116,7 @@ public class OrderActivity extends AbActivity {
      * 注册控件，设置控件相关信息
      */
     private void setView() {
+        TV_Booth.setText(logsBean.getBooth());
         TV_TaskNum.setText(logsBean.getTaskNum());
         TV_Serial.setText(logsBean.getSerial());
         TV_TransNum.setText(logsBean.getTransNum());
@@ -170,7 +173,6 @@ public class OrderActivity extends AbActivity {
 
                     @Override
                     public void onStart() {//开始请求
-                        //AbDialogUtil.showAlertDialog(OrderActivity.this,"");
                         AbDialogUtil.showProgressDialog(OrderActivity.this, -1, "请稍后...");
                     }
 

@@ -12,11 +12,12 @@
         android:background="#00C3C5">
 
         <TextView
+            android:id="@+id/tv_wayBilltile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:padding="12dp"
-            android:text="运单详情"
+            android:text=""
             android:textColor="#fff"
             android:textSize="20sp"
             android:typeface="sans" />

@@ -4,6 +4,7 @@ package com.auto.logistics.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import com.auto.logistics.Activity.OrderActivity;
 import com.auto.logistics.Adapter.MessageAdapter;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
+import com.auto.logistics.Service.MessageService;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 
@@ -37,6 +39,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2016/10/27.
@@ -50,9 +54,15 @@ public class MessageCenterFragment extends Fragment {
     private MessageAdapter messageAdapter;
     private LogTaskBean dataBean;
     private AbPullToRefreshView Ab_AbPullToRefreshView;
-    private int curPage =1;
+    private int curPage = 1;
+    private Message message = new Message();
+    private Timer timer = new Timer(true);
+    private TimerTask timerTask;
+    private List<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<LogTaskBean.DataBean.LogsBean>();
 
-    List<LogTaskBean.DataBean.LogsBean>newlist = new ArrayList<LogTaskBean.DataBean.LogsBean>();
+
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,7 +70,6 @@ public class MessageCenterFragment extends Fragment {
         mAbHttpUtil = AbHttpUtil.getInstance(getActivity());
         params = new AbRequestParams();
         initView(view);
-
         return view;
     }
 
@@ -93,7 +102,7 @@ public class MessageCenterFragment extends Fragment {
             public void onFooterLoad(AbPullToRefreshView abPullToRefreshView) {
                 getData(curPage++);
 //              重新查询后，将数据加载到新的list中去
-                for (int i=0;i<listlogs.size();i++){
+                for (int i = 0; i < listlogs.size(); i++) {
                     newlist.add(listlogs.get(i));
                 }
                 messageAdapter = new MessageAdapter(getActivity(), (ArrayList<LogTaskBean.DataBean.LogsBean>) newlist);
@@ -115,9 +124,10 @@ public class MessageCenterFragment extends Fragment {
             }
         });
     }
-//动画
+
+    //动画
     private void startAction(View view) {
-        TranslateAnimation translateAnimation =new TranslateAnimation(0,100,0,0);
+        TranslateAnimation translateAnimation = new TranslateAnimation(0, 100, 0, 0);
         translateAnimation.setDuration(2000);
         translateAnimation.setInterpolator(getActivity(), android.R.anim.cycle_interpolator);
         translateAnimation.setFillAfter(true);
@@ -131,7 +141,7 @@ public class MessageCenterFragment extends Fragment {
     }
 
     //获取数据
-    public void getData(int curPage ) {
+    public void getData(int curPage) {
         params.put("TaskNum", "");
         params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
         // Log.d("111", "onClick: " + SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
@@ -159,7 +169,7 @@ public class MessageCenterFragment extends Fragment {
                     } else if (dataBean.getMsg().equals("token已失效")) {
                         AbToastUtil.showToast(getActivity(), "您的账号在其他客户端登录！");
                         startActivity(new Intent(getActivity(), LoginActivity.class));
-                        SharedPreferencesSava.getInstance().savaStringValue(getActivity(),"MDpwd","");
+                        SharedPreferencesSava.getInstance().savaStringValue(getActivity(), "MDpwd", "");
                         AbToastUtil.showToast(getActivity(), "数据获取失败，请重试！");
                     }
                 } else {
@@ -183,9 +193,17 @@ public class MessageCenterFragment extends Fragment {
             @Override
             public void onFinish() {//完成
 
+                getActivity().startService(new Intent(getActivity(), MessageService.class));
+
+              //  new Thread(new Myrun()).start();
             }
 
 
         });
     }
+
+
+
+
+
 }

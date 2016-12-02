@@ -36,7 +36,6 @@
             android:typeface="sans" />
 
         <EditText
-            android:gravity="center_vertical"
             android:id="@+id/ED_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,6 +44,7 @@
             android:layout_weight="1"
             android:background="@drawable/find"
             android:drawableRight="@mipmap/find_img"
+            android:gravity="center_vertical"
             android:hint="请提供运单编号"
             android:imeOptions="actionDone"
             android:inputType="textCapWords"
@@ -104,174 +104,112 @@
     <!--运单状态查询区域-->
     <LinearLayout
         android:id="@+id/LL_waybillSataArea"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/main_text">
+        android:layout_below="@+id/main_text"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
         <!--单个item-->
         <LinearLayout
-            android:id="@+id/LL_orders"
-            android:padding="5dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/click"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:padding="5dp">
 
             <TextView
-                android:textSize="16sp"
+                android:id="@+id/LL_orders"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableLeft="@mipmap/orders"
+                android:layout_weight="1"
                 android:drawablePadding="4dp"
+                android:drawableTop="@mipmap/orders"
+                android:gravity="center"
                 android:padding="7dp"
                 android:text="已接单"
-                android:typeface="sans"
-                android:id="@+id/textView3" />
+                android:textSize="16sp"
+                android:typeface="sans" />
+
 
             <TextView
+                android:id="@+id/LL_loading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:padding="5dp"
-                android:typeface="sans" />
-
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:background="@mipmap/rightarrow" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/LL_loading"
-            android:padding="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/click"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:drawableLeft="@mipmap/loading"
                 android:drawablePadding="4dp"
+                android:drawableTop="@mipmap/loading"
+                android:gravity="center"
                 android:padding="7dp"
                 android:text="已装车"
+                android:textSize="16sp"
                 android:typeface="sans" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:typeface="sans" />
-
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:background="@mipmap/rightarrow" />
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/LL_depart"
-            android:padding="5dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="@drawable/click"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:padding="5dp">
 
             <TextView
-                android:textSize="16sp"
+                android:id="@+id/LL_depart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableLeft="@mipmap/depart"
+                android:layout_weight="1"
                 android:drawablePadding="4dp"
+                android:drawableTop="@mipmap/depart"
+                android:gravity="center"
                 android:padding="7dp"
                 android:text="已出发"
+                android:textSize="16sp"
                 android:typeface="sans" />
 
+
             <TextView
+                android:id="@+id/LL_arrive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:padding="5dp"
-                android:typeface="sans" />
-
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:background="@mipmap/rightarrow" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/LL_arrive"
-            android:padding="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/click"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:drawableLeft="@mipmap/arrive"
                 android:drawablePadding="4dp"
+                android:drawableTop="@mipmap/arrive"
+                android:gravity="center"
                 android:padding="7dp"
                 android:text="已送到"
+                android:textSize="16sp"
                 android:typeface="sans" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:typeface="sans" />
-
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:background="@mipmap/rightarrow" />
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/LL_finish"
-            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="@drawable/click"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:padding="5dp">
 
             <TextView
-                android:textSize="16sp"
+                android:id="@+id/LL_finish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawableLeft="@mipmap/finish"
+                android:layout_weight="1"
                 android:drawablePadding="4dp"
+                android:drawableTop="@mipmap/finish"
+                android:gravity="center"
                 android:padding="7dp"
                 android:text="已完成"
+                android:textSize="16sp"
                 android:typeface="sans" />
 
             <TextView
@@ -279,14 +217,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:padding="5dp"
-                android:typeface="sans" />
+                android:drawablePadding="4dp"
+                android:drawableTop="@mipmap/finish"
+                android:gravity="center"
+                android:text="已完成"
+                android:textSize="16sp"
+                android:typeface="sans"
+                android:visibility="invisible" />
 
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:background="@mipmap/rightarrow" />
+
         </LinearLayout>
 
 

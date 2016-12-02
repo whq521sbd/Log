@@ -14,6 +14,7 @@ import com.ab.activity.AbActivity;
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
+import com.ab.util.AbDialogUtil;
 import com.ab.util.AbMd5;
 import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
@@ -22,6 +23,9 @@ import com.auto.logistics.R;
 import com.auto.logistics.Utills.CountDownTimerUtils;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Administrator on 2016/10/20.
@@ -167,12 +171,10 @@ public class MissPwdAcitvity extends AbActivity {
         ed_confirmPwd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -195,7 +197,7 @@ public class MissPwdAcitvity extends AbActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.tv_resetting:
-                if (checkPwd()) {
+                if (checkphone() && checkPwd()) {
                     getData();
                 }
                 break;
@@ -224,6 +226,7 @@ public class MissPwdAcitvity extends AbActivity {
         }
     }
 
+
     /**
      * 从服务器获取验证码
      */
@@ -232,37 +235,99 @@ public class MissPwdAcitvity extends AbActivity {
             //                点击后获取验证码并设置60秒倒计时，倒计时期间，设置按键不可用
             CountDownTimerUtils countDownTimerUtils = new CountDownTimerUtils(tv_getcode, 60000, 1000);
             countDownTimerUtils.start();
-            mAbHttpUtil.post(FinalURL.URL + "", params, new AbStringHttpResponseListener() {
+            mAbHttpUtil.post(FinalURL.URL + "/ForgetPwdCode", params, new AbStringHttpResponseListener() {
                 @Override
                 public void onSuccess(int i, String s) {
-
+                    if (s!= null) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            if (object.getBoolean("Suc")) {
+                                AbToastUtil.showToast(MissPwdAcitvity.this, "获取验证码成功！");
+                            } else {
+                                AbToastUtil.showToast(MissPwdAcitvity.this, object.getString("Msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        AbToastUtil.showToast(MissPwdAcitvity.this, "无网络连接！");
+                    }
                 }
 
                 @Override
                 public void onStart() {
-
+                    AbDialogUtil.showProgressDialog(MissPwdAcitvity.this,-1,"正在获取验证码");
                 }
 
                 @Override
                 public void onFinish() {
-
+                    AbDialogUtil.removeDialog(MissPwdAcitvity.this);
                 }
 
                 @Override
                 public void onFailure(int i, String s, Throwable throwable) {
-
+                    AbDialogUtil.removeDialog(MissPwdAcitvity.this);
                 }
             });
         }
     }
 
+
+    /**
+     * 请求网络，修改密码
+     */
+    public void getData() {
+        mAbHttpUtil.post(FinalURL.URL + "/NewPwd", params, new AbStringHttpResponseListener() {
+            @Override
+            public void onSuccess(int i, String s) {
+                if (s != null) {
+                    try {
+                        JSONObject object = new JSONObject(s);
+                        if (object.getBoolean("Suc")) {
+//                            提示
+                            AbToastUtil.showToast(MissPwdAcitvity.this, "密码修改成功，重新登录吧~");
+//                            返回登录页面
+                            finish();
+                        } else {
+                            AbToastUtil.showToast(MissPwdAcitvity.this, object.getString("Msg"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    AbToastUtil.showToast(MissPwdAcitvity.this, "无网络连接！");
+                }
+            }
+
+            @Override
+            public void onStart() {
+                AbDialogUtil.showProgressDialog(MissPwdAcitvity.this,-1,"正在提交数据");
+
+            }
+
+            @Override
+            public void onFinish() {
+                AbDialogUtil.removeDialog(MissPwdAcitvity.this);
+
+            }
+
+            @Override
+            public void onFailure(int i, String s, Throwable throwable) {
+                AbDialogUtil.removeDialog(MissPwdAcitvity.this);
+
+            }
+        });
+    }
+
+
     /**
      * 检查手机号，是否正确
+     *
      * @return
      */
     private boolean checkphone() {
         String phoneNum = ed_phoneNumber.getText().toString().trim();
-        if (AbStrUtil.isChinese(phoneNum)){
+        if (AbStrUtil.isChinese(phoneNum)) {
             AbToastUtil.showToast(MissPwdAcitvity.this, "手机号不能为中文哦~");
             return false;
         }
@@ -275,12 +340,14 @@ public class MissPwdAcitvity extends AbActivity {
             AbToastUtil.showToast(MissPwdAcitvity.this, "手机号不正确哦~");
             return false;
         }
+        params.put("PhoneNum", phoneNum);
         return true;
     }
 
 
     /**
      * 重置密码前检查 密码，确认密码，身份证，验证码等信息
+     *
      * @return true 验证通过，否则验证失败
      */
     private Boolean checkPwd() {
@@ -360,36 +427,8 @@ public class MissPwdAcitvity extends AbActivity {
         }
 
         String confirMd5 = AbMd5.MD5(confirpwd);
-
+        params.put("pwd", confirMd5);
+        params.put("IDNum", IdNumber);
         return true;
-    }
-
-    /**
-     * 请求网络，修改密码
-     */
-    public void getData() {
-        params.put("Token", SharedPreferencesSava.getInstance().getStringValue(MissPwdAcitvity.this, "Token"));
-
-        mAbHttpUtil.post(FinalURL.URL + "", params, new AbStringHttpResponseListener() {
-            @Override
-            public void onSuccess(int i, String s) {
-
-            }
-
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-
-            @Override
-            public void onFailure(int i, String s, Throwable throwable) {
-
-            }
-        });
     }
 }

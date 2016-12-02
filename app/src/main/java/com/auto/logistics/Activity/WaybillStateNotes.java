@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
 import com.ab.util.AbToastUtil;
@@ -24,28 +25,52 @@ public class WaybillStateNotes extends AbActivity {
     @AbIocView(id = R.id.IV_waybillback,click = "click")
     ImageView IV_waybillback;
     @AbIocView(id = R.id.LV_waybillListView)
-    ListView LV_waybillListView;
+     ListView LV_waybillListView;
+    @AbIocView(id =R.id.tv_wayBilltile)
+    TextView tv_wayBilltile;
     private List<DispatchBean.DataBean.LogsListBean> logsListBean;
+    private Intent intent;
+    private int state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.waybillstatenoteslayout);
-        Intent intent = getIntent();
+        intent = getIntent();
         logsListBean= (List<DispatchBean.DataBean.LogsListBean>) intent.getSerializableExtra("logsListBean");
-        setView();
+        state =  intent.getIntExtra("state",-1);
+        switch (state){
+            case 3:
+                tv_wayBilltile.setText("已接单");
+                setView(state);
+                break;
+            case 4:
+                tv_wayBilltile.setText("已装车");
+                setView(state);
+                break;
+            case 5:
+                tv_wayBilltile.setText("已出发");
+                setView(state);
+                break;
+            case 6:
+                tv_wayBilltile.setText("已到达");
+                setView(state);
+                break;
+        }
+
     }
 
-    private void setView() {
+    private void setView(final int  stata) {
         if (logsListBean!=null){
         WaybillAdapter waybillAdapter = new WaybillAdapter(WaybillStateNotes.this, (ArrayList<DispatchBean.DataBean.LogsListBean>) logsListBean);
         LV_waybillListView.setAdapter(waybillAdapter);
             LV_waybillListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    Intent intent = new Intent(WaybillStateNotes.this,DispatchDetailActivity.class);
+                    intent.setClass(WaybillStateNotes.this,DispatchDetailActivity.class);
+                    //intent = new Intent(WaybillStateNotes.this,DispatchDetailActivity.class);
                     intent.putExtra("itembean",logsListBean.get(position));
+                    intent.putExtra("state",stata);
                     startActivity(intent);
                 }
             });
