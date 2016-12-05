@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,8 @@ public class MainActivity extends AbActivity {
     TextView TV_mydispatching;
     @AbIocView(id = R.id.TV_mineinfo, click = "click")
     TextView TV_mineinfo;
+    @AbIocView(id = R.id.FL_point)
+    FrameLayout FL_point;
 
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 

@@ -60,9 +60,6 @@ public class MessageCenterFragment extends Fragment {
     private TimerTask timerTask;
     private List<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<LogTaskBean.DataBean.LogsBean>();
 
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -116,6 +113,7 @@ public class MessageCenterFragment extends Fragment {
         LV_MessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 getActivity().findViewById(R.id.FL_point).setVisibility(View.GONE);//点击item之后，小圆点隐藏
                 LogTaskBean.DataBean.LogsBean logsitemBean = listlogs.get(position);
                 Intent intent = new Intent();
                 intent.putExtra("itembean", logsitemBean);
@@ -158,7 +156,6 @@ public class MessageCenterFragment extends Fragment {
                 if (s != null) {
                     dataBean = AbJsonUtil.fromJson(s, LogTaskBean.class);
                     if (dataBean.isSuc()) {
-
                         for (int j = 0; j < dataBean.getData().getLogs().size(); j++) {
                             listlogs = dataBean.getData().getLogs();
                             //        适配器装载数据源
@@ -176,7 +173,6 @@ public class MessageCenterFragment extends Fragment {
                     AbToastUtil.showToast(getActivity(), "没有返回数据！");
                 }
             }
-
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {//失败

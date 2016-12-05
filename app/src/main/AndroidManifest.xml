@@ -54,7 +54,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -107,6 +106,14 @@
         <!--修改手机号-->
         <activity android:name=".Activity.EditPhoneActivity"
             android:screenOrientation="portrait"/>
+        <!--图片显示页面-->
+        <activity android:name=".Activity.ImageShowActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent"/>
+        <!--详情页面图片查看-->
+        <activity android:name=".Activity.DetailShow"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent"/>
         <!--消息轮询服务-->
         <service android:name=".Service.MessageService"/>
         <!--用于接收轮询消息的广播-->

@@ -61,7 +61,6 @@ public class MessageService extends Service {
         return null;
     }
 
-
     public void getData(final int curPage) {
         AbRequestParams params = new AbRequestParams();
         params.put("TaskNum", "");
@@ -73,7 +72,6 @@ public class MessageService extends Service {
         params.put("curPage", curPage);
         params.put("state", "2");
         mAbHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
-
             @Override
             public void onSuccess(int i, String s) {//成功
                 Intent intent = new Intent();
@@ -99,7 +97,6 @@ public class MessageService extends Service {
 
                 new Thread(new Myrun()).start();
             }
-
 
         });
     }

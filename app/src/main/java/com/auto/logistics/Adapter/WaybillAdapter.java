@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.auto.logistics.JavaBean.DispatchBean;
+import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 
 import java.util.ArrayList;
@@ -19,10 +20,10 @@ import java.util.ArrayList;
  */
 
 public class WaybillAdapter extends BaseAdapter {
-    private ArrayList<DispatchBean.DataBean.LogsListBean> dataList = new ArrayList<DispatchBean.DataBean.LogsListBean>();
+    private ArrayList<LogTaskBean.DataBean.LogsBean> dataList = new ArrayList<>();
     private Context ctx;
 
-    public WaybillAdapter(Context ctx, ArrayList<DispatchBean.DataBean.LogsListBean> dataList) {
+    public WaybillAdapter(Context ctx, ArrayList<LogTaskBean.DataBean.LogsBean> dataList) {
         this.ctx = ctx;
         this.dataList = dataList;
     }

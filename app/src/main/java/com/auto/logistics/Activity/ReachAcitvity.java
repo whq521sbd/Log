@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
+import com.ab.fragment.AbAlertDialogFragment;
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
@@ -25,13 +27,18 @@ import com.ab.view.ioc.AbIocView;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
+import com.auto.logistics.Utills.ImageUtil;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -47,11 +54,11 @@ public class ReachAcitvity extends AbActivity {
     TextView TV_installArea;
     @AbIocView(id = R.id.IV_installAddImg, click = "click")
     ImageView IV_installAddImg;
-    @AbIocView(id = R.id.IV_installUpImg1)
+    @AbIocView(id = R.id.IV_installUpImg1,longClick = "longcilic",click = "click")
     ImageView IV_installUpImg1;
-    @AbIocView(id = R.id.IV_installUpImg2)
+    @AbIocView(id = R.id.IV_installUpImg2,longClick = "longclick",click = "click")
     ImageView IV_installUpImg2;
-    @AbIocView(id = R.id.IV_installUpImg3)
+    @AbIocView(id = R.id.IV_installUpImg3,longClick = "longclick",click = "click")
     ImageView IV_installUpImg3;
     @AbIocView(id = R.id.IV_installback, click = "click")
     ImageView IV_installback;
@@ -59,6 +66,8 @@ public class ReachAcitvity extends AbActivity {
     private TextView tv_installcommit;
     @AbIocView(id = R.id.TV_tile)
     TextView TV_tile;
+    @AbIocView(id =R.id.tv_Return,click = "click")
+    TextView tv_Return;
     private LogTaskBean.DataBean.LogsBean logsBean;
     private int count = 0;
     private Uri tempUri;
@@ -66,6 +75,8 @@ public class ReachAcitvity extends AbActivity {
     private File file1, file2, file3;
     private File tempFile;
     private AbRequestParams params;
+    private File myCaptureFile;
+    private Intent imageintent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +88,8 @@ public class ReachAcitvity extends AbActivity {
         //首先获取上个页面传过来的数据
         Intent intent = getIntent();
         logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
+        imageintent = new Intent(this,ImageShowActivity.class);
+
 //     设置控件值
         setView();
     }
@@ -105,11 +118,60 @@ public class ReachAcitvity extends AbActivity {
         TV_installArea.setText("收货人：" + logsBean.getArea() + logsBean.getDeliUser());
     }
 
+
+    public  void  longclick(View view){
+        switch (view.getId()){
+            case R.id.IV_installUpImg1:
+                deleteImage(IV_installUpImg1);
+                count=1;
+                break;
+            case R.id.IV_installUpImg2:
+                deleteImage(IV_installUpImg2);
+                count=2;
+                break;
+            case R.id.IV_installUpImg3:
+                deleteImage(IV_installUpImg3);
+                count = 3;
+                break;
+        }
+    }
+
+    private void deleteImage(final ImageView imageView) {
+        AbDialogUtil.showAlertDialog(ReachAcitvity.this, -1, "提示！", "确定删除吗？", new AbAlertDialogFragment.AbDialogOnClickListener() {
+            @Override
+            public void onPositiveClick() {
+                imageView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onNegativeClick() {
+                AbDialogUtil.removeDialog(ReachAcitvity.this);
+            }
+        });
+    }
+
+
     /**
      * @param view    点击事件
      */
     public void click(View view) {
         switch (view.getId()) {
+            case R.id.IV_installUpImg1:
+                imageintent.putExtra("state",1);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_installUpImg2:
+                imageintent.putExtra("state",2);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_installUpImg3:
+                imageintent.putExtra("state",3);
+                startActivity(imageintent);
+                break;
+
+            case R.id.tv_Return:
+                startActivity(new Intent(this,MainActivity.class));
+                break;
 //            提交操作
             case R.id.tv_installcommit:
                 if (isLoadImage()) {
@@ -159,7 +221,6 @@ public class ReachAcitvity extends AbActivity {
                 break;
 //            添加照片
             case R.id.IV_installAddImg:
-                count++;
                 AlertDialog.Builder builder = new AlertDialog.Builder(ReachAcitvity.this);
                 builder.setTitle("上传车辆照片")
                         .setItems(new String[]{"拍照上传", "本地相册"}, new DialogInterface.OnClickListener() {
@@ -202,43 +263,76 @@ public class ReachAcitvity extends AbActivity {
         switch (requestCode) {
             case 102:
                 if (resultCode == RESULT_OK) {
-                    startPhotoZoom(tempUri, 1, 1, 500, 500);
+                    startPhotoZoom(tempUri, 1, 1, 1000, 1000);
                 }
                 break;
             case 103:
                 if (null != data) {
-                    startPhotoZoom(data.getData(), 1, 1, 500, 500);
+                    startPhotoZoom(data.getData(), 1, 1, 1000, 1000);
                 }
                 break;
             case 104:
+                count++;
                 Bitmap bitmap = decodeUriAsBitmap(tempUri);// decode bitmap
                 switch (count) {
                     case 1:
-                        file1 = tempFile;
-                        if (file1.exists()) {
-                            params.put("file1", file1);
-                            IV_installUpImg1.setImageBitmap(bitmap);
-                            IV_installUpImg1.setVisibility(View.VISIBLE);
+                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String time = format.format(new Date());
+                        Bitmap textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        try {
+                            saveFile(textBitmap, getPhotoFileName());//bitmap转换file
+                            if (myCaptureFile.exists()) {
+                                file1 = myCaptureFile;
+                                params.put("file1", file1);
+                                String img1 =file1.getAbsolutePath();
+                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this,"img1",img1);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                        IV_installUpImg1.setImageBitmap(textBitmap);//时间水印
+                        IV_installUpImg1.setVisibility(View.VISIBLE);
 
                         break;
                     case 2:
-                        file2 = tempFile;
-                        if (file2.exists()) {
-                            params.put("file2", file2);
-                            IV_installUpImg2.setImageBitmap(bitmap);
-                            IV_installUpImg2.setVisibility(View.VISIBLE);
+                        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        time = format.format(new Date());
+                        textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        try {
+                            saveFile(textBitmap, getPhotoFileName());//bitmap转换file
+                            if (myCaptureFile.exists()) {
+                                file2 = myCaptureFile;
+                                params.put("file2", file2);
+                                String img2 =file2.getAbsolutePath();
+                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this,"img2",img2);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                        IV_installUpImg2.setImageBitmap(textBitmap);//时间水印
+                        IV_installUpImg2.setVisibility(View.VISIBLE);
 
                         break;
                     case 3:
                         file3 = tempFile;
-                        if (file3.exists()) {
-                            params.put("file3", file3);
-                            IV_installUpImg3.setImageBitmap(bitmap);
-                            IV_installUpImg3.setVisibility(View.VISIBLE);
-                            IV_installAddImg.setVisibility(View.GONE);
+                        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        time = format.format(new Date());
+                        textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        try {
+                            saveFile(textBitmap, getPhotoFileName());//bitmap转换file
+                            if (myCaptureFile.exists()) {
+                                file3 = myCaptureFile;
+                                params.put("file3", file3);
+                                String img3 =file3.getAbsolutePath();
+                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this,"img3",img3);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+
+                        IV_installUpImg3.setImageBitmap(textBitmap);//时间水印
+                        IV_installUpImg3.setVisibility(View.VISIBLE);
+                        IV_installAddImg.setVisibility(View.GONE);
 
                         break;
                 }
@@ -340,6 +434,30 @@ public class ReachAcitvity extends AbActivity {
         }
         return bitmap;
     }
+
+
+
+
+    /**
+     * bitmap转File
+     *
+     * @param bm
+     * @param fileName
+     */
+    public void saveFile(Bitmap bm, String fileName) throws IOException {
+        String path = Environment.getExternalStorageDirectory() + "/BJDLogistics/";
+        File dirFile = new File(path);
+        if (!dirFile.exists()) {
+            dirFile.mkdir();
+        }
+        myCaptureFile = new File(path + fileName);
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+        bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+        bos.flush();
+        bos.close();
+    }
+
+
 
 
     public boolean isLoadImage() {

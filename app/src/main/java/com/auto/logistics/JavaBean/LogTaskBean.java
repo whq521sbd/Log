@@ -135,6 +135,33 @@ public class LogTaskBean implements Serializable {
             private String DeliUser;
             private String State;
             private String Booth;
+            private String PackPic;
+            private String DepPic;
+            private String SendPic;
+
+            public String getPackPic() {
+                return PackPic;
+            }
+
+            public void setPackPic(String packPic) {
+                PackPic = packPic;
+            }
+
+            public String getDepPic() {
+                return DepPic;
+            }
+
+            public void setDepPic(String depPic) {
+                DepPic = depPic;
+            }
+
+            public String getSendPic() {
+                return SendPic;
+            }
+
+            public void setSendPic(String sendPic) {
+                SendPic = sendPic;
+            }
 
             public String getTaskNum() {
                 return TaskNum;

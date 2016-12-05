@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,22 +17,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
+import com.ab.fragment.AbAlertDialogFragment;
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
 import com.ab.util.AbDialogUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
+import com.auto.logistics.JavaBean.DispatchBean;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
+import com.auto.logistics.Utills.ImageUtil;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -47,23 +55,28 @@ public class InstallCarActivity extends AbActivity {
     TextView TV_installArea;
     @AbIocView(id = R.id.IV_installAddImg, click = "click")
     ImageView IV_installAddImg;
-    @AbIocView(id = R.id.IV_installUpImg1)
+    @AbIocView(id = R.id.IV_installUpImg1, longClick = "longclick",click = "click")
     ImageView IV_installUpImg1;
-    @AbIocView(id = R.id.IV_installUpImg2)
+    @AbIocView(id = R.id.IV_installUpImg2, longClick = "longclick",click = "click")
     ImageView IV_installUpImg2;
-    @AbIocView(id = R.id.IV_installUpImg3)
+    @AbIocView(id = R.id.IV_installUpImg3, longClick = "longclick",click = "click")
     ImageView IV_installUpImg3;
     @AbIocView(id = R.id.IV_installback, click = "click")
     ImageView IV_installback;
     @AbIocView(id = R.id.tv_installcommit, click = "click")
     private TextView tv_installcommit;
+    @AbIocView(id = R.id.tv_Return, click = "click")
+    TextView tv_Return;
     private LogTaskBean.DataBean.LogsBean logsBean;
     private int count = 0;
     private Uri tempUri;
     private AbHttpUtil mAbHttpUtil;
     private File file1, file2, file3;
     private File tempFile;
-    AbRequestParams params;
+    private AbRequestParams params;
+    private File myCaptureFile;
+    private Bitmap textBitmap1,textBitmap2,textBitmap3;
+    private  Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +85,16 @@ public class InstallCarActivity extends AbActivity {
         mAbHttpUtil = AbHttpUtil.getInstance(InstallCarActivity.this);
         mAbHttpUtil.setTimeout(10000);
         params = new AbRequestParams();
+        intent=new Intent(this,ImageShowActivity.class);
+
         //首先获取上个页面传过来的数据
         Intent intent = getIntent();
+
+        //     正常流程数据
         logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
-//        设置值
+        //        设置值
         setView();
     }
-
 
     //返回键监听
     @Override
@@ -89,7 +105,6 @@ public class InstallCarActivity extends AbActivity {
         return false;
     }
 
-
     //控件赋值
     private void setView() {
         TV_intallGoodsTitle.setText("商品名称：" + logsBean.getGoodsTitle());
@@ -97,55 +112,93 @@ public class InstallCarActivity extends AbActivity {
         TV_installArea.setText("送达地点：" + logsBean.getArea() + logsBean.getStreet());
     }
 
+    //长按点击
+    public void longclick(View view) {
+        switch (view.getId()) {
+            case R.id.IV_installUpImg1:
+//                清空照片
+                deleteImage(IV_installUpImg1);
+                count = 1;
+                break;
+            case R.id.IV_installUpImg2:
+                deleteImage(IV_installUpImg2);
+                count = 2;
+                break;
+            case R.id.IV_installUpImg3:
+                deleteImage(IV_installUpImg3);
+                count = 3;
+                break;
+        }
+    }
+
+
+
 
     //点击事件
     public void click(View view) {
         switch (view.getId()) {
+
+            case R.id.IV_installUpImg1:
+                intent.putExtra("state",1);
+                startActivity(intent);
+                break;
+            case R.id.IV_installUpImg2:
+                intent.putExtra("state",2);
+                startActivity(intent);
+                break;
+            case R.id.IV_installUpImg3:
+                intent.putExtra("state",3);
+                startActivity(intent);
+                break;
+//            返回
+            case R.id.tv_Return:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
 //            提交操作
             case R.id.tv_installcommit:
                 if (isLoadImageViews()) {
-                params.put("Token", SharedPreferencesSava.getInstance().getStringValue(InstallCarActivity.this, "Token"));
-                params.put("TaskNum", logsBean.getTaskNum());
-                params.put("state", "4");
+                    params.put("Token", SharedPreferencesSava.getInstance().getStringValue(InstallCarActivity.this, "Token"));
+                    params.put("TaskNum", logsBean.getTaskNum());
+                    params.put("state", "4");
 
-                mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
-                    @Override
-                    public void onStart() {
-                        AbDialogUtil.showProgressDialog(InstallCarActivity.this, -1, "正在上传数据");
-                    }
+                    mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
+                        @Override
+                        public void onStart() {
+                            AbDialogUtil.showProgressDialog(InstallCarActivity.this, -1, "正在上传数据");
+                        }
 
-                    @Override
-                    public void onFinish() {
-                        AbDialogUtil.removeDialog(InstallCarActivity.this);
-                    }
+                        @Override
+                        public void onFinish() {
+                            AbDialogUtil.removeDialog(InstallCarActivity.this);
+                        }
 
-                    @Override
-                    public void onFailure(int i, String s, Throwable throwable) {
-                        Log.e("1111", "onFailure: " + throwable);
-                        AbDialogUtil.removeDialog(InstallCarActivity.this);
-                        AbToastUtil.showToast(InstallCarActivity.this, "上传网络失败,请重试~");
-                    }
+                        @Override
+                        public void onFailure(int i, String s, Throwable throwable) {
+                            Log.e("1111", "onFailure: " + throwable);
+                            AbDialogUtil.removeDialog(InstallCarActivity.this);
+                            AbToastUtil.showToast(InstallCarActivity.this, "上传网络失败,请重试~");
+                        }
 
-                    @Override
-                    public void onSuccess(int i, String s) {
-                        if (s != null) {
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                boolean Suc = object.getBoolean("Suc");
-                                if (Suc) {
-                                    Intent intent = new Intent(InstallCarActivity.this, SendGoodsActivity.class);
-                                    intent.putExtra("logsBean", logsBean);
-                                    startActivity(intent);
-                                } else if (object.getString("Msg").equals("token已失效")) {
-                                    AbToastUtil.showToast(InstallCarActivity.this, "您的账号在其他客户端登录！");
-                                    startActivity(new Intent(InstallCarActivity.this, LoginActivity.class));
+                        @Override
+                        public void onSuccess(int i, String s) {
+                            if (s != null) {
+                                try {
+                                    JSONObject object = new JSONObject(s);
+                                    boolean Suc = object.getBoolean("Suc");
+                                    if (Suc) {
+                                        Intent intent = new Intent(InstallCarActivity.this, SendGoodsActivity.class);
+                                        intent.putExtra("logsBean", logsBean);
+                                        startActivity(intent);
+                                    } else if (object.getString("Msg").equals("token已失效")) {
+                                        AbToastUtil.showToast(InstallCarActivity.this, "您的账号在其他客户端登录！");
+                                        startActivity(new Intent(InstallCarActivity.this, LoginActivity.class));
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
                         }
-                    }
-                });
+                    });
                 }
                 break;
             case R.id.IV_installback:// 返回按钮
@@ -153,7 +206,7 @@ public class InstallCarActivity extends AbActivity {
                 break;
 //            添加照片
             case R.id.IV_installAddImg:
-                count++;
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(InstallCarActivity.this);
                 builder.setTitle("上传车辆照片")
                         .setItems(new String[]{"拍照上传", "本地相册"}, new DialogInterface.OnClickListener() {
@@ -197,42 +250,78 @@ public class InstallCarActivity extends AbActivity {
         switch (requestCode) {
             case 102:
                 if (resultCode == RESULT_OK) {
-                    startPhotoZoom(tempUri, 1, 1, 500, 500);
+                    startPhotoZoom(tempUri, 1, 1, 1000, 1000);
                 }
                 break;
             case 103:
                 if (null != data) {
-                    startPhotoZoom(data.getData(), 1, 1, 500, 500);
+                    startPhotoZoom(data.getData(), 1, 1, 1000, 1000);
                 }
                 break;
             case 104:
+                count++;
                 Bitmap bitmap = decodeUriAsBitmap(tempUri);// decode bitmap
                 switch (count) {
                     case 1:
-                        file1 = tempFile;
-
-                        if (file1.exists()) {
-                            params.put("file1", file1);
-                            IV_installUpImg1.setImageBitmap(bitmap);
-                            IV_installUpImg1.setVisibility(View.VISIBLE);
+                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String time = format.format(new Date());
+                        textBitmap1 = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        try {
+                            saveFile(textBitmap1, getPhotoFileName());//bitmap转换file
+                            if (myCaptureFile.exists()) {
+                                file1 = myCaptureFile;
+                                params.put("file1", file1);
+                                String img1 =file1.getAbsolutePath();
+                                SharedPreferencesSava.getInstance().savaStringValue(InstallCarActivity.this,"img1",img1);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                        IV_installUpImg1.setImageBitmap(textBitmap1);//时间水印
+                        IV_installUpImg1.setVisibility(View.VISIBLE);
+
                         break;
                     case 2:
-                        file2 = tempFile;
-                        if (file2.exists()) {
-                            params.put("file2", file2);
-                            IV_installUpImg2.setImageBitmap(bitmap);
-                            IV_installUpImg2.setVisibility(View.VISIBLE);
+                        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        time = format.format(new Date());
+                        textBitmap2 = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        try {
+                            saveFile(textBitmap2, getPhotoFileName());//bitmap转换file
+                            if (myCaptureFile.exists()) {
+                                file2 = myCaptureFile;
+                                params.put("file2", file2);
+                                String img2 =file2.getAbsolutePath();//获得文件路径
+                                SharedPreferencesSava.getInstance().savaStringValue(InstallCarActivity.this,"img2",img2);//保存路径地址
+
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                        IV_installUpImg2.setImageBitmap(textBitmap2);//时间水印
+                        IV_installUpImg2.setVisibility(View.VISIBLE);
+
                         break;
                     case 3:
                         file3 = tempFile;
-                        if (file3.exists()) {
-                            params.put("file3", file3);
-                            IV_installUpImg3.setImageBitmap(bitmap);
-                            IV_installUpImg3.setVisibility(View.VISIBLE);
-                            IV_installAddImg.setVisibility(View.GONE);
+                        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        time = format.format(new Date());
+                        textBitmap3 = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        try {
+                            saveFile(textBitmap3, getPhotoFileName());//bitmap转换file
+                            if (myCaptureFile.exists()) {
+                                file3 = myCaptureFile;
+                                params.put("file3", file3);
+                            }
+                            String img3 =file3.getAbsolutePath();
+                            SharedPreferencesSava.getInstance().savaStringValue(InstallCarActivity.this,"img3",img3);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+
+                        IV_installUpImg3.setImageBitmap(textBitmap3);//时间水印
+                        IV_installUpImg3.setVisibility(View.VISIBLE);
+                        IV_installAddImg.setVisibility(View.GONE);
+
                         break;
                 }
                 break;
@@ -316,12 +405,47 @@ public class InstallCarActivity extends AbActivity {
     }
 
 
+
+    private void deleteImage(final ImageView imageView) {
+        AbDialogUtil.showAlertDialog(InstallCarActivity.this, -1, "提示！", "确定删除吗？", new AbAlertDialogFragment.AbDialogOnClickListener() {
+            @Override
+            public void onPositiveClick() {
+                imageView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onNegativeClick() {
+                AbDialogUtil.removeDialog(InstallCarActivity.this);
+            }
+        });
+    }
+
+    /**
+     * bitmap转File
+     *
+     * @param bm
+     * @param fileName
+     */
+    public void saveFile(Bitmap bm, String fileName) throws IOException {
+        String path = Environment.getExternalStorageDirectory() + "/BJDLogistics/";
+        File dirFile = new File(path);
+        if (!dirFile.exists()) {
+            dirFile.mkdir();
+        }
+        myCaptureFile = new File(path + fileName);
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+        bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+        bos.flush();
+        bos.close();
+    }
+
+
     /**
      * @return 最少上传一张照片
      */
     public boolean isLoadImageViews() {
-        if (IV_installUpImg1.getDrawable()==null&&IV_installUpImg2.getDrawable()==null&&IV_installUpImg3.getDrawable()==null){
-            AbToastUtil.showToast(InstallCarActivity.this,"最少上传一张照片哦~");
+        if (IV_installUpImg1.getDrawable() == null && IV_installUpImg2.getDrawable() == null && IV_installUpImg3.getDrawable() == null) {
+            AbToastUtil.showToast(InstallCarActivity.this, "最少上传一张照片哦~");
             return false;
         }
 

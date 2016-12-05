@@ -37,10 +37,10 @@
     <LinearLayout
         android:id="@+id/infoArea"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_sendgoods"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/LL_buttonArea"
         android:layout_below="@+id/sendgoogs_titleArea"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="0dp"
         android:orientation="vertical">
         <!--单个条目-->
         <LinearLayout
@@ -201,9 +201,6 @@
         </LinearLayout>
 
 
-
-
-
         <!--照片区域-->
         <LinearLayout
             android:id="@+id/photoArea"
@@ -251,25 +248,49 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
-    <TextView
-       android:visibility="visible"
-        android:id="@+id/tv_sendgoods"
+    <!--按钮区域  上面布局有above 取消后可能导致界面比例失真-->
+    <LinearLayout
+        android:id="@+id/LL_buttonArea"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/use_pwd_layout"
-        android:layout_marginBottom="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bluebuttonstyle"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="确认送货"
-        android:textColor="#fff"
-        android:textSize="25sp" />
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
 
+
+        <TextView
+            android:id="@+id/tv_sendgoods"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bluebuttonstyle"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="确认送货"
+            android:textColor="#fff"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+
+        <TextView
+            android:id="@+id/tv_sendReturn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/tv_sendgoods"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/buttonstyle"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="返回首页"
+            android:textColor="#fff"
+            android:textSize="25sp"
+            android:visibility="visible" />
+    </LinearLayout>
 
 </RelativeLayout>

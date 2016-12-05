@@ -17,8 +17,10 @@ import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
 import com.auto.logistics.JavaBean.DispatchBean;
+import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
+import com.bumptech.glide.Glide;
 
 /**
  * Created by Administrator on 2016/11/18.
@@ -66,47 +68,55 @@ public class DispatchDetailActivity extends AbActivity {
     TextView TV_DeliTime;
     @AbIocView(id = R.id.TV_DeliUser)
     TextView TV_DeliUser;
-    @AbIocView(id = R.id.IV_pickPic0)
+    @AbIocView(id = R.id.IV_pickPic0,click = "click")
     ImageView IV_pickPic0;
-    @AbIocView(id = R.id.IV_pickPic1)
+    @AbIocView(id = R.id.IV_pickPic1,click = "click")
     ImageView IV_pickPic1;
-    @AbIocView(id = R.id.IV_pickPic2)
+    @AbIocView(id = R.id.IV_pickPic2,click = "click")
     ImageView IV_pickPic2;
-    @AbIocView(id= R.id.IV_sendPic0)
+    @AbIocView(id = R.id.IV_sendPic0,click = "click")
     ImageView IV_sendPic0;
-    @AbIocView(id= R.id.IV_sendPic1)
+    @AbIocView(id = R.id.IV_sendPic1,click = "click")
     ImageView IV_sendPic1;
-    @AbIocView(id= R.id.IV_sendPic2)
+    @AbIocView(id = R.id.IV_sendPic2,click = "click")
     ImageView IV_sendPic2;
-    @AbIocView(id = R.id.IV_depPics0)
+    @AbIocView(id = R.id.IV_depPics0,click = "click")
     ImageView IV_depPics0;
-    @AbIocView(id = R.id.IV_depPics1)
+    @AbIocView(id = R.id.IV_depPics1,click = "click")
     ImageView IV_depPics1;
-    @AbIocView(id = R.id.IV_depPics2)
+    @AbIocView(id = R.id.IV_depPics2,click = "click")
     ImageView IV_depPics2;
-    @AbIocView(id = R.id.tv_next,click = "click")
+    @AbIocView(id = R.id.tv_next, click = "click")
     TextView tv_next;
 
-    private DispatchBean.DataBean.LogsListBean logsListBean;
+    private LogTaskBean.DataBean.LogsBean logsListBean;
     private String[] pickPics;
     private String[] sendPics;
     private String[] depPics;
     private AbImageLoader abImageLoader;
-    private  int state;
+    private int state;
+    private  Intent intent;
+    private Intent imageintent;
+    private String pickPic0path , pickPic1path, pickPic2path ;
+    private String sendPic0path , sendPic1path, sendPic2path ;
+    private String depPics0path , depPics1path, depPics2path ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.dispatchdetaillayout);
-        Intent intent = getIntent();
-        logsListBean = (DispatchBean.DataBean.LogsListBean) intent.getSerializableExtra("itembean");
-        state = intent.getIntExtra("state",-1);
-        abImageLoader = AbImageLoader.getInstance(this);
+        intent = getIntent();
+        logsListBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("itembean");
+        state = intent.getIntExtra("state", -1);
+//        abImageLoader = AbImageLoader.getInstance(this);
+        imageintent = new Intent(this,DetailShow.class);
+        if (state ==6 ){//如果状态为6时，改变按钮颜色及文字
+            tv_next.setText("返回首页");
+            tv_next.setBackground(getResources().getDrawable(R.drawable.buttonstyle));
+        }
 
         setView();
     }
-
-
 
 
     private void setView() {
@@ -134,30 +144,40 @@ public class DispatchDetailActivity extends AbActivity {
         String depPic = logsListBean.getDepPic();
         String sendPic = logsListBean.getSendPic();
 
-        pickPics = pickPic.split(",,");//装车图片地址
-//AbStrUtil.isEmpty(pickPic)
-        if (!pickPic.equals("")){
-            for (int i=0;i<pickPics.length;i++){
-                if (pickPics.length==1){
-                    abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0].substring(0,pickPics[0].length()-1));
+        pickPics = pickPic.split(",");//装车图片地址
+        if (!pickPic.equals("")) {
+            for (int i = 0; i < pickPics.length; i++) {
+                if (pickPics.length == 1) {
+                  pickPic0path = FinalURL.IMGURL + pickPics[0].substring(0, pickPics[0].length() );
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + pickPics[0].substring(0, pickPics[0].length() - 1)).into(IV_pickPic0);
+                   // abImageLoader.display(IV_pickPic0, FinalURL.IMGURL + pickPics[0].substring(0, pickPics[0].length() - 1));
                     IV_pickPic0.setVisibility(View.VISIBLE);
                     startAction(IV_pickPic0);
                     break;
 
-                }else if (pickPics.length==2){
-                    abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0]);
-                    abImageLoader.display(IV_pickPic1,FinalURL.IMGURL+pickPics[1].substring(0,pickPics[1].length()-1));
+                } else if (pickPics.length == 2) {
+                    pickPic0path = FinalURL.IMGURL + pickPics[0];
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + pickPics[0]).into(IV_pickPic0);
+                    //abImageLoader.display(IV_pickPic0, FinalURL.IMGURL + pickPics[0]);
+                    pickPic1path = FinalURL.IMGURL + pickPics[1].substring(0, pickPics[1].length() - 1);
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + pickPics[1].substring(0, pickPics[1].length() - 1)).into(IV_pickPic1);
+                    //abImageLoader.display(IV_pickPic1, FinalURL.IMGURL + pickPics[1].substring(0, pickPics[1].length() - 1));
                     IV_pickPic0.setVisibility(View.VISIBLE);
                     IV_pickPic1.setVisibility(View.VISIBLE);
-
                     startAction(IV_pickPic0);
                     startAction(IV_pickPic1);
                     break;
 
-                }else if (pickPics.length==3){
-                    abImageLoader.display(IV_pickPic0,FinalURL.IMGURL+pickPics[0]);
-                    abImageLoader.display(IV_pickPic1,FinalURL.IMGURL+pickPics[1]);
-                    abImageLoader.display(IV_pickPic2,FinalURL.IMGURL+pickPics[2].substring(0,pickPics[2].length()-1));
+                } else if (pickPics.length == 3) {
+                    pickPic0path = FinalURL.IMGURL + pickPics[0];
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + pickPics[0]).into(IV_pickPic0);
+                    //abImageLoader.display(IV_pickPic0, FinalURL.IMGURL + pickPics[0]);
+                    pickPic1path = FinalURL.IMGURL + pickPics[1];
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + pickPics[1]).into(IV_pickPic1);
+                    //abImageLoader.display(IV_pickPic1, FinalURL.IMGURL + pickPics[1]);
+                    pickPic2path =FinalURL.IMGURL + pickPics[2].substring(0, pickPics[2].length() - 1);
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + pickPics[2].substring(0, pickPics[2].length() - 1)).into(IV_pickPic2);
+                    //abImageLoader.display(IV_pickPic2, FinalURL.IMGURL + pickPics[2].substring(0, pickPics[2].length() - 1));
 
                     IV_pickPic0.setVisibility(View.VISIBLE);
                     IV_pickPic1.setVisibility(View.VISIBLE);
@@ -174,30 +194,41 @@ public class DispatchDetailActivity extends AbActivity {
 
         sendPics = sendPic.split(",,");//送货图片地址
 
-        if (!sendPic.equals("")){
-            for (int i=0;i<sendPics.length;i++){
-                if (sendPics.length==1){
-                    abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0].substring(0,sendPics[0].length()-1));
+        if (!sendPic.equals("")) {
+            for (int i = 0; i < sendPics.length; i++) {
+                if (sendPics.length == 1) {
+                    sendPic0path = FinalURL.IMGURL + sendPics[0].substring(0, sendPics[0].length() - 1);
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + sendPics[0].substring(0, sendPics[0].length() - 1)).into(IV_sendPic0);
+                    //abImageLoader.display(IV_sendPic0, FinalURL.IMGURL + sendPics[0].substring(0, sendPics[0].length() - 1));
                     IV_sendPic0.setVisibility(View.VISIBLE);
                     startAction(IV_sendPic0);
                     break;
-                }else if (pickPics.length==2){
-                    abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0]);
-                    abImageLoader.display(IV_sendPic1,FinalURL.IMGURL+sendPics[1].substring(0,sendPics[1].length()-1));
+                } else if (pickPics.length == 2) {
+                    sendPic0path = FinalURL.IMGURL + sendPics[0];
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + sendPics[0]).into(IV_sendPic0);
+                    //abImageLoader.display(IV_sendPic0, FinalURL.IMGURL + sendPics[0]);
+                    sendPic1path =  sendPics[1].substring(0, sendPics[1].length() - 1);
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + sendPics[1].substring(0, sendPics[1].length() - 1)).into(IV_sendPic1);
+                   // abImageLoader.display(IV_sendPic1, FinalURL.IMGURL + sendPics[1].substring(0, sendPics[1].length() - 1));
                     IV_sendPic0.setVisibility(View.VISIBLE);
                     IV_sendPic1.setVisibility(View.VISIBLE);
 
                     startAction(IV_sendPic0);
                     startAction(IV_sendPic1);
                     break;
-                }else if (pickPics.length==3){
-                    abImageLoader.display(IV_sendPic0,FinalURL.IMGURL+sendPics[0]);
-                    abImageLoader.display(IV_sendPic1,FinalURL.IMGURL+sendPics[1]);
-                    abImageLoader.display(IV_sendPic2,FinalURL.IMGURL+sendPics[2].substring(0,sendPics[2].length()-1));
+                } else if (pickPics.length == 3) {
+                    sendPic0path = FinalURL.IMGURL + sendPics[0];
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + sendPics[0]).into(IV_sendPic0);
+                    //abImageLoader.display(IV_sendPic0, FinalURL.IMGURL + sendPics[0]);
+                    sendPic1path = FinalURL.IMGURL + sendPics[1];
+                    Glide.with(DispatchDetailActivity.this).load( FinalURL.IMGURL + sendPics[1]).into(IV_sendPic1);
+                    //abImageLoader.display(IV_sendPic1, FinalURL.IMGURL + sendPics[1]);
+                    sendPic2path = FinalURL.IMGURL + sendPics[2].substring(0, sendPics[2].length() - 1);
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + sendPics[2].substring(0, sendPics[2].length() - 1)).into(IV_sendPic2);
+                    //abImageLoader.display(IV_sendPic2, FinalURL.IMGURL + sendPics[2].substring(0, sendPics[2].length() - 1));
                     IV_sendPic0.setVisibility(View.VISIBLE);
                     IV_sendPic1.setVisibility(View.VISIBLE);
                     IV_sendPic2.setVisibility(View.VISIBLE);
-
                     startAction(IV_sendPic0);
                     startAction(IV_sendPic1);
                     startAction(IV_sendPic2);
@@ -208,28 +239,39 @@ public class DispatchDetailActivity extends AbActivity {
         }
 
         depPics = depPic.split(",,");//到达图片地址
-        if (!depPic.equals("")){
-            for (int i=0;i<depPics.length;i++){
-                if (depPics.length==1){
-                    abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0].substring(0,depPics[0].length()-1));
+        if (!depPic.equals("")) {
+            for (int i = 0; i < depPics.length; i++) {
+                if (depPics.length == 1) {
+                    depPics0path = depPics[0].substring(0, depPics[0].length() - 1);
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[0].substring(0, depPics[0].length() - 1)).into(IV_depPics0);
+                    //abImageLoader.display(IV_depPics0, FinalURL.IMGURL + depPics[0].substring(0, depPics[0].length() - 1));
                     IV_depPics0.setVisibility(View.VISIBLE);
-
                     startAction(IV_depPics0);
                     break;
 
-                }else if (depPics.length==2){
-                    abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0]);
-                    abImageLoader.display(IV_depPics1,FinalURL.IMGURL+depPics[1].substring(0,depPics[1].length()-1));
+                } else if (depPics.length == 2) {
+                    depPics0path =  FinalURL.IMGURL + depPics[0];
+                    Glide.with(DispatchDetailActivity.this).load( FinalURL.IMGURL + depPics[0]).into(IV_depPics0);
+                    //abImageLoader.display(IV_depPics0, FinalURL.IMGURL + depPics[0]);
+                    depPics1path = FinalURL.IMGURL + depPics[1].substring(0, depPics[1].length() - 1);
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[1].substring(0, depPics[1].length() - 1)).into(IV_depPics1);
+                    //abImageLoader.display(IV_depPics1, FinalURL.IMGURL + depPics[1].substring(0, depPics[1].length() - 1));
                     IV_depPics0.setVisibility(View.VISIBLE);
                     IV_depPics1.setVisibility(View.VISIBLE);
 
                     startAction(IV_depPics0);
                     startAction(IV_depPics1);
                     break;
-                }else if (depPics.length==3){
-                    abImageLoader.display(IV_depPics0,FinalURL.IMGURL+depPics[0]);
-                    abImageLoader.display(IV_depPics1,FinalURL.IMGURL+depPics[1]);
-                    abImageLoader.display(IV_depPics2,FinalURL.IMGURL+depPics[2].substring(0,depPics[2].length()-1));
+                } else if (depPics.length == 3) {
+                    depPics0path = FinalURL.IMGURL + depPics[0];
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[0]).into(IV_depPics0);
+                    //abImageLoader.display(IV_depPics0, FinalURL.IMGURL + depPics[0]);
+                    depPics1path = FinalURL.IMGURL + depPics[1];
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[1]).into(IV_depPics1);
+                    //abImageLoader.display(IV_depPics1, FinalURL.IMGURL + depPics[1]);
+                    depPics2path = FinalURL.IMGURL + depPics[2].substring(0, depPics[2].length() - 1);
+                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[2].substring(0, depPics[2].length() - 1)).into(IV_depPics2);
+                    //abImageLoader.display(IV_depPics2, FinalURL.IMGURL + depPics[2].substring(0, depPics[2].length() - 1));
                     IV_depPics0.setVisibility(View.VISIBLE);
                     IV_depPics1.setVisibility(View.VISIBLE);
                     IV_depPics2.setVisibility(View.VISIBLE);
@@ -242,8 +284,6 @@ public class DispatchDetailActivity extends AbActivity {
             }
 
         }
-
-
 
 
     }
@@ -259,6 +299,51 @@ public class DispatchDetailActivity extends AbActivity {
 
     public void click(View view) {
         switch (view.getId()) {
+            case R.id.IV_pickPic0:
+                String path = pickPic0path;
+                imageintent.putExtra("path",path);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_pickPic1:
+                 path = pickPic1path;
+                imageintent.putExtra("path",path);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_pickPic2:
+                path = pickPic2path;
+                imageintent.putExtra("path",path);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_sendPic0:
+                path = sendPic0path;
+                imageintent.putExtra("path",path);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_sendPic1:
+                path = sendPic1path;
+                imageintent.putExtra("path",path);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_sendPic2:
+                path = sendPic2path;
+                imageintent.putExtra("path",path);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_depPics0:
+                path = depPics0path;
+                imageintent.putExtra("path",path);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_depPics1:
+                path = depPics1path;
+                imageintent.putExtra("path",path);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_depPics2:
+                path = depPics2path;
+                imageintent.putExtra("path",path);
+                startActivity(imageintent);
+                break;
             case R.id.tv_next:
                 switch (state){
                     case -1:
@@ -273,22 +358,25 @@ public class DispatchDetailActivity extends AbActivity {
                         break;
                     case 4:
                         intent = new Intent();
-                        //intent.putExtra("itemBean",logsListBean);
+                        intent.putExtra("logsBean",logsListBean);
                         intent.setClass(DispatchDetailActivity.this,SendGoodsActivity.class);
                         startActivity(intent);
                         AbToastUtil.showToast(DispatchDetailActivity.this,"44444");
                         break;
                     case 5:
                         intent = new Intent();
-                        //intent.putExtra("itemBean",logsListBean);
+                        intent.putExtra("logsBean",logsListBean);
                         intent.setClass(DispatchDetailActivity.this,ReachAcitvity.class);
                         startActivity(intent);
                         AbToastUtil.showToast(DispatchDetailActivity.this,"55555");
                         break;
                     case 6:
+                        startActivity(new Intent(this,MainActivity.class));
                         AbToastUtil.showToast(DispatchDetailActivity.this,"66666");
                         break;
                 }
+
+
                 break;
             case R.id.IV_dispatchdetaillback:
                 finish();

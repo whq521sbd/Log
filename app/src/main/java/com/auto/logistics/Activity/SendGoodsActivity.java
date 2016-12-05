@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
+import com.ab.fragment.AbAlertDialogFragment;
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
@@ -24,13 +26,18 @@ import com.ab.view.ioc.AbIocView;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
+import com.auto.logistics.Utills.ImageUtil;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -54,12 +61,15 @@ public class SendGoodsActivity extends AbActivity {
     ImageView IV_sendgoodsgoback;
     @AbIocView(id = R.id.IV_installAddImg,click = "click")
     ImageView IV_installAddImg;
-    @AbIocView(id = R.id.IV_installUpImg1)
+    @AbIocView(id = R.id.IV_installUpImg1,longClick = "longclick",click = "click")
     ImageView IV_installUpImg1;
-    @AbIocView(id = R.id.IV_installUpImg2)
+    @AbIocView(id = R.id.IV_installUpImg2,longClick = "longclick",click = "click")
     ImageView IV_installUpImg2;
-    @AbIocView(id = R.id.IV_installUpImg3)
+    @AbIocView(id = R.id.IV_installUpImg3,longClick = "longclick",click = "click")
     ImageView IV_installUpImg3;
+    @AbIocView(id =R.id.tv_sendReturn,click = "click")
+    TextView tv_sendReturn;
+
 
     private LogTaskBean.DataBean.LogsBean logsBean;
     private AbHttpUtil mHttpUtil;
@@ -68,21 +78,24 @@ public class SendGoodsActivity extends AbActivity {
     private Uri tempUri;
     private  File file1 ,file2,file3;
     private File tempFile ;
+    private File myCaptureFile;
+    private Intent imageintent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.sendgoodslayout);
+
         mHttpUtil = AbHttpUtil.getInstance(SendGoodsActivity.this);
 //        设置连接超时
         mHttpUtil.setTimeout(10000);
 //       获取上个页面的bean
         Intent intent = getIntent();
         logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
+        imageintent   =new Intent(this,ImageShowActivity.class);
 //     注册并设置值
         setView();
     }
-
 
 
     /**
@@ -97,6 +110,40 @@ public class SendGoodsActivity extends AbActivity {
     }
 
 
+
+    public  void  longclick(View view){
+        switch (view.getId()){
+            case R.id.IV_installUpImg1:
+                deleteImage(IV_installUpImg1);
+                count=1;
+                break;
+            case R.id.IV_installUpImg2:
+                deleteImage(IV_installUpImg2);
+                count=2;
+                break;
+            case R.id.IV_installUpImg3:
+                deleteImage(IV_installUpImg3);
+                count =3;
+                break;
+        }
+    }
+
+    private void deleteImage(final ImageView image) {
+            AbDialogUtil.showAlertDialog(SendGoodsActivity.this, -1, "提示！", "确定删除吗？", new AbAlertDialogFragment.AbDialogOnClickListener() {
+                @Override
+                public void onPositiveClick() {
+                    image.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onNegativeClick() {
+                    AbDialogUtil.removeDialog(SendGoodsActivity.this);
+                }
+            });
+        }
+
+
+
     /**
      * 点击事件
      *
@@ -104,8 +151,23 @@ public class SendGoodsActivity extends AbActivity {
      */
     public void click(View view) {
         switch (view.getId()) {
+            case R.id.IV_installUpImg1:
+                imageintent.putExtra("state",1);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_installUpImg2:
+                imageintent.putExtra("state",2);
+                startActivity(imageintent);
+                break;
+            case R.id.IV_installUpImg3:
+                imageintent.putExtra("state",3);
+                startActivity(imageintent);
+                break;
+            case R.id.tv_sendReturn:
+                startActivity(new Intent(this,MainActivity.class));
+                break;
             case R.id.IV_installAddImg:
-                count++;
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(SendGoodsActivity.this);
                 builder.setTitle("上传车辆照片")
                         .setItems(new String[]{"拍照上传", "本地相册"}, new DialogInterface.OnClickListener() {
@@ -206,12 +268,6 @@ public class SendGoodsActivity extends AbActivity {
         return false;
     }
 
-
-
-
-
-
-
     /**
      * 调用照相机之后，缩小比例，裁剪，等相关操作
      * */
@@ -220,42 +276,77 @@ public class SendGoodsActivity extends AbActivity {
         switch (requestCode) {
             case 102:
                 if (resultCode == RESULT_OK){
-                    startPhotoZoom(tempUri, 1, 1, 500, 500);
+                    startPhotoZoom(tempUri, 1, 1, 1000, 1000);
                 }
                 break;
             case 103:
                 if (null != data) {
-                    startPhotoZoom(data.getData(), 1, 1, 500, 500);
+                    startPhotoZoom(data.getData(), 1, 1, 1000, 1000);
                 }
                 break;
             case 104:
+                count++;
                 Bitmap bitmap = decodeUriAsBitmap(tempUri);// decode bitmap
-                switch (count){
+                switch (count) {
                     case 1:
-                        file1 = tempFile;
-
-                        if (file1.exists()){
-                            params.put("file1",file1);
-                            IV_installUpImg1.setImageBitmap(bitmap);
-                            IV_installUpImg1.setVisibility(View.VISIBLE);
+                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String time = format.format(new Date());
+                        Bitmap textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        try {
+                            saveFile(textBitmap, getPhotoFileName());//bitmap转换file
+                            if (myCaptureFile.exists()) {
+                                file1 = myCaptureFile;
+                                params.put("file1", file1);
+                                String img1 =file1.getAbsolutePath();
+                                SharedPreferencesSava.getInstance().savaStringValue(SendGoodsActivity.this,"img1",img1);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                        IV_installUpImg1.setImageBitmap(textBitmap);//时间水印
+                        IV_installUpImg1.setVisibility(View.VISIBLE);
+
                         break;
                     case 2:
-                        file2 = tempFile;
-                        if (file2.exists()){
-                            params.put("file2",file2);
-                            IV_installUpImg2.setImageBitmap(bitmap);
-                            IV_installUpImg2.setVisibility(View.VISIBLE);
+                        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        time = format.format(new Date());
+                        textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        try {
+                            saveFile(textBitmap, getPhotoFileName());//bitmap转换file
+                            if (myCaptureFile.exists()) {
+                                file2 = myCaptureFile;
+                                params.put("file2", file2);
+                                String img2 =file2.getAbsolutePath();
+                                SharedPreferencesSava.getInstance().savaStringValue(SendGoodsActivity.this,"img2",img2);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                        IV_installUpImg2.setImageBitmap(textBitmap);//时间水印
+                        IV_installUpImg2.setVisibility(View.VISIBLE);
+
                         break;
                     case 3:
                         file3 = tempFile;
-                        if (file3.exists()){
-                            params.put("file3",file3);
-                            IV_installUpImg3.setImageBitmap(bitmap);
-                            IV_installUpImg3.setVisibility(View.VISIBLE);
-                            IV_installAddImg.setVisibility(View.GONE);
+                        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        time = format.format(new Date());
+                        textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        try {
+                            saveFile(textBitmap, getPhotoFileName());//bitmap转换file
+                            if (myCaptureFile.exists()) {
+                                file3 = myCaptureFile;
+                                params.put("file3", file3);
+                                String img3 =file3.getAbsolutePath();
+                                SharedPreferencesSava.getInstance().savaStringValue(SendGoodsActivity.this,"img3",img3);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+
+                        IV_installUpImg3.setImageBitmap(textBitmap);//时间水印
+                        IV_installUpImg3.setVisibility(View.VISIBLE);
+                        IV_installAddImg.setVisibility(View.GONE);
+
                         break;
                 }
                 break;
@@ -270,7 +361,6 @@ public class SendGoodsActivity extends AbActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("'PNG'_yyyyMMdd_HHmmss");
         return sdf.format(date) + ".png";
     }
-
 
 
 
@@ -341,6 +431,26 @@ public class SendGoodsActivity extends AbActivity {
             return null;
         }
         return bitmap;
+    }
+
+
+    /**
+     * bitmap转File
+     *
+     * @param bm
+     * @param fileName
+     */
+    public void saveFile(Bitmap bm, String fileName) throws IOException {
+        String path = Environment.getExternalStorageDirectory() + "/BJDLogistics/";
+        File dirFile = new File(path);
+        if (!dirFile.exists()) {
+            dirFile.mkdir();
+        }
+        myCaptureFile = new File(path + fileName);
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+        bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+        bos.flush();
+        bos.close();
     }
 
 

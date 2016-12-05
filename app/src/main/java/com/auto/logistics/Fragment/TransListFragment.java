@@ -61,7 +61,6 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
         initView(view);
         setView();
         return view;
-
     }
 
 
@@ -185,7 +184,7 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                                     SV_waybill.setVisibility(View.VISIBLE);
                                 } else {
                                     SV_waybill.setVisibility(View.GONE);
-                                    AbToastUtil.showToast(getActivity(),"查询不到此单号！");
+                                    AbToastUtil.showToast(getActivity(),"查询不到数据！");
                                 }
                             }else {
                                 AbToastUtil.showToast(getActivity(),"接口获取数据失败！");
@@ -235,9 +234,10 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
             @Override
             public void onSuccess(int i, String s) {
                 if (s!=null) {
-                    DispatchBean dispatchBean = AbJsonUtil.fromJson(s, DispatchBean.class);
-                    if (dispatchBean.getData().getLogs().size()!=0) {
-                        List<DispatchBean.DataBean.LogsListBean> logsListBean = dispatchBean.getData().getLogs();
+                    //DispatchBean dispatchBean = AbJsonUtil.fromJson(s, DispatchBean.class);
+                    LogTaskBean dataBean = AbJsonUtil.fromJson(s, LogTaskBean.class);
+                    if (dataBean.getData().getLogs().size()!=0) {
+                        List<LogTaskBean.DataBean.LogsBean> logsListBean = dataBean.getData().getLogs();
                         Intent intent = new Intent(getActivity(), WaybillStateNotes.class);
                         intent.putExtra("logsListBean", (Serializable) logsListBean);
                         intent.putExtra("state",state);

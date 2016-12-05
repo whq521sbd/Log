@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dispatchttitleArea"
-        android:layout_marginBottom="2dp"
         android:background="#fff"
         android:padding="7dp"
         android:text=" | 运单列表"
@@ -40,7 +39,7 @@
 
     <!--按钮第一排区域-->
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         android:id="@+id/mylogisticsArea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,11 +73,11 @@
             android:background="@mipmap/ture"
             android:visibility="invisible"></FrameLayout>
 
-        <View
+        <TextView
             android:layout_width="0.6px"
             android:layout_height="match_parent"
-            android:background="#45494A"
-            android:visibility="gone" />
+            android:background="@color/colorPrimary"
+            android:visibility="visible" />
 
         <!-- -->
         <TextView
@@ -102,11 +101,6 @@
             android:background="@mipmap/ture"
             android:visibility="invisible"></FrameLayout>
 
-        <View
-            android:layout_width="0.6px"
-            android:layout_height="match_parent"
-            android:background="#45494A"
-            android:visibility="gone" />
 
 
     </LinearLayout>
@@ -114,7 +108,7 @@
 
     <!--按钮第二排区域-->
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         android:id="@+id/mylogisticsArea2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -150,6 +144,13 @@
 
 
         <TextView
+            android:layout_width="0.6px"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:visibility="visible" />
+
+
+        <TextView
             android:id="@+id/TV_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -182,7 +183,7 @@
 
     <!--按钮第三排区域-->
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mylogisticsArea2"
@@ -214,11 +215,12 @@
             android:background="@mipmap/ture"
             android:visibility="invisible"></FrameLayout>
 
-        <View
+        <TextView
+            android:layout_marginLeft="8dp"
             android:layout_width="0.6px"
             android:layout_height="match_parent"
-            android:background="#45494A"
-            android:visibility="gone" />
+            android:background="@color/colorPrimary"
+            android:visibility="visible" />
 
 
         <TextView

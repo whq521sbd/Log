@@ -62,6 +62,8 @@ public class OrderActivity extends AbActivity {
     TextView TV_AccTime;
     @AbIocView(id = R.id.TV_Booth)
     TextView TV_Booth;
+    @AbIocView(id =  R.id.tv_ordReturn,click = "click")
+    TextView tv_ordReturn;
 
     @AbIocView(id = R.id.order_listview)
     ListView order_listview;
@@ -137,6 +139,9 @@ public class OrderActivity extends AbActivity {
      */
     public void clickMe(View v) {
         switch (v.getId()) {
+            case R.id.tv_ordReturn://返回首页
+                finish();
+                break;
             case R.id.order_goback://返回
                 finish();
                 break;

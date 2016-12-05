@@ -13,6 +13,7 @@ import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
 import com.auto.logistics.Adapter.WaybillAdapter;
 import com.auto.logistics.JavaBean.DispatchBean;
+import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class WaybillStateNotes extends AbActivity {
      ListView LV_waybillListView;
     @AbIocView(id =R.id.tv_wayBilltile)
     TextView tv_wayBilltile;
-    private List<DispatchBean.DataBean.LogsListBean> logsListBean;
+    private List<LogTaskBean.DataBean.LogsBean> logsListBean;
     private Intent intent;
     private int state;
 
@@ -37,7 +38,7 @@ public class WaybillStateNotes extends AbActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.waybillstatenoteslayout);
         intent = getIntent();
-        logsListBean= (List<DispatchBean.DataBean.LogsListBean>) intent.getSerializableExtra("logsListBean");
+        logsListBean= (List<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("logsListBean");
         state =  intent.getIntExtra("state",-1);
         switch (state){
             case 3:
@@ -62,7 +63,7 @@ public class WaybillStateNotes extends AbActivity {
 
     private void setView(final int  stata) {
         if (logsListBean!=null){
-        WaybillAdapter waybillAdapter = new WaybillAdapter(WaybillStateNotes.this, (ArrayList<DispatchBean.DataBean.LogsListBean>) logsListBean);
+        WaybillAdapter waybillAdapter = new WaybillAdapter(WaybillStateNotes.this, (ArrayList<LogTaskBean.DataBean.LogsBean>) logsListBean);
         LV_waybillListView.setAdapter(waybillAdapter);
             LV_waybillListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

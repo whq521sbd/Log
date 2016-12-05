@@ -135,16 +135,18 @@
         <!--货物详情区域-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:background="#fff">
 
-            <EditText
+            <TextView
                 android:id="@+id/ED_installRemarks"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@null"
-                android:hint="备注信息、客户要求等（选填）"
-                android:paddingLeft="10dp" />
+                android:paddingLeft="10dp"
+                android:text="最少上传一张照片（长按可删除照片）"
+                android:textSize="18sp"
+                android:typeface="sans" />
             <!--照片区域-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,35 +158,37 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_weight="1"
                     android:id="@+id/IV_installUpImg1"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:scaleType="fitCenter"
-                    android:visibility="gone" />
-                <ImageView
                     android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="visible" />
+
+                <ImageView
                     android:id="@+id/IV_installUpImg2"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:scaleType="fitCenter"
-                    android:visibility="gone" />
-                <ImageView
-                    android:layout_weight="1"
                     android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:visibility="visible" />
+
+                <ImageView
                     android:id="@+id/IV_installUpImg3"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
                     android:scaleType="fitCenter"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <ImageView
-                    android:layout_weight="1"
                     android:id="@+id/IV_installAddImg"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
                     android:src="@mipmap/addimg" />
             </LinearLayout>
 
@@ -192,7 +196,6 @@
         </RelativeLayout>
 
         <TextView
-            android:clickable="true"
             android:id="@+id/tv_installcommit"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -201,10 +204,27 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/bluebuttonstyle"
+            android:clickable="true"
             android:gravity="center"
             android:text="提交数据"
             android:textColor="#fff"
             android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/tv_Return"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/order_informationArea"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/buttonstyle"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="返回首页"
+            android:textColor="#fff"
+            android:textSize="25sp" />
+
 
     </LinearLayout>
 
