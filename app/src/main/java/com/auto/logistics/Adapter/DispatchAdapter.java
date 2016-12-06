@@ -22,7 +22,6 @@ import java.util.ArrayList;
 public class DispatchAdapter extends BaseAdapter {
     private ArrayList<DispatchBean.DataBean.LogsListBean> dataList = new ArrayList<DispatchBean.DataBean.LogsListBean>();
     private Context ctx;
-
     public DispatchAdapter(Context ctx, ArrayList<DispatchBean.DataBean.LogsListBean> dataList) {
         this.ctx = ctx;
         this.dataList = dataList;

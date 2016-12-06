@@ -45,8 +45,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:layout_toLeftOf="@+id/rightarrow"
-        android:descendantFocusability="blocksDescendants">
+        android:layout_toLeftOf="@+id/rightarrow">
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,12 +64,11 @@
             android:textSize="16sp" />
 
         <CheckBox
-            android:id="@+id/ck_itemcheck"
+            android:id="@+id/cb_itemcheck"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:checked="false"
-            android:clickable="false"
-            android:focusable="false"
+
             android:visibility="gone" />
     </LinearLayout>
 

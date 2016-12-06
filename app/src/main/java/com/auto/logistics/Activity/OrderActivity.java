@@ -62,7 +62,7 @@ public class OrderActivity extends AbActivity {
     TextView TV_AccTime;
     @AbIocView(id = R.id.TV_Booth)
     TextView TV_Booth;
-    @AbIocView(id =  R.id.tv_ordReturn,click = "click")
+    @AbIocView(id =  R.id.tv_ordReturn,click = "clickMe")
     TextView tv_ordReturn;
 
     @AbIocView(id = R.id.order_listview)

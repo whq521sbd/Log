@@ -37,6 +37,7 @@
 
 
         <TextView
+            android:layout_marginLeft="10dp"
             android:id="@+id/TV_Message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,12 +50,7 @@
             android:text="消息提醒"
             android:textColor="@drawable/textstyle" />
 
-        <FrameLayout
-            android:id="@+id/FL_point"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/point"
-            android:visibility="gone"></FrameLayout>
+
 
         <TextView
             android:id="@+id/TV_list"

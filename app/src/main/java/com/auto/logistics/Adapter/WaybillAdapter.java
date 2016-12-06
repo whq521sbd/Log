@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.auto.logistics.JavaBean.DispatchBean;
@@ -63,7 +64,7 @@ public class WaybillAdapter extends BaseAdapter {
             holder.tv_waybillNum = (TextView) view.findViewById(R.id.tv_waybillNum);
             holder.tv_GoodsName = (TextView) view.findViewById(R.id.tv_GoodsName);
             holder.tv_Booth = (TextView) view.findViewById(R.id.tv_Booth);
-
+            holder.ck_itemcheck = (CheckBox) view.findViewById(R.id.ck_itemcheck);
 
             view.setTag(holder);
         } else {
@@ -84,6 +85,7 @@ public class WaybillAdapter extends BaseAdapter {
         TextView tv_waybillNum;
         TextView tv_GoodsName;
         TextView tv_Booth;
+        CheckBox ck_itemcheck;
 
     }
 }

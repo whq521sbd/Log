@@ -103,14 +103,14 @@ public class LogTaskBean implements Serializable {
              * State : 已派单
              * Booth : 匡山A区001
              */
-            private int sata;
+            private boolean ischecked = false;
 
-            public int getSata() {
-                return sata;
+            public boolean ischecked() {
+                return ischecked;
             }
 
-            public void setSata(int sata) {
-                this.sata = sata;
+            public void setIschecked(boolean ischecked) {
+                this.ischecked = ischecked;
             }
 
             private String TaskNum;

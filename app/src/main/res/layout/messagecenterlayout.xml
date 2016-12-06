@@ -18,6 +18,7 @@
 
 
     <com.ab.view.pullview.AbPullToRefreshView
+        android:layout_weight="1"
         android:id="@+id/Ab_AbPullToRefreshView"
         android:layout_below="@+id/messagetitelArea"
         android:layout_width="match_parent"
@@ -27,10 +28,10 @@
         android:id="@+id/LV_MessageListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:divider="@color/colorPrimary"
         android:dividerHeight="0.6px"
-        android:layoutAnimation="@anim/list_anim_layout"></ListView>
+        android:layoutAnimation="@anim/list_anim_layout">
+    </ListView>
     </com.ab.view.pullview.AbPullToRefreshView>
 
     <TextView

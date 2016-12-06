@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <!--标题区域-->
     <FrameLayout
         android:id="@+id/waybillSataArea_titleArea"
@@ -33,18 +34,30 @@
     </FrameLayout>
 
 
+    <ListView
+        android:layout_weight="1"
+        android:id="@+id/LV_waybillListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/waybillSataArea_titleArea"
+        android:divider="@color/colorPrimary"
+        android:dividerHeight="0.6px"
+        android:layoutAnimation="@anim/list_anim_layout"></ListView>
 
-        <ListView
-            android:layoutAnimation="@anim/list_anim_layout"
-            android:layout_below="@+id/waybillSataArea_titleArea"
-            android:id="@+id/LV_waybillListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@color/colorPrimary"
-            android:dividerHeight="0.6px">
+    <TextView
+        android:id="@+id/tv_waybillnext"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/LV_waybillListView"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bluebuttonstyle"
+        android:gravity="center"
+        android:text="下一步"
+        android:textColor="#fff"
+        android:textSize="25sp" />
 
-        </ListView>
 
-
-
-</RelativeLayout>
+</LinearLayout>

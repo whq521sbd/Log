@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,9 +30,12 @@ public class WaybillStateNotes extends AbActivity {
      ListView LV_waybillListView;
     @AbIocView(id =R.id.tv_wayBilltile)
     TextView tv_wayBilltile;
+    @AbIocView(id = R.id.tv_waybillnext,click = "click")
+    TextView tv_waybillnext;
     private List<LogTaskBean.DataBean.LogsBean> logsListBean;
     private Intent intent;
     private int state;
+    private ArrayList<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +72,20 @@ public class WaybillStateNotes extends AbActivity {
             LV_waybillListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    intent.setClass(WaybillStateNotes.this,DispatchDetailActivity.class);
-                    //intent = new Intent(WaybillStateNotes.this,DispatchDetailActivity.class);
+                  CheckBox ck_itemcheck = (CheckBox) view.findViewById(R.id.ck_itemcheck);
+
+                    if (logsListBean.get(position).ischecked()){
+                        ck_itemcheck.setChecked(true);
+                        newlist.add(logsListBean.get(position));//添加到新的数据源中
+                    }else {
+                        logsListBean.get(position).setIschecked(true);
+                        ck_itemcheck.setChecked(false);
+                        newlist.remove(newlist.size()-1);//删除最后一个
+                    }
+
+                    intent = new Intent(WaybillStateNotes.this,DispatchDetailActivity.class);
                     intent.putExtra("itembean",logsListBean.get(position));
+                    //intent.putExtra("newlist",newlist);
                     intent.putExtra("state",stata);
                     startActivity(intent);
                 }
@@ -84,6 +99,8 @@ public class WaybillStateNotes extends AbActivity {
 
     public void click(View view){
         switch (view.getId()){
+            case R.id.tv_waybillnext:
+            break;
             case R.id.IV_waybillback:
                 finish();
                 break;

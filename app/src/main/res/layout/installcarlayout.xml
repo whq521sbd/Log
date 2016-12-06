@@ -163,7 +163,7 @@
                     android:layout_height="80dp"
                     android:layout_weight="1"
                     android:scaleType="fitCenter"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/IV_installUpImg2"
@@ -172,7 +172,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:scaleType="fitCenter"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/IV_installUpImg3"
@@ -181,7 +181,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:scaleType="fitCenter"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/IV_installAddImg"

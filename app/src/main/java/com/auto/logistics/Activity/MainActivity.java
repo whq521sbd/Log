@@ -4,13 +4,14 @@ package com.auto.logistics.Activity;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.auto.logistics.Fragment.MineInfoFragment;
 import com.auto.logistics.Fragment.TransListFragment;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
+import com.readystatesoftware.viewbadger.BadgeView;
 
 import java.util.List;
 import java.util.Timer;
@@ -55,11 +57,10 @@ public class MainActivity extends AbActivity {
     TextView TV_mydispatching;
     @AbIocView(id = R.id.TV_mineinfo, click = "click")
     TextView TV_mineinfo;
-    @AbIocView(id = R.id.FL_point)
-    FrameLayout FL_point;
 
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +75,12 @@ public class MainActivity extends AbActivity {
         TV_Message.setTextColor(Color.parseColor("#00C3C5"));
         params = new AbRequestParams();
         mAbHttpUtil = AbHttpUtil.getInstance(this);
+
+        BadgeView badgeView = new BadgeView(MainActivity.this,TV_Message);
+        badgeView.setText("new");
+        badgeView.setContextClickable(false);
+        badgeView.setTextSize(8.0f);
+        badgeView.show();
         // getData();
 
     }
@@ -218,6 +225,13 @@ public class MainActivity extends AbActivity {
                         .commit();
                 break;
         }
+    }
+
+
+    public void updateUI(){
+        BadgeView badgeView = new BadgeView(MainActivity.this,TV_Message);
+        badgeView.setText("1");
+        badgeView.show();
     }
 
 

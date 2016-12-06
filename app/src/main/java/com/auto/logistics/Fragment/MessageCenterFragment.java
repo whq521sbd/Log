@@ -70,7 +70,6 @@ public class MessageCenterFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onStart() {
         getData(1);
@@ -80,6 +79,7 @@ public class MessageCenterFragment extends Fragment {
 
     //设置控件
     private void setView() {
+        Ab_AbPullToRefreshView.setLoadMoreEnable(false);
 //      上拉刷新
         Ab_AbPullToRefreshView.setOnHeaderRefreshListener(new AbPullToRefreshView.OnHeaderRefreshListener() {
             @Override
@@ -88,32 +88,36 @@ public class MessageCenterFragment extends Fragment {
                 getData(1);
                 messageAdapter.notifyDataSetChanged();
                 Ab_AbPullToRefreshView.onHeaderRefreshFinish();
-                startAction(LV_MessageListView);
+               startAction(LV_MessageListView);
             }
         });
 
-
-//      下拉加载更多
-        Ab_AbPullToRefreshView.setOnFooterLoadListener(new AbPullToRefreshView.OnFooterLoadListener() {
-            @Override
-            public void onFooterLoad(AbPullToRefreshView abPullToRefreshView) {
-                getData(curPage++);
-//              重新查询后，将数据加载到新的list中去
-                for (int i = 0; i < listlogs.size(); i++) {
-                    newlist.add(listlogs.get(i));
-                }
-                messageAdapter = new MessageAdapter(getActivity(), (ArrayList<LogTaskBean.DataBean.LogsBean>) newlist);
-                LV_MessageListView.setAdapter(messageAdapter);
-                messageAdapter.notifyDataSetChanged();//刷新适配器
-                Ab_AbPullToRefreshView.onFooterLoadFinish();
-            }
-        });
+////      下拉加载更多
+//        Ab_AbPullToRefreshView.setOnFooterLoadListener(new AbPullToRefreshView.OnFooterLoadListener() {
+//            @Override
+//            public void onFooterLoad(AbPullToRefreshView abPullToRefreshView) {
+//                getData(curPage++);
+////              重新查询后，将数据加载到新的list中去
+//                for (int i = 0; i < listlogs.size(); i++) {
+//                    newlist.add(listlogs.get(i));
+//                }
+//                messageAdapter = new MessageAdapter(getActivity(), (ArrayList<LogTaskBean.DataBean.LogsBean>) newlist);
+//                LV_MessageListView.setAdapter(messageAdapter);
+//                messageAdapter.notifyDataSetChanged();//刷新适配器
+//                Ab_AbPullToRefreshView.onFooterLoadFinish();
+//            }
+//        });
 
 //      item 监听
         LV_MessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                 getActivity().findViewById(R.id.FL_point).setVisibility(View.GONE);//点击item之后，小圆点隐藏
+                // getActivity().findViewById(R.id.FL_point).setVisibility(View.GONE);//点击item之后，小圆点隐藏
+
+
+
+
+
                 LogTaskBean.DataBean.LogsBean logsitemBean = listlogs.get(position);
                 Intent intent = new Intent();
                 intent.putExtra("itembean", logsitemBean);
