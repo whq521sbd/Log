@@ -9,6 +9,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
@@ -70,44 +71,39 @@ public class DispatchDetailActivity extends AbActivity {
     TextView TV_DeliTime;
     @AbIocView(id = R.id.TV_DeliUser)
     TextView TV_DeliUser;
-    @AbIocView(id = R.id.IV_pickPic0,click = "click")
+    @AbIocView(id = R.id.IV_pickPic0, click = "click")
     ImageView IV_pickPic0;
-    @AbIocView(id = R.id.IV_pickPic1,click = "click")
+    @AbIocView(id = R.id.IV_pickPic1, click = "click")
     ImageView IV_pickPic1;
-    @AbIocView(id = R.id.IV_pickPic2,click = "click")
+    @AbIocView(id = R.id.IV_pickPic2, click = "click")
     ImageView IV_pickPic2;
-    @AbIocView(id = R.id.IV_sendPic0,click = "click")
+    @AbIocView(id = R.id.IV_sendPic0, click = "click")
     ImageView IV_sendPic0;
-    @AbIocView(id = R.id.IV_sendPic1,click = "click")
+    @AbIocView(id = R.id.IV_sendPic1, click = "click")
     ImageView IV_sendPic1;
-    @AbIocView(id = R.id.IV_sendPic2,click = "click")
+    @AbIocView(id = R.id.IV_sendPic2, click = "click")
     ImageView IV_sendPic2;
-    @AbIocView(id = R.id.IV_depPics0,click = "click")
+    @AbIocView(id = R.id.IV_depPics0, click = "click")
     ImageView IV_depPics0;
-    @AbIocView(id = R.id.IV_depPics1,click = "click")
+    @AbIocView(id = R.id.IV_depPics1, click = "click")
     ImageView IV_depPics1;
-    @AbIocView(id = R.id.IV_depPics2,click = "click")
+    @AbIocView(id = R.id.IV_depPics2, click = "click")
     ImageView IV_depPics2;
     @AbIocView(id = R.id.tv_next, click = "click")
     TextView tv_next;
-
+    @AbIocView(id = R.id.LV_dispatchlistview)
+    ListView LV_dispatchlistview;
     private LogTaskBean.DataBean.LogsBean logsListBean;
     private String[] pickPics;
     private String[] sendPics;
     private String[] depPics;
-    private AbImageLoader abImageLoader;
     private int state;
-    private  Intent intent;
+    private Intent intent;
     private Intent imageintent;
-    private String pickPic0path , pickPic1path, pickPic2path ;
-    private String sendPic0path , sendPic1path, sendPic2path ;
-    private String depPics0path , depPics1path, depPics2path ;
-    //private ImageView [] IV_pickPic  = {IV_pickPic0,IV_pickPic1,IV_pickPic2};
     private ArrayList<ImageView> IV_pickPiclist = new ArrayList<ImageView>();
     private ArrayList<ImageView> IV_sendPiclist = new ArrayList<ImageView>();
     private ArrayList<ImageView> IV_depPicslist = new ArrayList<ImageView>();
-    //private ImageView [] IV_sendPic  = {IV_sendPic0,IV_sendPic1,IV_sendPic2};
-    //private ImageView [] IV_depPics = {IV_depPics0,IV_depPics1,IV_depPics2};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +112,6 @@ public class DispatchDetailActivity extends AbActivity {
         intent = getIntent();
         logsListBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("itembean");
         state = intent.getIntExtra("state", -1);
-//        abImageLoader = AbImageLoader.getInstance(this);
 
         IV_pickPiclist.add(IV_pickPic0);
         IV_pickPiclist.add(IV_pickPic1);
@@ -131,8 +126,8 @@ public class DispatchDetailActivity extends AbActivity {
         IV_depPicslist.add(IV_depPics2);
 
 
-        imageintent = new Intent(this,DetailShow.class);
-        if (state ==6 ){//如果状态为6时，改变按钮颜色及文字
+        imageintent = new Intent(this, DetailShow.class);
+        if (state == 6) {//如果状态为6时，改变按钮颜色及文字
             tv_next.setText("返回首页");
             tv_next.setBackground(getResources().getDrawable(R.drawable.buttonstyle));
         }
@@ -179,68 +174,23 @@ public class DispatchDetailActivity extends AbActivity {
 
         }
 
-
+        if (!sendPic.equals("")) {
             for (int i = 0; i < sendPics.length; i++) {
-                Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL+sendPics[i]).into(IV_sendPiclist.get(i));
+                Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + sendPics[i]).into(IV_sendPiclist.get(i));
                 IV_sendPiclist.get(i).setVisibility(View.VISIBLE);
                 startAction(IV_sendPiclist.get(i));
             }
+        }
 
-
+        if (!depPic.equals("")) {
             for (int i = 0; i < depPics.length; i++) {
-                Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL+depPics[i]).into(IV_depPicslist.get(i));
+                Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[i]).into(IV_depPicslist.get(i));
                 IV_depPicslist.get(i).setVisibility(View.VISIBLE);
                 startAction(IV_depPicslist.get(i));
-
-
-
-//            for (int i = 0; i < depPics.length; i++) {
-//                if (depPics.length == 1) {
-//                    depPics0path = depPics[0].substring(0, depPics[0].length() - 1);
-//                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[0].substring(0, depPics[0].length() - 1)).into(IV_depPics0);
-//                    //abImageLoader.display(IV_depPics0, FinalURL.IMGURL + depPics[0].substring(0, depPics[0].length() - 1));
-//                    IV_depPics0.setVisibility(View.VISIBLE);
-//                    startAction(IV_depPics0);
-//                    break;
-//
-//                } else if (depPics.length == 2) {
-//                    depPics0path =  FinalURL.IMGURL + depPics[0];
-//                    Glide.with(DispatchDetailActivity.this).load( FinalURL.IMGURL + depPics[0]).into(IV_depPics0);
-//                    //abImageLoader.display(IV_depPics0, FinalURL.IMGURL + depPics[0]);
-//                    depPics1path = FinalURL.IMGURL + depPics[1].substring(0, depPics[1].length() - 1);
-//                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[1].substring(0, depPics[1].length() - 1)).into(IV_depPics1);
-//                    //abImageLoader.display(IV_depPics1, FinalURL.IMGURL + depPics[1].substring(0, depPics[1].length() - 1));
-//                    IV_depPics0.setVisibility(View.VISIBLE);
-//                    IV_depPics1.setVisibility(View.VISIBLE);
-//
-//                    startAction(IV_depPics0);
-//                    startAction(IV_depPics1);
-//                    break;
-//                } else if (depPics.length == 3) {
-//                    depPics0path = FinalURL.IMGURL + depPics[0];
-//                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[0]).into(IV_depPics0);
-//                    //abImageLoader.display(IV_depPics0, FinalURL.IMGURL + depPics[0]);
-//                    depPics1path = FinalURL.IMGURL + depPics[1];
-//                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[1]).into(IV_depPics1);
-//                    //abImageLoader.display(IV_depPics1, FinalURL.IMGURL + depPics[1]);
-//                    depPics2path = FinalURL.IMGURL + depPics[2].substring(0, depPics[2].length() - 1);
-//                    Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[2].substring(0, depPics[2].length() - 1)).into(IV_depPics2);
-//                    //abImageLoader.display(IV_depPics2, FinalURL.IMGURL + depPics[2].substring(0, depPics[2].length() - 1));
-//                    IV_depPics0.setVisibility(View.VISIBLE);
-//                    IV_depPics1.setVisibility(View.VISIBLE);
-//                    IV_depPics2.setVisibility(View.VISIBLE);
-//
-//                    startAction(IV_depPics0);
-//                    startAction(IV_depPics1);
-//                    startAction(IV_depPics2);
-//                    break;
-//                }
-//            }
+            }
 
         }
     }
-
-
 
 
     private void startAction(View view) {
@@ -255,79 +205,75 @@ public class DispatchDetailActivity extends AbActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.IV_pickPic0:
-                String path =FinalURL.IMGURL+pickPics[0];
-                imageintent.putExtra("path",path);
+                String path = FinalURL.IMGURL + pickPics[0];
+                imageintent.putExtra("path", path);
                 startActivity(imageintent);
                 break;
             case R.id.IV_pickPic1:
-                path =FinalURL.IMGURL+pickPics[1];
-                imageintent.putExtra("path",path);
+                path = FinalURL.IMGURL + pickPics[1];
+                imageintent.putExtra("path", path);
                 startActivity(imageintent);
                 break;
             case R.id.IV_pickPic2:
-                path =FinalURL.IMGURL+pickPics[2];
-                imageintent.putExtra("path",path);
+                path = FinalURL.IMGURL + pickPics[2];
+                imageintent.putExtra("path", path);
                 startActivity(imageintent);
                 break;
             case R.id.IV_sendPic0:
-                path =FinalURL.IMGURL+sendPics[0];
-                imageintent.putExtra("path",path);
+                path = FinalURL.IMGURL + sendPics[0];
+                imageintent.putExtra("path", path);
                 startActivity(imageintent);
                 break;
             case R.id.IV_sendPic1:
-                path =FinalURL.IMGURL+sendPics[1];
-                imageintent.putExtra("path",path);
+                path = FinalURL.IMGURL + sendPics[1];
+                imageintent.putExtra("path", path);
                 startActivity(imageintent);
                 break;
             case R.id.IV_sendPic2:
-                path =FinalURL.IMGURL+sendPics[2];
-                imageintent.putExtra("path",path);
+                path = FinalURL.IMGURL + sendPics[2];
+                imageintent.putExtra("path", path);
                 startActivity(imageintent);
                 break;
             case R.id.IV_depPics0:
-                path =FinalURL.IMGURL+depPics[0];
-                imageintent.putExtra("path",path);
+                path = FinalURL.IMGURL + depPics[0];
+                imageintent.putExtra("path", path);
                 startActivity(imageintent);
                 break;
             case R.id.IV_depPics1:
-                path =FinalURL.IMGURL+depPics[1];
-                imageintent.putExtra("path",path);
+                path = FinalURL.IMGURL + depPics[1];
+                imageintent.putExtra("path", path);
                 startActivity(imageintent);
                 break;
             case R.id.IV_depPics2:
-                path =FinalURL.IMGURL+depPics[2];
-                imageintent.putExtra("path",path);
+                path = FinalURL.IMGURL + depPics[2];
+                imageintent.putExtra("path", path);
                 startActivity(imageintent);
                 break;
             case R.id.tv_next:
-                switch (state){
+                switch (state) {
                     case -1:
-                        AbToastUtil.showToast(DispatchDetailActivity.this,"-1111111111");
+                        AbToastUtil.showToast(DispatchDetailActivity.this, "-1");
                         break;
                     case 3:
                         Intent intent = new Intent();
-                        intent.putExtra("logsBean",logsListBean);
-                        intent.setClass(DispatchDetailActivity.this,InstallCarActivity.class);
+                        intent.putExtra("logsBean", logsListBean);
+                        intent.setClass(DispatchDetailActivity.this, InstallCarActivity.class);
                         startActivity(intent);
-                        AbToastUtil.showToast(DispatchDetailActivity.this,"33333");
                         break;
                     case 4:
                         intent = new Intent();
-                        intent.putExtra("logsBean",logsListBean);
-                        intent.setClass(DispatchDetailActivity.this,SendGoodsActivity.class);
+                        intent.putExtra("logsBean", logsListBean);
+                        intent.setClass(DispatchDetailActivity.this, SendGoodsActivity.class);
                         startActivity(intent);
-                        AbToastUtil.showToast(DispatchDetailActivity.this,"44444");
                         break;
                     case 5:
                         intent = new Intent();
-                        intent.putExtra("logsBean",logsListBean);
-                        intent.setClass(DispatchDetailActivity.this,ReachAcitvity.class);
+                        intent.putExtra("logsBean", logsListBean);
+                        intent.setClass(DispatchDetailActivity.this, ReachAcitvity.class);
                         startActivity(intent);
-                        AbToastUtil.showToast(DispatchDetailActivity.this,"55555");
                         break;
                     case 6:
-                        startActivity(new Intent(this,MainActivity.class));
-                        AbToastUtil.showToast(DispatchDetailActivity.this,"66666");
+                        startActivity(new Intent(this, MainActivity.class));
                         break;
                 }
 

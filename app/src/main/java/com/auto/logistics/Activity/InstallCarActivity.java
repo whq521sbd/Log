@@ -68,7 +68,7 @@ public class InstallCarActivity extends AbActivity {
     @AbIocView(id = R.id.tv_Return, click = "click")
     TextView tv_Return;
     private LogTaskBean.DataBean.LogsBean logsBean;
-    private int count = 0;
+    //private int count = 0;
     private Uri tempUri;
     private AbHttpUtil mAbHttpUtil;
     private File file1, file2, file3;
@@ -77,6 +77,7 @@ public class InstallCarActivity extends AbActivity {
     private File myCaptureFile;
     private Bitmap textBitmap1,textBitmap2,textBitmap3;
     private  Intent intent;
+    private int  count=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,14 +120,17 @@ public class InstallCarActivity extends AbActivity {
 //                清空照片
                 deleteImage(IV_installUpImg1);
                 count = 1;
+                IV_installAddImg.setVisibility(View.VISIBLE);
                 break;
             case R.id.IV_installUpImg2:
                 deleteImage(IV_installUpImg2);
                 count = 2;
+                IV_installAddImg.setVisibility(View.VISIBLE);
                 break;
             case R.id.IV_installUpImg3:
                 deleteImage(IV_installUpImg3);
                 count = 3;
+                IV_installAddImg.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -206,7 +210,6 @@ public class InstallCarActivity extends AbActivity {
                 break;
 //            添加照片
             case R.id.IV_installAddImg:
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(InstallCarActivity.this);
                 builder.setTitle("上传车辆照片")
                         .setItems(new String[]{"拍照上传", "本地相册"}, new DialogInterface.OnClickListener() {
@@ -259,7 +262,6 @@ public class InstallCarActivity extends AbActivity {
                 }
                 break;
             case 104:
-                count++;
                 Bitmap bitmap = decodeUriAsBitmap(tempUri);// decode bitmap
                 switch (count) {
                     case 1:
@@ -279,7 +281,7 @@ public class InstallCarActivity extends AbActivity {
                         }
                         IV_installUpImg1.setImageBitmap(textBitmap1);//时间水印
                         IV_installUpImg1.setVisibility(View.VISIBLE);
-
+                        count=2;
                         break;
                     case 2:
                         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -299,7 +301,7 @@ public class InstallCarActivity extends AbActivity {
                         }
                         IV_installUpImg2.setImageBitmap(textBitmap2);//时间水印
                         IV_installUpImg2.setVisibility(View.VISIBLE);
-
+                        count=3;
                         break;
                     case 3:
                         file3 = tempFile;
@@ -321,7 +323,7 @@ public class InstallCarActivity extends AbActivity {
                         IV_installUpImg3.setImageBitmap(textBitmap3);//时间水印
                         IV_installUpImg3.setVisibility(View.VISIBLE);
                         IV_installAddImg.setVisibility(View.GONE);
-
+                        count=1;
                         break;
                 }
                 break;

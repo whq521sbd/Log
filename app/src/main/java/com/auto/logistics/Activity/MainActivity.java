@@ -2,6 +2,7 @@ package com.auto.logistics.Activity;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -45,11 +46,15 @@ public class MainActivity extends AbActivity {
     private AbHttpUtil mAbHttpUtil;
     private List<LogTaskBean.DataBean.LogsBean> listlogs;
     private MessageAdapter messageAdapter;
+    private static Activity instance;
+    private static BadgeView badgeView;
+
 
     /*
     * 初始化控件
     * */
     @AbIocView(id = R.id.TV_Message, click = "click")
+    static
     TextView TV_Message;
     @AbIocView(id = R.id.TV_list, click = "click")
     TextView TV_list;
@@ -57,9 +62,7 @@ public class MainActivity extends AbActivity {
     TextView TV_mydispatching;
     @AbIocView(id = R.id.TV_mineinfo, click = "click")
     TextView TV_mineinfo;
-
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,25 +79,28 @@ public class MainActivity extends AbActivity {
         params = new AbRequestParams();
         mAbHttpUtil = AbHttpUtil.getInstance(this);
 
-        BadgeView badgeView = new BadgeView(MainActivity.this,TV_Message);
-        badgeView.setText("new");
-        badgeView.setContextClickable(false);
-        badgeView.setTextSize(8.0f);
-        badgeView.show();
+        instance = this;
         // getData();
 
     }
 
+    public static Activity getInstance() {
+        return instance;
+    }
+
+    public static void setInstance(Activity instance) {
+        MainActivity.instance = instance;
+    }
 
     /*
-    *
-    * Andrroid 6.0 系统，进去页面之后判断WRITE_EXTERNAL_STORAGE，是否打开
-    *
-    * 因为 STORAGE，是危险权限组，所以如果WRITE_EXTERNAL_STORAGE打开之后
-    *
-    * 则READ_EXTERNAL_STORAGE权限会自动被系统授权，不需重复判断
-    *
-    * */
+        *
+        * Andrroid 6.0 系统，进去页面之后判断WRITE_EXTERNAL_STORAGE，是否打开
+        *
+        * 因为 STORAGE，是危险权限组，所以如果WRITE_EXTERNAL_STORAGE打开之后
+        *
+        * 则READ_EXTERNAL_STORAGE权限会自动被系统授权，不需重复判断
+        *
+        * */
     private void judgePermission() {
 //        如果mainfast里面没有WRITE_EXTERNAL_STORAGE权限，则提示用户授权
         if (ContextCompat.checkSelfPermission(MainActivity.this,
@@ -228,11 +234,24 @@ public class MainActivity extends AbActivity {
     }
 
 
-    public void updateUI(){
-        BadgeView badgeView = new BadgeView(MainActivity.this,TV_Message);
-        badgeView.setText("1");
+    /**
+     * 显示小圆点
+     */
+    public static void  showBadge(){
+        badgeView = new BadgeView(MainActivity.getInstance(), TV_Message);
+        badgeView.setText("new");
+        badgeView.setTextSize(8.0f);
         badgeView.show();
+
     }
+
+    /**
+     * 隐藏小圆点
+     */
+    public static void hideBadge(){
+        badgeView.hide();
+    }
+
 
 
     /**

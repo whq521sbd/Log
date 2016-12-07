@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
@@ -25,6 +27,7 @@ import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.pullview.AbPullToRefreshView;
 import com.auto.logistics.Activity.LoginActivity;
+import com.auto.logistics.Activity.MainActivity;
 import com.auto.logistics.Activity.OrderActivity;
 import com.auto.logistics.Adapter.MessageAdapter;
 import com.auto.logistics.JavaBean.LogTaskBean;
@@ -32,6 +35,7 @@ import com.auto.logistics.R;
 import com.auto.logistics.Service.MessageService;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
+import com.readystatesoftware.viewbadger.BadgeView;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -46,7 +50,7 @@ import java.util.TimerTask;
  * Created by Administrator on 2016/10/27.
  */
 
-public class MessageCenterFragment extends Fragment {
+public class MessageCenterFragment extends Fragment implements View.OnClickListener {
     private ListView LV_MessageListView;
     private AbHttpUtil mAbHttpUtil;
     private AbRequestParams params;
@@ -59,6 +63,7 @@ public class MessageCenterFragment extends Fragment {
     private Timer timer = new Timer(true);
     private TimerTask timerTask;
     private List<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<LogTaskBean.DataBean.LogsBean>();
+    private ImageView IV_scan;
 
     @Nullable
     @Override
@@ -79,6 +84,7 @@ public class MessageCenterFragment extends Fragment {
 
     //设置控件
     private void setView() {
+        IV_scan.setOnClickListener(this);
         Ab_AbPullToRefreshView.setLoadMoreEnable(false);
 //      上拉刷新
         Ab_AbPullToRefreshView.setOnHeaderRefreshListener(new AbPullToRefreshView.OnHeaderRefreshListener() {
@@ -113,11 +119,7 @@ public class MessageCenterFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // getActivity().findViewById(R.id.FL_point).setVisibility(View.GONE);//点击item之后，小圆点隐藏
-
-
-
-
-
+                MainActivity.hideBadge();//点击之后小圆点隐藏
                 LogTaskBean.DataBean.LogsBean logsitemBean = listlogs.get(position);
                 Intent intent = new Intent();
                 intent.putExtra("itembean", logsitemBean);
@@ -138,6 +140,7 @@ public class MessageCenterFragment extends Fragment {
 
     //初始化listview
     private void initView(View view) {
+        IV_scan = (ImageView) view.findViewById(R.id.IV_scan);
         Ab_AbPullToRefreshView = (AbPullToRefreshView) view.findViewById(R.id.Ab_AbPullToRefreshView);
         LV_MessageListView = (ListView) view.findViewById(R.id.LV_MessageListView);
     }
@@ -203,7 +206,12 @@ public class MessageCenterFragment extends Fragment {
     }
 
 
-
-
-
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.IV_scan://扫描
+                
+                break;
+        }
+    }
 }

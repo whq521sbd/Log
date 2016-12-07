@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/dispatch_titleArea"
-        android:visibility="visible">
+        android:visibility="gone">
         <!--控制横竖显示-->
         <LinearLayout
 
@@ -633,8 +633,12 @@
 
         </LinearLayout>
 
-
     </ScrollView>
 
+    <ListView
+        android:id="@+id/LV_dispatchlistview"
+        android:layout_below="@+id/dispatch_titleArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
 </RelativeLayout>

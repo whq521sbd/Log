@@ -22,7 +22,6 @@ import java.io.File;
  */
 
 public class GuideActivity extends AbActivity {
-
     private Animation animation;
     private RelativeLayout RL_guidelayout;
     private  static  final  int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE=1;

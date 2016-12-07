@@ -73,13 +73,14 @@ public class SendGoodsActivity extends AbActivity {
 
     private LogTaskBean.DataBean.LogsBean logsBean;
     private AbHttpUtil mHttpUtil;
-    private int count=0;
+    //private int count=0;
     private  AbRequestParams params = new AbRequestParams();
     private Uri tempUri;
     private  File file1 ,file2,file3;
     private File tempFile ;
     private File myCaptureFile;
     private Intent imageintent;
+    private int  count=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,14 +117,17 @@ public class SendGoodsActivity extends AbActivity {
             case R.id.IV_installUpImg1:
                 deleteImage(IV_installUpImg1);
                 count=1;
+                IV_installAddImg.setVisibility(View.VISIBLE);
                 break;
             case R.id.IV_installUpImg2:
                 deleteImage(IV_installUpImg2);
                 count=2;
+                IV_installAddImg.setVisibility(View.VISIBLE);
                 break;
             case R.id.IV_installUpImg3:
                 deleteImage(IV_installUpImg3);
                 count =3;
+                IV_installAddImg.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -285,7 +289,7 @@ public class SendGoodsActivity extends AbActivity {
                 }
                 break;
             case 104:
-                count++;
+
                 Bitmap bitmap = decodeUriAsBitmap(tempUri);// decode bitmap
                 switch (count) {
                     case 1:
@@ -305,7 +309,7 @@ public class SendGoodsActivity extends AbActivity {
                         }
                         IV_installUpImg1.setImageBitmap(textBitmap);//时间水印
                         IV_installUpImg1.setVisibility(View.VISIBLE);
-
+                        count=2;
                         break;
                     case 2:
                         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -324,7 +328,7 @@ public class SendGoodsActivity extends AbActivity {
                         }
                         IV_installUpImg2.setImageBitmap(textBitmap);//时间水印
                         IV_installUpImg2.setVisibility(View.VISIBLE);
-
+                        count=3;
                         break;
                     case 3:
                         file3 = tempFile;
@@ -346,7 +350,7 @@ public class SendGoodsActivity extends AbActivity {
                         IV_installUpImg3.setImageBitmap(textBitmap);//时间水印
                         IV_installUpImg3.setVisibility(View.VISIBLE);
                         IV_installAddImg.setVisibility(View.GONE);
-
+                        count=1;
                         break;
                 }
                 break;

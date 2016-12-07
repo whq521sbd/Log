@@ -4,38 +4,52 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <!--标题栏-->
-    <TextView
-        android:id="@+id/messagetitelArea"
+    <FrameLayout
+        android:id="@+id/fl_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#00C3C5"
-        android:gravity="center"
-        android:text="消息中心"
-        android:textColor="#fff"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:typeface="sans" />
+        android:layout_height="wrap_content"
+        android:background="#00C3C5">
+
+        <TextView
+            android:id="@+id/messagetitelArea"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#00C3C5"
+            android:gravity="center"
+            android:text="消息中心"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:typeface="sans" />
+
+        <ImageView
+            android:id="@+id/IV_scan"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:src="@mipmap/scan" />
+    </FrameLayout>
 
 
     <com.ab.view.pullview.AbPullToRefreshView
-        android:layout_weight="1"
         android:id="@+id/Ab_AbPullToRefreshView"
-        android:layout_below="@+id/messagetitelArea"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <ListView
-        android:id="@+id/LV_MessageListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/colorPrimary"
-        android:dividerHeight="0.6px"
-        android:layoutAnimation="@anim/list_anim_layout">
-    </ListView>
+        android:layout_below="@+id/messagetitelArea"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/LV_MessageListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/colorPrimary"
+            android:dividerHeight="0.6px"
+            android:layoutAnimation="@anim/list_anim_layout"></ListView>
     </com.ab.view.pullview.AbPullToRefreshView>
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/tv_next"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -48,6 +62,7 @@
         android:gravity="center"
         android:text="下一步"
         android:textColor="#fff"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:visibility="gone" />
 
 </LinearLayout>

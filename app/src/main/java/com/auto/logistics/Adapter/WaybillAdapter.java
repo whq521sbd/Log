@@ -15,6 +15,7 @@ import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Administrator on 2016/11/28.
@@ -23,10 +24,36 @@ import java.util.ArrayList;
 public class WaybillAdapter extends BaseAdapter {
     private ArrayList<LogTaskBean.DataBean.LogsBean> dataList = new ArrayList<>();
     private Context ctx;
+    private static HashMap<Integer, Boolean> isSelected;
+
+    public static HashMap<Integer, Boolean> getIsSelected() {
+        return isSelected;
+    }
+
+
+    public static void setIsSelected(HashMap<Integer, Boolean> isSelected) {
+        WaybillAdapter.isSelected = isSelected;
+    }
+
 
     public WaybillAdapter(Context ctx, ArrayList<LogTaskBean.DataBean.LogsBean> dataList) {
         this.ctx = ctx;
         this.dataList = dataList;
+        isSelected = new HashMap<Integer, Boolean>();
+        init();
+
+    }
+
+    /**
+     * 初始化 checkbox的状态 isSelected<0,false>
+     * isSelected<1,false>
+     * ...
+     */
+    private void init() {
+        for (int i = 0; i < dataList.size(); i++) {
+            getIsSelected().put(i, false);
+        }
+
     }
 
     // 必须得到真实的数据源项数，否则不能适配数据
@@ -58,7 +85,6 @@ public class WaybillAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             view = inflater.inflate(R.layout.waybillitem, null);
-
             holder = new WaybillAdapter.ViewHolder();
 
             holder.tv_waybillNum = (TextView) view.findViewById(R.id.tv_waybillNum);
@@ -68,24 +94,23 @@ public class WaybillAdapter extends BaseAdapter {
 
             view.setTag(holder);
         } else {
+
             holder = (WaybillAdapter.ViewHolder) view.getTag();
 
         }
-
         holder.tv_waybillNum.setText(dataList.get(position).getTaskNum());
         holder.tv_GoodsName.setText(dataList.get(position).getGoodsTitle());
         holder.tv_Booth.setText(dataList.get(position).getBooth());
-
         return view;
     }
 
 
     // 用来实现缓存机制
-    private static class ViewHolder {
-        TextView tv_waybillNum;
-        TextView tv_GoodsName;
-        TextView tv_Booth;
-        CheckBox ck_itemcheck;
+    public class ViewHolder {
+        public TextView tv_waybillNum;
+        public TextView tv_GoodsName;
+        public TextView tv_Booth;
+        public CheckBox ck_itemcheck;
 
     }
 }

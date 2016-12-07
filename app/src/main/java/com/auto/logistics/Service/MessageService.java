@@ -37,7 +37,6 @@ public class MessageService extends Service {
                     break;
             }
             super.handleMessage(msg);
-
         }
     };
 
@@ -46,9 +45,7 @@ public class MessageService extends Service {
         super.onCreate();
         mAbHttpUtil = AbHttpUtil.getInstance(getApplicationContext());
         getData(1);
-
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -80,7 +77,6 @@ public class MessageService extends Service {
                 sendBroadcast(intent);
             }
 
-
             @Override
             public void onFailure(int i, String s, Throwable throwable) {//失败
                 AbDialogUtil.removeDialog(getApplicationContext());
@@ -106,7 +102,7 @@ public class MessageService extends Service {
         @Override
         public void run() {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(30000);
                 Message msg = new Message();
                 msg.what = 10010;
                 handler.sendMessage(msg);
