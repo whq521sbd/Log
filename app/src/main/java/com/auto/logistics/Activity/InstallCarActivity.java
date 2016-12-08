@@ -136,8 +136,6 @@ public class InstallCarActivity extends AbActivity {
     }
 
 
-
-
     //点击事件
     public void click(View view) {
         switch (view.getId()) {

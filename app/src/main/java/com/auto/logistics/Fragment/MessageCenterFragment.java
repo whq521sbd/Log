@@ -35,6 +35,7 @@ import com.auto.logistics.R;
 import com.auto.logistics.Service.MessageService;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
+import com.auto.logistics.Utills.ZxingUtil;
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import java.io.Serializable;
@@ -183,7 +184,6 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {//失败
-
                 AbDialogUtil.removeDialog(getActivity());
                 AbToastUtil.showToast(getActivity(), "查询失败，请重试~");
             }
@@ -195,12 +195,9 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void onFinish() {//完成
-
                 getActivity().startService(new Intent(getActivity(), MessageService.class));
-
               //  new Thread(new Myrun()).start();
             }
-
 
         });
     }
@@ -210,7 +207,9 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.IV_scan://扫描
-                
+                ZxingUtil.getInstance().decode(getActivity());//扫描
+//                生成二维码
+//                Bitmap  bitmap= ZxingUtil.getInstance().encodeAsBitmap(MainActivity.this, "哈哈哈");
                 break;
         }
     }

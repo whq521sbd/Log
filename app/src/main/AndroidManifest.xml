@@ -24,10 +24,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!-- 打电话权限 -->
@@ -40,6 +36,19 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+
+    <!-- 用于扫描二维码 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
 
     <application
         android:allowBackup="true"
@@ -114,6 +123,9 @@
         <activity android:name=".Activity.DetailShow"
             android:screenOrientation="portrait"
             android:theme="@android:style/Animation.Dialog"/>
+        <!--Zxin的Activity-->、
+        <activity android:name=".zxing.DecodeActivity"/>
+
         <!--消息轮询服务-->
         <service android:name=".Service.MessageService"/>
         <!--用于接收轮询消息的广播-->
@@ -121,11 +133,7 @@
             <intent-filter>
                 <action android:name="com.auto.logistics.messagereceiver"/>
             </intent-filter>
-        </receiver><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        </receiver>
 
     </application>
 
