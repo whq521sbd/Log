@@ -32,8 +32,9 @@
             android:src="@mipmap/back_img" />
     </FrameLayout>
     <ImageView
+        android:layout_below="@+id/order_titleArea"
         android:id="@+id/IV_showImage"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true" />
 </RelativeLayout>

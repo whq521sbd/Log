@@ -3,23 +3,17 @@ package com.auto.logistics.BroadcastReceiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.ab.util.AbJsonUtil;
 import com.ab.util.AbMd5;
-import com.auto.logistics.Activity.MainActivity;
 import com.auto.logistics.Adapter.MessageAdapter;
 import com.auto.logistics.JavaBean.LogTaskBean;
-import com.auto.logistics.R;
 import com.auto.logistics.Utills.SharedPreferencesSava;
-import com.readystatesoftware.viewbadger.BadgeView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * 接收消息服务发送的广播，并更新页面
@@ -51,16 +45,17 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 //            刷新适配器
             messageAdapter.notifyDataSetChanged();
 
-            Log.d(TAG, "onReceive: listlogs:" + listlogs.size());
+        //    Log.d(TAG, "onReceive: listlogs:" + listlogs.size());
 //            将得到的字符串转换成MD5
             String newMessage = AbMd5.MD5(MessageData);
 
 //              对比消息有没有发生变化，MD5加密内容是否与本地内容一致，如果不一致则提示
             if (!newMessage.equals(SharedPreferencesSava.getInstance().getStringValue(context.getApplicationContext(),"newMessage"))) {
-                MainActivity.showBadge();//内容不一致，显示提示
+                //MainActivity.showBadge(true);//内容不一致，显示提示
+                EventBus.getDefault().post("show");
             }
 //              将加密的MD5存在本地,方便下次判断
-            SharedPreferencesSava.getInstance().savaStringValue(context.getApplicationContext(),"newMessage",newMessage);
+          SharedPreferencesSava.getInstance().savaStringValue(context.getApplicationContext(),"newMessage",newMessage);
 
         }
     }

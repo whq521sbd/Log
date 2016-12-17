@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA"
+    android:orientation="vertical">
+    <!--标题区域-->
+    <FrameLayout
+        android:id="@+id/fixcar_titleArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#00C3C5">
+
+        <TextView
+            android:id="@+id/TV_tile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="12dp"
+            android:text="检修详情"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:typeface="sans" />
+
+        <ImageView
+            android:id="@+id/IV_fixcarback"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="4dp"
+            android:padding="6dp"
+            android:src="@mipmap/back_img" />
+    </FrameLayout>
+    <!--主题内容-->
+
+
+    <TextView
+        android:id="@+id/TV_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fixcar_titleArea"
+        android:background="#fff"
+        android:padding="5dp"
+        android:text="  | 添加详情" />
+
+
+    <!--货物详情区域-->
+
+
+    <RelativeLayout
+        android:layout_below="@+id/TV_title"
+        android:id="@+id/notesArea"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentStart="true"
+        android:background="#fff">
+
+
+        <FrameLayout
+            android:id="@+id/FL_voice"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:background="@mipmap/voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </FrameLayout>
+
+        <EditText
+            android:layout_below="@+id/FL_voice"
+            android:id="@+id/ED_Remarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="请点击语音按钮描述修理原因，并拍照上传。"
+            android:lines="7"
+            android:paddingLeft="10dp"
+            android:selectAllOnFocus="true"
+            android:textSize="18sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.6px"
+            android:layout_below="@+id/ED_Remarks"
+            android:background="@color/colorPrimary" />
+
+        <!--照片区域-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/IV_installUpImg1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/IV_installUpImg2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/IV_installUpImg3"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/IV_installAddImg"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:src="@mipmap/addimg" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_commit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/notesArea"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bluebuttonstyle"
+        android:gravity="center"
+        android:text="提交"
+        android:textColor="#fff"
+        android:textSize="25sp" />
+
+</RelativeLayout>

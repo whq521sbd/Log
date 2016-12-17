@@ -52,6 +52,7 @@
             android:typeface="sans" />
 
         <TextView
+            android:padding="3dp"
             android:id="@+id/TV_Dataselect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

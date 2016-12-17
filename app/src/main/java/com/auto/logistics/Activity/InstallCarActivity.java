@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
@@ -41,6 +42,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -67,17 +69,25 @@ public class InstallCarActivity extends AbActivity {
     private TextView tv_installcommit;
     @AbIocView(id = R.id.tv_Return, click = "click")
     TextView tv_Return;
+    @AbIocView(id = R.id.LL_itemArea)
+    LinearLayout LL_itemArea;
     private LogTaskBean.DataBean.LogsBean logsBean;
     //private int count = 0;
-    private Uri tempUri;
+    private AbRequestParams params;
     private AbHttpUtil mAbHttpUtil;
+    private  Intent intent;
+    private ArrayList<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<>();
+    private  StringBuffer buffer;
+
+    private Uri tempUri;
     private File file1, file2, file3;
     private File tempFile;
-    private AbRequestParams params;
     private File myCaptureFile;
     private Bitmap textBitmap1,textBitmap2,textBitmap3;
-    private  Intent intent;
     private int  count=1;
+    private int  state;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +100,29 @@ public class InstallCarActivity extends AbActivity {
 
         //首先获取上个页面传过来的数据
         Intent intent = getIntent();
+        state  =  intent.getIntExtra("state",-1); //通过状态判断
+        if (state==3){
+            LL_itemArea.setVisibility(View.GONE);
+            newlist = (ArrayList<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("newlist");
+            buffer  = new StringBuffer();
+            initlist(newlist);
+            Log.d("InstallCarActivity", "initlist: "+buffer);
+        }else {
+            //     正常流程数据
+            logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
+            //        设置值
+            setView();
+        }
 
-        //     正常流程数据
-        logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
-        //        设置值
-        setView();
+
+    }
+
+    private void initlist(ArrayList<LogTaskBean.DataBean.LogsBean> newlist) {
+        for (int i =0;i<newlist.size();i++){
+            newlist.get(i).getTaskNum();
+            buffer.append(newlist.get(i).getTaskNum()+",");
+        }
+
     }
 
     //返回键监听
@@ -139,7 +167,6 @@ public class InstallCarActivity extends AbActivity {
     //点击事件
     public void click(View view) {
         switch (view.getId()) {
-
             case R.id.IV_installUpImg1:
                 intent.putExtra("state",1);
                 startActivity(intent);
@@ -160,7 +187,12 @@ public class InstallCarActivity extends AbActivity {
             case R.id.tv_installcommit:
                 if (isLoadImageViews()) {
                     params.put("Token", SharedPreferencesSava.getInstance().getStringValue(InstallCarActivity.this, "Token"));
-                    params.put("TaskNum", logsBean.getTaskNum());
+
+                    if (state==3){
+                        params.put("TaskNum",buffer.toString());
+                    }else {
+                        params.put("TaskNum", logsBean.getTaskNum());
+                    }
                     params.put("state", "4");
 
                     mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
@@ -180,7 +212,6 @@ public class InstallCarActivity extends AbActivity {
                             AbDialogUtil.removeDialog(InstallCarActivity.this);
                             AbToastUtil.showToast(InstallCarActivity.this, "上传网络失败,请重试~");
                         }
-
                         @Override
                         public void onSuccess(int i, String s) {
                             if (s != null) {
@@ -189,8 +220,16 @@ public class InstallCarActivity extends AbActivity {
                                     boolean Suc = object.getBoolean("Suc");
                                     if (Suc) {
                                         Intent intent = new Intent(InstallCarActivity.this, SendGoodsActivity.class);
-                                        intent.putExtra("logsBean", logsBean);
+                                        intent.putExtra("state",3);
+                                        if (state==3){ //通过状态判断
+                                            intent.putExtra("newlist", newlist);
+                                            intent.putExtra("state",3);
+                                        }else {
+                                            intent.putExtra("logsBean", logsBean);//正常流程
+                                            intent.putExtra("state",state);
+                                        }
                                         startActivity(intent);
+                                        finish();
                                     } else if (object.getString("Msg").equals("token已失效")) {
                                         AbToastUtil.showToast(InstallCarActivity.this, "您的账号在其他客户端登录！");
                                         startActivity(new Intent(InstallCarActivity.this, LoginActivity.class));
@@ -265,7 +304,9 @@ public class InstallCarActivity extends AbActivity {
                     case 1:
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String time = format.format(new Date());
-                        textBitmap1 = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        if (bitmap!=null){
+                            textBitmap1 = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
+
                         try {
                             saveFile(textBitmap1, getPhotoFileName());//bitmap转换file
                             if (myCaptureFile.exists()) {
@@ -280,11 +321,14 @@ public class InstallCarActivity extends AbActivity {
                         IV_installUpImg1.setImageBitmap(textBitmap1);//时间水印
                         IV_installUpImg1.setVisibility(View.VISIBLE);
                         count=2;
+                        }
                         break;
                     case 2:
                         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         time = format.format(new Date());
-                        textBitmap2 = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        if (bitmap!=null){
+                            textBitmap2 = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
+
                         try {
                             saveFile(textBitmap2, getPhotoFileName());//bitmap转换file
                             if (myCaptureFile.exists()) {
@@ -300,12 +344,16 @@ public class InstallCarActivity extends AbActivity {
                         IV_installUpImg2.setImageBitmap(textBitmap2);//时间水印
                         IV_installUpImg2.setVisibility(View.VISIBLE);
                         count=3;
+                        }
                         break;
                     case 3:
                         file3 = tempFile;
                         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         time = format.format(new Date());
-                        textBitmap3 = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        if (bitmap!=null){
+                            textBitmap3 = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
+
+
                         try {
                             saveFile(textBitmap3, getPhotoFileName());//bitmap转换file
                             if (myCaptureFile.exists()) {
@@ -322,6 +370,7 @@ public class InstallCarActivity extends AbActivity {
                         IV_installUpImg3.setVisibility(View.VISIBLE);
                         IV_installAddImg.setVisibility(View.GONE);
                         count=1;
+                        }
                         break;
                 }
                 break;

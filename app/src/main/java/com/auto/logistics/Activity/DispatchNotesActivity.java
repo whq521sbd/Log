@@ -20,7 +20,7 @@ import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
 import com.auto.logistics.Adapter.DispatchAdapter;
-import com.auto.logistics.JavaBean.DispatchBean;
+import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
@@ -48,8 +48,9 @@ public class DispatchNotesActivity extends AbActivity {
     private String data;
     private AbRequestParams params;
     private AbHttpUtil mHttpUtil;
-    private ArrayList<DispatchBean.DataBean.LogsListBean> logsListBean;
+    private ArrayList<LogTaskBean.DataBean.LogsBean> logsListBean;
     private  DispatchAdapter dispatchAdapter;
+    private LogTaskBean   dispatchBean;
 
 
     @Override
@@ -68,9 +69,10 @@ public class DispatchNotesActivity extends AbActivity {
         LV_DisListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DispatchBean.DataBean.LogsListBean itemBean = logsListBean.get(position);
+                LogTaskBean.DataBean.LogsBean itemBean = logsListBean.get(position);
                 Intent intent = new Intent();
                 intent.putExtra("itembean", itemBean);
+                intent.putExtra("state",110);
                 intent.setClass(DispatchNotesActivity.this, DispatchDetailActivity.class);
                 startActivity(intent);
 //                logsListBean.remove(position);
@@ -125,7 +127,6 @@ public class DispatchNotesActivity extends AbActivity {
             }
         });
 
-
     }
 
     /*
@@ -145,11 +146,11 @@ public class DispatchNotesActivity extends AbActivity {
                 @Override
                 public void onSuccess(int i, String s) {
                     if (s != null) {
-                        DispatchBean dispatchBean = AbJsonUtil.fromJson(s, DispatchBean.class);
+                        dispatchBean = AbJsonUtil.fromJson(s, LogTaskBean.class);
                         try {
 //                            由于返回字段，有可能没有logs字段，所以，判定如果没有logs字段，就没有数据信息，手动抛异常
                             for (int j = 0; j < dispatchBean.getData().getLogs().size(); j++) {
-                                logsListBean = (ArrayList<DispatchBean.DataBean.LogsListBean>) dispatchBean.getData().getLogs();
+                                logsListBean = (ArrayList<LogTaskBean.DataBean.LogsBean>) dispatchBean.getData().getLogs();
                             }
                             if (logsListBean!=null){
                             dispatchAdapter = new DispatchAdapter(DispatchNotesActivity.this, logsListBean);

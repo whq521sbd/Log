@@ -49,6 +49,26 @@
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
 
+    <!--Gps权限-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <!--全局ALERT-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission>
+
+    <!--讯飞语音权限-->
+    <!--连接网络权限，用于执行云端语音能力 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!--读取网络信息状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--获取当前wifi状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--允许程序改变网络连接状态 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <!--读取手机信息权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--读取联系人权限，上传联系人需要用到此权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:allowBackup="true"
@@ -110,28 +130,55 @@
             android:name=".Activity.DispatchDetailActivity"
             android:screenOrientation="portrait" />
         <!--运单状态详情-->
-        <activity android:name=".Activity.WaybillStateNotes"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activity.WaybillStateNotes"
+            android:screenOrientation="portrait" />
         <!--修改手机号-->
-        <activity android:name=".Activity.EditPhoneActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activity.EditPhoneActivity"
+            android:screenOrientation="portrait" />
         <!--图片显示页面-->
-        <activity android:name=".Activity.ImageShowActivity"
+        <activity
+            android:name=".Activity.ImageShowActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Animation.Dialog"/>
+            android:theme="@android:style/Animation.Dialog" />
         <!--详情页面图片查看-->
-        <activity android:name=".Activity.DetailShow"
+        <activity
+            android:name=".Activity.DetailShow"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Animation.Dialog"/>
+            android:theme="@android:style/Animation.Dialog" />
         <!--Zxin的Activity-->、
-        <activity android:name=".zxing.DecodeActivity"/>
-
+        <activity android:name=".zxing.DecodeActivity" />
+        <!--修理车-->
+        <activity
+            android:name=".Activity.FixCar"
+            android:screenOrientation="portrait" />
+        <!--扫描之后跳转的接单页-->
+        <activity
+            android:name=".Activity.ScanOrderAcitvity"
+            android:screenOrientation="portrait" />
+        <!--扫描之后跳转的装车页-->
+        <activity
+            android:name=".Activity.ScanInstall"
+            android:screenOrientation="portrait" />
+        <!--扫描之后跳转送货页-->
+        <activity
+            android:name=".Activity.ScanSendGoods"
+            android:screenOrientation="portrait" />
+        <!--扫描之后跳转送货页面-->
+        <activity
+            android:name=".Activity.ScanReach"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.FixCarHistory"
+            android:screenOrientation="portrait"/>
         <!--消息轮询服务-->
-        <service android:name=".Service.MessageService"/>
+        <service android:name=".Service.MessageService" />
+        <!--每分钟记录车辆位置-->
+        <service android:name=".Service.CarGpsService" />
         <!--用于接收轮询消息的广播-->
         <receiver android:name=".BroadcastReceiver.MessageBroadcastReceiver">
             <intent-filter>
-                <action android:name="com.auto.logistics.messagereceiver"/>
+                <action android:name="com.auto.logistics.messagereceiver" />
             </intent-filter>
         </receiver>
 

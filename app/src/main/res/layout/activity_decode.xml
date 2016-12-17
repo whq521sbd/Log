@@ -38,7 +38,7 @@
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/scan_flashlight" />
+                android:src="@mipmap/flash" />
         </LinearLayout>
 
         <TextView
@@ -67,7 +67,7 @@
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/scan_photo" />
+                android:src="@mipmap/photoclamp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -79,6 +79,9 @@
         android:orientation="horizontal">
 
         <Button
+            android:clickable="true"
+            android:textColor="#fff"
+            android:background="@color/colorPrimary"
             android:id="@+id/capture_button_cancel"
             android:layout_width="70.0dip"
             android:layout_height="40.0dip"
@@ -88,13 +91,14 @@
             android:textSize="14.0sp" />
 
         <TextView
+            android:typeface="sans"
             android:id="@+id/capture_bottom_hint"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
             android:paddingLeft="20.0dip"
             android:paddingRight="20.0dip"
-            android:text="建议与镜头保持10CM距离，尽量避免逆光和阴影"
+            android:text="建议与镜头保持10CM距离，尽量避免逆光和阴影，对焦请点击屏幕"
             android:textColor="#ffffffff"
             android:textSize="13.0sp" />
     </LinearLayout>

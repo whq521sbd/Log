@@ -164,6 +164,7 @@ public class OrderActivity extends AbActivity {
                                     Intent intent = new Intent(OrderActivity.this, InstallCarActivity.class);
                                     intent.putExtra("logsBean", logsBean);
                                     startActivity(intent);
+                                    finish();
                                 } else if (obj.getString("Msg").equals("token已失效")) {
                                     AbToastUtil.showToast(OrderActivity.this, "您的账号在其他客户端登录！");
                                     startActivity(new Intent(OrderActivity.this, LoginActivity.class));

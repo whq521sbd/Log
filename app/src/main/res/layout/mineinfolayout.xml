@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/tools"
     android:background="#F4F4F4">
 
@@ -46,6 +45,7 @@
                     android:background="@drawable/headimgstyle" />
 
                 <com.auto.logistics.DiyView.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:background="@drawable/headimgstyle"
                     android:id="@+id/IV_Headimg2"
                     android:layout_gravity="center_horizontal"
@@ -218,6 +218,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LL_fixcar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -227,14 +228,14 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/TV_fixcar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:drawableLeft="@mipmap/frind"
+                    android:drawableLeft="@mipmap/fixcar"
                     android:drawablePadding="4dp"
                     android:padding="5dp"
-                    android:text="好友关系"
+                    android:text="维修记录"
                     android:typeface="sans" />
 
 

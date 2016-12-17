@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
@@ -52,6 +53,10 @@ public class LoginActivity extends AbActivity {
     ImageView IV_cleanall;
     @AbIocView(id = R.id.IV_showpwd, click = "click")
     ImageView IV_showpwd;
+
+    @AbIocView(id =R.id.PB_progressbar)
+    ProgressBar PB_progressbar;
+
     private AbHttpUtil mHttpUtil;
     private String username;
 
@@ -139,6 +144,8 @@ public class LoginActivity extends AbActivity {
                 startActivity(new Intent(LoginActivity.this, MissPwdAcitvity.class));
                 break;
             case R.id.tv_login:
+                PB_progressbar.setVisibility(View.VISIBLE);
+                tv_login.setText("登录中...");
                 checkUser();
             case R.id.IV_cleanall://输入文字之后，如果有误可以全部清除
                 ed_pwd.setText("");
@@ -201,18 +208,22 @@ public class LoginActivity extends AbActivity {
 
                 @Override
                 public void onStart() {//开始访问
-                    AbDialogUtil.showProgressDialog(LoginActivity.this, -1, "正在验证您的身份信息");
+                   // AbDialogUtil.showProgressDialog(LoginActivity.this, -1, "正在验证您的身份信息");
                 }
 
                 @Override
                 public void onFinish() {//访问结束
                     AbDialogUtil.removeDialog(LoginActivity.this);
+                    PB_progressbar.setVisibility(View.GONE);
+                    tv_login.setText("登录");
                 }
 
                 @Override
                 public void onFailure(int i, String s, Throwable throwable) {//访问失败
                     if (i != 200) {
                         AbDialogUtil.removeDialog(LoginActivity.this);
+                        PB_progressbar.setVisibility(View.GONE);//登录失败后隐藏PB，并将文字改成“登录”
+                        tv_login.setText("登录");
                         AbToastUtil.showToast(LoginActivity.this, "无法访问网络，请您检查网络连接~");
                     }
                 }
@@ -227,43 +238,43 @@ public class LoginActivity extends AbActivity {
      */
     @Override
     protected void onStart() {
-        goToMain();
+        //goToMain();
         super.onStart();
     }
 
-    /*
-    * 此方法是判断网络是否打开(wifi、移动蜂窝)
-    * */
-    private void goToMain() {
-        if (!NetworkUtils.isNetworkAvailable(this)) {
-            // 如果网络不可用，则弹出对话框，对网络进行设置
-            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this)
-                    .setTitle("网络提醒")
-                    .setMessage("没有开启网络连接哦，点击确定去打开吧。")
-                    .setPositiveButton("确定",
-                            new android.content.DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        String sdkVersion = android.os.Build.VERSION.SDK;
-                                        if (Integer.valueOf(sdkVersion) > 10) {
-                                            startActivity(new Intent(
-                                                    android.provider.Settings.ACTION_SETTINGS));
-                                        } else {
-                                            startActivity(new Intent(
-                                                    android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-                                        }
-                                        dialog.cancel();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            })
-                    .setNegativeButton("取消", null);
-            builder.create().show();
-        }
-        super.onStart();
-    }
+//    /*
+//    * 此方法是判断网络是否打开(wifi、移动蜂窝)
+//    * */
+//    private void goToMain() {
+//        if (!NetworkUtils.isNetworkAvailable(this)) {
+//            // 如果网络不可用，则弹出对话框，对网络进行设置
+//            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this)
+//                    .setTitle("网络提醒")
+//                    .setMessage("没有开启网络连接哦，点击确定去打开吧。")
+//                    .setPositiveButton("确定",
+//                            new android.content.DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    try {
+//                                        String sdkVersion = android.os.Build.VERSION.SDK;
+//                                        if (Integer.valueOf(sdkVersion) > 10) {
+//                                            startActivity(new Intent(
+//                                                    android.provider.Settings.ACTION_SETTINGS));
+//                                        } else {
+//                                            startActivity(new Intent(
+//                                                    android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+//                                        }
+//                                        dialog.cancel();
+//                                    } catch (Exception e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            })
+//                    .setNegativeButton("取消", null);
+//            builder.create().show();
+//        }
+//        super.onStart();
+//    }
 
 
     /**

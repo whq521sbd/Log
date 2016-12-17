@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
@@ -22,8 +23,10 @@ import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
 import com.ab.util.AbDialogUtil;
+import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
+import com.auto.logistics.JavaBean.CarSata;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
@@ -40,6 +43,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -54,11 +58,11 @@ public class ReachAcitvity extends AbActivity {
     TextView TV_installArea;
     @AbIocView(id = R.id.IV_installAddImg, click = "click")
     ImageView IV_installAddImg;
-    @AbIocView(id = R.id.IV_installUpImg1,longClick = "longcilic",click = "click")
+    @AbIocView(id = R.id.IV_installUpImg1, longClick = "longcilic", click = "click")
     ImageView IV_installUpImg1;
-    @AbIocView(id = R.id.IV_installUpImg2,longClick = "longclick",click = "click")
+    @AbIocView(id = R.id.IV_installUpImg2, longClick = "longclick", click = "click")
     ImageView IV_installUpImg2;
-    @AbIocView(id = R.id.IV_installUpImg3,longClick = "longclick",click = "click")
+    @AbIocView(id = R.id.IV_installUpImg3, longClick = "longclick", click = "click")
     ImageView IV_installUpImg3;
     @AbIocView(id = R.id.IV_installback, click = "click")
     ImageView IV_installback;
@@ -66,10 +70,12 @@ public class ReachAcitvity extends AbActivity {
     private TextView tv_installcommit;
     @AbIocView(id = R.id.TV_tile)
     TextView TV_tile;
-    @AbIocView(id =R.id.tv_Return,click = "click")
+    @AbIocView(id = R.id.tv_Return, click = "click")
     TextView tv_Return;
+    @AbIocView(id = R.id.LL_itemArea)
+    LinearLayout LL_itemArea;
     private LogTaskBean.DataBean.LogsBean logsBean;
-   // private int count = 0;
+    // private int count = 0;
     private Uri tempUri;
     private AbHttpUtil mAbHttpUtil;
     private File file1, file2, file3;
@@ -77,7 +83,11 @@ public class ReachAcitvity extends AbActivity {
     private AbRequestParams params;
     private File myCaptureFile;
     private Intent imageintent;
-    private  int  count=1;
+    private int count = 1;
+    private int state;
+    private ArrayList<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<>();
+    private StringBuffer buffer = new StringBuffer();
+    private Bitmap textBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +98,23 @@ public class ReachAcitvity extends AbActivity {
         params = new AbRequestParams();
         //首先获取上个页面传过来的数据
         Intent intent = getIntent();
-        logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
-        imageintent = new Intent(this,ImageShowActivity.class);
+        state = intent.getIntExtra("state", -1);
+        if (state == 3 || state == 4 || state == 5) {
+            TV_tile.setText("到达详情");
+            LL_itemArea.setVisibility(View.GONE);
+            newlist = (ArrayList<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("newlist");
 
-//     设置控件值
-        setView();
+            for (int i = 0; i < newlist.size(); i++) {
+                newlist.get(i).getTaskNum();
+                buffer.append(newlist.get(i).getTaskNum() + ",");
+            }
+
+        } else {
+            logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
+            //     设置控件值
+            setView();
+        }
+        imageintent = new Intent(this, ImageShowActivity.class);
     }
 
     /**
@@ -120,16 +142,16 @@ public class ReachAcitvity extends AbActivity {
     }
 
 
-    public  void  longclick(View view){
-        switch (view.getId()){
+    public void longclick(View view) {
+        switch (view.getId()) {
             case R.id.IV_installUpImg1:
                 deleteImage(IV_installUpImg1);
-                count=1;
+                count = 1;
                 IV_installAddImg.setVisibility(View.VISIBLE);
                 break;
             case R.id.IV_installUpImg2:
                 deleteImage(IV_installUpImg2);
-                count=2;
+                count = 2;
                 IV_installAddImg.setVisibility(View.VISIBLE);
                 break;
             case R.id.IV_installUpImg3:
@@ -156,68 +178,72 @@ public class ReachAcitvity extends AbActivity {
 
 
     /**
-     * @param view    点击事件
+     * @param view 点击事件
      */
     public void click(View view) {
         switch (view.getId()) {
             case R.id.IV_installUpImg1:
-                imageintent.putExtra("state",1);
+                imageintent.putExtra("state", 1);
                 startActivity(imageintent);
                 break;
             case R.id.IV_installUpImg2:
-                imageintent.putExtra("state",2);
+                imageintent.putExtra("state", 2);
                 startActivity(imageintent);
                 break;
             case R.id.IV_installUpImg3:
-                imageintent.putExtra("state",3);
+                imageintent.putExtra("state", 3);
                 startActivity(imageintent);
                 break;
 
             case R.id.tv_Return:
-                startActivity(new Intent(this,MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
                 break;
 //            提交操作
             case R.id.tv_installcommit:
                 if (isLoadImage()) {
-                params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this, "Token"));
-                params.put("TaskNum", logsBean.getTaskNum());
-                params.put("state", "6");
-                mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
-                    @Override
-                    public void onStart() {
-                        AbDialogUtil.showProgressDialog(ReachAcitvity.this, -1, "正在上传数据");
+                    params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this, "Token"));
+                    if (state == 3 || state == 4 || state == 5) {
+                        params.put("TaskNum", buffer.toString());
+                    } else {
+                        params.put("TaskNum", logsBean.getTaskNum());
                     }
+                    params.put("state", "6");
+                    mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
+                        @Override
+                        public void onStart() {
+                            AbDialogUtil.showProgressDialog(ReachAcitvity.this, -1, "正在上传数据");
+                        }
 
-                    @Override
-                    public void onFinish() {
-                        AbDialogUtil.removeDialog(ReachAcitvity.this);
-                    }
+                        @Override
+                        public void onFinish() {
+                            AbDialogUtil.removeDialog(ReachAcitvity.this);
+                        }
 
-                    @Override
-                    public void onFailure(int i, String s, Throwable throwable) {
-                        Log.e("1111", "onFailure: " + throwable);
-                        AbDialogUtil.removeDialog(ReachAcitvity.this);
-                        AbToastUtil.showToast(ReachAcitvity.this, "上传网络失败,请重试~");
-                    }
+                        @Override
+                        public void onFailure(int i, String s, Throwable throwable) {
+                            Log.e("1111", "onFailure: " + throwable);
+                            AbDialogUtil.removeDialog(ReachAcitvity.this);
+                            AbToastUtil.showToast(ReachAcitvity.this, "上传网络失败,请重试~");
+                        }
 
-                    @Override
-                    public void onSuccess(int i, String s) {
-                        if (s != null) {
-                            try {
-                                JSONObject object = new JSONObject(s);
-                                boolean Suc = object.getBoolean("Suc");
-                                if (Suc) {
-                                    AbToastUtil.showToast(ReachAcitvity.this, "数据上传成功！返回途中开车请小心~");
-                                }else if (object.getString("Msg").equals("token已失效")){
-                                    AbToastUtil.showToast(ReachAcitvity.this,"您的账号在其他客户端登录！");
-                                    startActivity(new Intent(ReachAcitvity.this, LoginActivity.class));
+                        @Override
+                        public void onSuccess(int i, String s) {
+                            if (s != null) {
+                                try {
+                                    JSONObject object = new JSONObject(s);
+                                    boolean Suc = object.getBoolean("Suc");
+                                    if (Suc) {
+                                        queryLogOver();//查询手中还有多少订单
+                                    } else if (object.getString("Msg").equals("token已失效")) {
+                                        AbToastUtil.showToast(ReachAcitvity.this, "您的账号在其他客户端登录！");
+                                        startActivity(new Intent(ReachAcitvity.this, LoginActivity.class));
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
                         }
-                    }
-                });
+                    });
                 }
                 break;
             case R.id.IV_installback:// 返回按钮
@@ -236,9 +262,9 @@ public class ReachAcitvity extends AbActivity {
                                         boolean sdCardExist = Environment.getExternalStorageState()
                                                 .equals(Environment.MEDIA_MOUNTED);
                                         //  创建新文件夹
-                                        File file =  new File(Environment.getExternalStorageDirectory()+"/BJDLogistics");
+                                        File file = new File(Environment.getExternalStorageDirectory() + "/BJDLogistics");
 //                                       判断文件夹是否存在，不存在则创建一个
-                                        if (!file.exists()){
+                                        if (!file.exists()) {
                                             file.mkdirs();
                                         }
                                         if (sdCardExist) {
@@ -258,6 +284,93 @@ public class ReachAcitvity extends AbActivity {
                 break;
         }
     }
+
+    private void queryLogOver() {
+        params.put("Token",SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this,"Token"));
+        mAbHttpUtil.post(FinalURL.URL+"/LogOver", params, new AbStringHttpResponseListener() {
+            @Override
+            public void onSuccess(int i, String s) {
+                if (s!=null&&!s.equals("")){
+                    try {
+                        JSONObject object = new JSONObject(s);
+                        if (object.getBoolean("Data")){
+                            AlertDialog.Builder  builder= new AlertDialog.Builder(ReachAcitvity.this)
+                                    .setTitle("提示：")
+                                    .setMessage("您暂时没有运单派送，是否立即返程？")
+                                    .setNegativeButton("取消",null)
+                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            editCarState();//改变物流状态
+                                        }
+                                    });
+
+                            builder.show();
+
+                        }else {
+                            AbToastUtil.showToast(ReachAcitvity.this,object.getString("Msg"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onFailure(int i, String s, Throwable throwable) {
+                AbToastUtil.showToast(ReachAcitvity.this,"无法连接网络，查询订单状态失败！");
+            }
+        });
+
+
+    }
+
+    private void editCarState() {
+        AbRequestParams Abparams = new AbRequestParams();
+        Abparams.put("Token",SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this,"Token"));
+        Abparams.put("State",4);
+            mAbHttpUtil.post(FinalURL.URL + "/CarSign", Abparams, new AbStringHttpResponseListener() {
+                @Override
+                public void onSuccess(int i, String s) {
+                    if (s != null && !s.equals("")) {
+                        CarSata catbean = AbJsonUtil.fromJson(s, CarSata.class);
+                        if (catbean.isSuc()) {
+                            AbToastUtil.showToast(ReachAcitvity.this, "已经修改物流状态");
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onStart() {
+                    AbDialogUtil.showProgressDialog(ReachAcitvity.this, -1, "正在修改状态");
+                }
+
+                @Override
+                public void onFinish() {
+                    AbDialogUtil.removeDialog(ReachAcitvity.this);
+                }
+
+                @Override
+                public void onFailure(int i, String s, Throwable throwable) {
+                    AbDialogUtil.removeDialog(ReachAcitvity.this);
+                    AbToastUtil.showToast(ReachAcitvity.this, "无法访问网络，修改车辆状态失败！");
+                }
+            });
+        }
+
 
     /**
      * 调用照相机之后，缩小比例，裁剪，等相关操作
@@ -281,62 +394,71 @@ public class ReachAcitvity extends AbActivity {
                     case 1:
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String time = format.format(new Date());
-                        Bitmap textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        if (bitmap!=null){
+                            textBitmap= ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
+
                         try {
                             saveFile(textBitmap, getPhotoFileName());//bitmap转换file
                             if (myCaptureFile.exists()) {
                                 file1 = myCaptureFile;
                                 params.put("file1", file1);
-                                String img1 =file1.getAbsolutePath();
-                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this,"img1",img1);
+                                String img1 = file1.getAbsolutePath();
+                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this, "img1", img1);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         IV_installUpImg1.setImageBitmap(textBitmap);//时间水印
                         IV_installUpImg1.setVisibility(View.VISIBLE);
-                        count=2;
+                        count = 2;
+                        }
                         break;
                     case 2:
                         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         time = format.format(new Date());
-                        textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        if (bitmap!=null){
+                            textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
+
                         try {
                             saveFile(textBitmap, getPhotoFileName());//bitmap转换file
                             if (myCaptureFile.exists()) {
                                 file2 = myCaptureFile;
                                 params.put("file2", file2);
-                                String img2 =file2.getAbsolutePath();
-                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this,"img2",img2);
+                                String img2 = file2.getAbsolutePath();
+                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this, "img2", img2);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         IV_installUpImg2.setImageBitmap(textBitmap);//时间水印
                         IV_installUpImg2.setVisibility(View.VISIBLE);
-                        count=3;
+                        count = 3;
+                        }
                         break;
                     case 3:
                         file3 = tempFile;
                         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         time = format.format(new Date());
-                        textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        if (bitmap!=null){
+                            textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
+
+
                         try {
                             saveFile(textBitmap, getPhotoFileName());//bitmap转换file
                             if (myCaptureFile.exists()) {
                                 file3 = myCaptureFile;
                                 params.put("file3", file3);
-                                String img3 =file3.getAbsolutePath();
-                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this,"img3",img3);
+                                String img3 = file3.getAbsolutePath();
+                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this, "img3", img3);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                         IV_installUpImg3.setImageBitmap(textBitmap);//时间水印
                         IV_installUpImg3.setVisibility(View.VISIBLE);
                         IV_installAddImg.setVisibility(View.GONE);
-                        count=1;
+                        count = 1;
+                        }
                         break;
                 }
                 break;
@@ -424,7 +546,7 @@ public class ReachAcitvity extends AbActivity {
      * 转换成bitmap格式
      *
      * @param uri 裁剪完成的路径，现在拍照路径与裁剪路径为同一个
-     * @return    返回bitmap对象
+     * @return 返回bitmap对象
      */
     private Bitmap decodeUriAsBitmap(Uri uri) {
         Bitmap bitmap = null;
@@ -437,7 +559,6 @@ public class ReachAcitvity extends AbActivity {
         }
         return bitmap;
     }
-
 
 
     /**
@@ -460,11 +581,9 @@ public class ReachAcitvity extends AbActivity {
     }
 
 
-
-
     public boolean isLoadImage() {
-        if (IV_installUpImg1.getDrawable()==null&&IV_installUpImg2.getDrawable()==null&&IV_installUpImg3.getDrawable()==null){
-            AbToastUtil.showToast(ReachAcitvity.this,"最少上传一张照片哦~");
+        if (IV_installUpImg1.getDrawable() == null && IV_installUpImg2.getDrawable() == null && IV_installUpImg3.getDrawable() == null) {
+            AbToastUtil.showToast(ReachAcitvity.this, "最少上传一张照片哦~");
             return false;
         }
         return true;

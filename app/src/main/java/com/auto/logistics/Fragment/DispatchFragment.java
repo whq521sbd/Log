@@ -25,6 +25,7 @@ import com.ab.http.AbStringHttpResponseListener;
 import com.ab.util.AbDialogUtil;
 import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
+import com.auto.logistics.Activity.FixCar;
 import com.auto.logistics.JavaBean.CarSata;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
@@ -39,17 +40,18 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 /**
  * Created by Administrator on 2016/10/21.
  */
-
 public class DispatchFragment extends Fragment implements View.OnClickListener {
     private AbHttpUtil mAbHttpUtil;
-    private TextView TV_accept, TV_install, TV_send, TV_stop, TV_back, TV_exit;
+    private TextView TV_accept, TV_install, TV_send, TV_stop, TV_back, TV_eating;
     private AbRequestParams params;
-    private FrameLayout frame1, frame2, frame3, frame4, frame5;
+    private FrameLayout frame1, frame2, frame3, frame4, frame5, frame6, frame8;
     private BigDecimal bigDecimal;
-
+    private TextView TV_fix, TV_blockup;
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mBuilder;
     private List<FrameLayout> framelists;
+    private AbRequestParams paramsCar;
+    private int fragmentState = -1;
 
 
     @Override
@@ -59,26 +61,104 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
 //        设置超时时间
         mAbHttpUtil.setTimeout(10000);
         params = new AbRequestParams();
+        paramsCar = new AbRequestParams();
         params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
         framelists = new ArrayList<FrameLayout>();
+
+
 //     初始化view
         initView(view);
 //    设置view事件
         setView();
+
+        if (savedInstanceState != null) {
+            switch (savedInstanceState.getInt("fragmentState", -1)) {
+                case 0:
+                    frame1.setVisibility(View.VISIBLE);
+                    frame2.setVisibility(View.INVISIBLE);
+                    frame3.setVisibility(View.INVISIBLE);
+                    frame4.setVisibility(View.INVISIBLE);
+                    frame5.setVisibility(View.INVISIBLE);
+                    frame6.setVisibility(View.INVISIBLE);
+                    notifymethod("暂停接单啦！", "师傅辛苦了~", "您有新的物流信息！");
+                    alphaAnmation(frame1);
+
+                    break;
+                case 1:
+                    frame1.setVisibility(View.INVISIBLE);
+                    frame2.setVisibility(View.VISIBLE);
+                    frame3.setVisibility(View.INVISIBLE);
+                    frame4.setVisibility(View.INVISIBLE);
+                    frame5.setVisibility(View.INVISIBLE);
+                    frame6.setVisibility(View.INVISIBLE);
+                    notifymethod("开始接单啦！", "开车请小心~", "您有新的物流信息！");
+                    alphaAnmation(frame2);
+                    break;
+                case 2:
+                    frame1.setVisibility(View.INVISIBLE);
+                    frame2.setVisibility(View.INVISIBLE);
+                    frame3.setVisibility(View.VISIBLE);
+                    frame4.setVisibility(View.INVISIBLE);
+                    frame5.setVisibility(View.INVISIBLE);
+                    frame6.setVisibility(View.INVISIBLE);
+                    alphaAnmation(frame3);
+                    break;
+                case 3:
+                    frame1.setVisibility(View.INVISIBLE);
+                    frame2.setVisibility(View.INVISIBLE);
+                    frame3.setVisibility(View.INVISIBLE);
+                    frame4.setVisibility(View.VISIBLE);
+                    frame5.setVisibility(View.INVISIBLE);
+                    frame6.setVisibility(View.INVISIBLE);
+                    alphaAnmation(frame4);
+                    break;
+                case 4:
+                    frame1.setVisibility(View.INVISIBLE);
+                    frame2.setVisibility(View.INVISIBLE);
+                    frame3.setVisibility(View.INVISIBLE);
+                    frame4.setVisibility(View.INVISIBLE);
+                    frame5.setVisibility(View.VISIBLE);
+                    frame6.setVisibility(View.INVISIBLE);
+                    alphaAnmation(frame5);
+                    break;
+                case 5:
+                    frame1.setVisibility(View.INVISIBLE);
+                    frame2.setVisibility(View.INVISIBLE);
+                    frame3.setVisibility(View.INVISIBLE);
+                    frame4.setVisibility(View.INVISIBLE);
+                    frame5.setVisibility(View.INVISIBLE);
+                    frame6.setVisibility(View.VISIBLE);
+                    alphaAnmation(frame6);
+                    break;
+                case 7:
+                    frame1.setVisibility(View.INVISIBLE);
+                    frame2.setVisibility(View.INVISIBLE);
+                    frame3.setVisibility(View.INVISIBLE);
+                    frame4.setVisibility(View.INVISIBLE);
+                    frame5.setVisibility(View.INVISIBLE);
+                    frame6.setVisibility(View.INVISIBLE);
+                    frame8.setVisibility(View.VISIBLE);
+                    alphaAnmation(frame8);
+                    break;
+            }
+
+        }
         return view;
     }
 
-//    设置控件
+    //    设置控件
     private void setView() {
         TV_accept.setOnClickListener(this);
         TV_install.setOnClickListener(this);
         TV_send.setOnClickListener(this);
         TV_stop.setOnClickListener(this);
         TV_back.setOnClickListener(this);
-        TV_exit.setOnClickListener(this);
+        TV_eating.setOnClickListener(this);
+        TV_fix.setOnClickListener(this);
+        TV_blockup.setOnClickListener(this);
     }
 
-//    初始化控件
+    //    初始化控件
     private void initView(View view) {
         //对号
         frame1 = (FrameLayout) view.findViewById(R.id.frame0);
@@ -86,14 +166,16 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
         frame3 = (FrameLayout) view.findViewById(R.id.frame2);
         frame4 = (FrameLayout) view.findViewById(R.id.frame3);
         frame5 = (FrameLayout) view.findViewById(R.id.frame4);
-
-        TV_accept  = (TextView) view.findViewById(R.id.TV_accept);
+        frame6 = (FrameLayout) view.findViewById(R.id.frame5);
+        frame8 = (FrameLayout) view.findViewById(R.id.frame7);
+        TV_accept = (TextView) view.findViewById(R.id.TV_accept);
         TV_install = (TextView) view.findViewById(R.id.TV_install);
         TV_send = (TextView) view.findViewById(R.id.TV_send);
         TV_stop = (TextView) view.findViewById(R.id.TV_stop);
         TV_back = (TextView) view.findViewById(R.id.TV_back);
-        TV_exit = (TextView) view.findViewById(R.id.TV_exit);
-
+        TV_eating = (TextView) view.findViewById(R.id.TV_eating);
+        TV_fix = (TextView) view.findViewById(R.id.TV_fix);
+        TV_blockup = (TextView) view.findViewById(R.id.TV_blockup);
         framelists.add(frame1);
         framelists.add(frame2);
         framelists.add(frame3);
@@ -101,7 +183,6 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
         framelists.add(frame5);
 
     }
-
 
 
     /**
@@ -114,63 +195,90 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
         mAbHttpUtil.post(FinalURL.URL + "/CarSign", params, new AbStringHttpResponseListener() {
             @Override
             public void onSuccess(int i, String s) {
-                CarSata catbean = AbJsonUtil.fromJson(s, CarSata.class);
-                if (catbean.isSuc()) {
-//                   判断显示与隐藏
-                    switch (tag) {
-                        case 0:
-                            frame1.setVisibility(View.VISIBLE);
-                            frame2.setVisibility(View.INVISIBLE);
-                            frame3.setVisibility(View.INVISIBLE);
-                            frame4.setVisibility(View.INVISIBLE);
-                            frame5.setVisibility(View.INVISIBLE);
-                            notifymethod("暂停接单啦！", "师傅辛苦了~", "您有新的物流信息！");
-                            alphaAnmation(frame1);
+                if (s != null && !s.equals("")) {
 
-                            break;
-                        case 1:
-                            frame1.setVisibility(View.INVISIBLE);
-                            frame2.setVisibility(View.VISIBLE);
-                            frame3.setVisibility(View.INVISIBLE);
-                            frame4.setVisibility(View.INVISIBLE);
-                            frame5.setVisibility(View.INVISIBLE);
-                            notifymethod("开始接单啦！", "开车请小心~", "您有新的物流信息！");
-                            alphaAnmation(frame2);
-                            break;
-                        case 2:
-                            frame1.setVisibility(View.INVISIBLE);
-                            frame2.setVisibility(View.INVISIBLE);
-                            frame3.setVisibility(View.VISIBLE);
-                            frame4.setVisibility(View.INVISIBLE);
-                            frame5.setVisibility(View.INVISIBLE);
-                            alphaAnmation(frame3);
-                            break;
-                        case 3:
-                            frame1.setVisibility(View.INVISIBLE);
-                            frame2.setVisibility(View.INVISIBLE);
-                            frame3.setVisibility(View.INVISIBLE);
-                            frame4.setVisibility(View.VISIBLE);
-                            frame5.setVisibility(View.INVISIBLE);
-                            alphaAnmation(frame4);
-                            break;
-                        case 4:
-                            frame1.setVisibility(View.INVISIBLE);
-                            frame2.setVisibility(View.INVISIBLE);
-                            frame3.setVisibility(View.INVISIBLE);
-                            frame4.setVisibility(View.INVISIBLE);
-                            frame5.setVisibility(View.VISIBLE);
-                            alphaAnmation(frame5);
-                            break;
+                    CarSata catbean = AbJsonUtil.fromJson(s, CarSata.class);
+                    if (catbean.isSuc()) {
+//                   判断显示与隐藏
+                        switch (tag) {
+                            case 0:
+                                frame1.setVisibility(View.VISIBLE);
+                                frame2.setVisibility(View.INVISIBLE);
+                                frame3.setVisibility(View.INVISIBLE);
+                                frame4.setVisibility(View.INVISIBLE);
+                                frame5.setVisibility(View.INVISIBLE);
+                                frame6.setVisibility(View.INVISIBLE);
+                                notifymethod("暂停接单啦！", "师傅辛苦了~", "您有新的物流信息！");
+                                alphaAnmation(frame1);
+
+                                break;
+                            case 1:
+                                frame1.setVisibility(View.INVISIBLE);
+                                frame2.setVisibility(View.VISIBLE);
+                                frame3.setVisibility(View.INVISIBLE);
+                                frame4.setVisibility(View.INVISIBLE);
+                                frame5.setVisibility(View.INVISIBLE);
+                                frame6.setVisibility(View.INVISIBLE);
+                                notifymethod("开始接单啦！", "开车请小心~", "您有新的物流信息！");
+                                alphaAnmation(frame2);
+                                break;
+                            case 2:
+                                frame1.setVisibility(View.INVISIBLE);
+                                frame2.setVisibility(View.INVISIBLE);
+                                frame3.setVisibility(View.VISIBLE);
+                                frame4.setVisibility(View.INVISIBLE);
+                                frame5.setVisibility(View.INVISIBLE);
+                                frame6.setVisibility(View.INVISIBLE);
+                                alphaAnmation(frame3);
+                                break;
+                            case 3:
+                                frame1.setVisibility(View.INVISIBLE);
+                                frame2.setVisibility(View.INVISIBLE);
+                                frame3.setVisibility(View.INVISIBLE);
+                                frame4.setVisibility(View.VISIBLE);
+                                frame5.setVisibility(View.INVISIBLE);
+                                frame6.setVisibility(View.INVISIBLE);
+                                alphaAnmation(frame4);
+                                break;
+                            case 4:
+                                frame1.setVisibility(View.INVISIBLE);
+                                frame2.setVisibility(View.INVISIBLE);
+                                frame3.setVisibility(View.INVISIBLE);
+                                frame4.setVisibility(View.INVISIBLE);
+                                frame5.setVisibility(View.VISIBLE);
+                                frame6.setVisibility(View.INVISIBLE);
+                                alphaAnmation(frame5);
+                                break;
+                            case 5:
+                                frame1.setVisibility(View.INVISIBLE);
+                                frame2.setVisibility(View.INVISIBLE);
+                                frame3.setVisibility(View.INVISIBLE);
+                                frame4.setVisibility(View.INVISIBLE);
+                                frame5.setVisibility(View.INVISIBLE);
+                                frame6.setVisibility(View.VISIBLE);
+                                alphaAnmation(frame6);
+                                break;
+                            case 7:
+                                frame1.setVisibility(View.INVISIBLE);
+                                frame2.setVisibility(View.INVISIBLE);
+                                frame3.setVisibility(View.INVISIBLE);
+                                frame4.setVisibility(View.INVISIBLE);
+                                frame5.setVisibility(View.INVISIBLE);
+                                frame6.setVisibility(View.INVISIBLE);
+                                frame8.setVisibility(View.VISIBLE);
+                                alphaAnmation(frame8);
+                                break;
+                        }
+                        AbToastUtil.showToast(getActivity(), "已经修改物流状态");
                     }
-                    AbToastUtil.showToast(getActivity(), "已经修改物流状态");
-                }
                     String str = catbean.getData().toString();
                     Log.i("1111111111", "onSuccess: " + str);
+                }
             }
 
             @Override
             public void onStart() {
-                AbDialogUtil.showProgressDialog(getActivity(), -1, "正在验证您的身份信息");
+                AbDialogUtil.showProgressDialog(getActivity(), -1, "正在修改状态");
             }
 
             @Override
@@ -191,7 +299,7 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
     * */
     private void alphaAnmation(FrameLayout frame) {
 //        透明度动画
-        AlphaAnimation animation =new AlphaAnimation(0.1f,1.0f);
+        AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
         animation.setDuration(500);
         animation.setRepeatCount(3);
         animation.setRepeatMode(Animation.REVERSE);
@@ -219,7 +327,7 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                 .setLights(Color.parseColor("#00C3C5"), 2000, 5000);
         Notification notification = mBuilder.build();
         notification.flags = Notification.FLAG_SHOW_LIGHTS;              //三色灯提醒，在使用三色灯提醒时候必须加该标志符
-       // notification.flags = Notification.FLAG_ONGOING_EVENT;          //发起正在运行事件（活动中）
+        // notification.flags = Notification.FLAG_ONGOING_EVENT;          //发起正在运行事件（活动中）
         //notification.flags = Notification.FLAG_INSISTENT;   //让声音、振动无限循环，直到用户响应 （取消或者打开）
         notification.flags = Notification.FLAG_ONLY_ALERT_ONCE;  //发起Notification后，铃声和震动均只执行一次
         notification.flags = Notification.FLAG_AUTO_CANCEL;      //用户单击通知后自动消失
@@ -229,37 +337,75 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
 
     }
 
-/*
-*
-*点击事件
-* */
+    /*
+    *
+    *点击事件
+    * */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.TV_stop://停止接单
                 params.put("State", "0");
                 getData(params, 0);
+                paramsCar.put("State", "N");
+                getData(params, 0);
+                fragmentState = 0;
                 break;
             case R.id.TV_accept://开始接单
                 params.put("State", "1");
                 getData(params, 1);
+                paramsCar.put("State", "N");
+                getData(params, 1);
+                fragmentState = 1;
                 break;
             case R.id.TV_install://正在装车
                 params.put("State", "2");
                 getData(params, 2);
+                paramsCar.put("State", "N");
+                getData(params, 2);
+                fragmentState = 2;
                 break;
             case R.id.TV_send://准备运送
                 params.put("State", "3");
                 getData(params, 3);
+                paramsCar.put("State", "N");
+                getData(params, 3);
+                fragmentState = 3;
                 break;
             case R.id.TV_back://运送返回
                 params.put("State", "4");
                 getData(params, 4);
+                paramsCar.put("State", "N");
+                getData(params, 4);
+                fragmentState = 4;
                 break;
+            case R.id.TV_eating:
+                params.put("State", "5");//吃饭休息
+                getData(params, 5);
+                paramsCar.put("State", "S");//吃饭休息是改变车辆状态为暂停
+                getData(params, 5);
+                fragmentState = 5;
+                break;
+            case R.id.TV_fix:
+                startActivity(new Intent(getActivity(), FixCar.class));
+                break;
+
+            case R.id.TV_blockup:
+                params.put("State", "E");
+                getData(params, 7);
+                fragmentState = 7;
+                break;
+
 
         }
 
     }
 
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("fragmentState", fragmentState);
+
+    }
 }

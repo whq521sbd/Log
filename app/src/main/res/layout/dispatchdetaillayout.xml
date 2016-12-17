@@ -44,7 +44,6 @@
         android:visibility="gone">
         <!--控制横竖显示-->
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -615,30 +614,32 @@
             </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/tv_next"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/use_pwd_layout"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bluebuttonstyle"
-                android:gravity="center"
-                android:text="下一步"
-                android:textColor="#fff"
-                android:textSize="25sp" />
-
-
         </LinearLayout>
 
     </ScrollView>
 
     <ListView
         android:id="@+id/LV_dispatchlistview"
-        android:layout_below="@+id/dispatch_titleArea"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tv_next"
+        android:layout_below="@+id/dispatch_titleArea"></ListView>
+
+
+    <TextView
+        android:id="@+id/tv_next"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/use_pwd_layout"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bluebuttonstyle"
+        android:gravity="center"
+        android:text="下一步"
+        android:textColor="#fff"
+        android:textSize="25sp" />
 
 </RelativeLayout>

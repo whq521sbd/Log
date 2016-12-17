@@ -3,21 +3,16 @@ package com.auto.logistics.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
@@ -27,7 +22,6 @@ import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.pullview.AbPullToRefreshView;
 import com.auto.logistics.Activity.LoginActivity;
-import com.auto.logistics.Activity.MainActivity;
 import com.auto.logistics.Activity.OrderActivity;
 import com.auto.logistics.Adapter.MessageAdapter;
 import com.auto.logistics.JavaBean.LogTaskBean;
@@ -36,9 +30,7 @@ import com.auto.logistics.Service.MessageService;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 import com.auto.logistics.Utills.ZxingUtil;
-import com.readystatesoftware.viewbadger.BadgeView;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +38,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Administrator on 2016/10/27.
@@ -65,6 +59,10 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
     private TimerTask timerTask;
     private List<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<LogTaskBean.DataBean.LogsBean>();
     private ImageView IV_scan;
+    private AbHttpUtil httpUtil;
+    private String time;
+    private LogTaskBean logTaskBean;
+    private LogTaskBean.DataBean.LogsBean logsBean;
 
     @Nullable
     @Override
@@ -72,6 +70,11 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
         View view = inflater.inflate(R.layout.messagecenterlayout, null);
         mAbHttpUtil = AbHttpUtil.getInstance(getActivity());
         params = new AbRequestParams();
+        httpUtil = AbHttpUtil.getInstance(getActivity());
+        params = new AbRequestParams();
+        Date date = new Date();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        time = format.format(date);
         initView(view);
         return view;
     }
@@ -95,7 +98,7 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
                 getData(1);
                 messageAdapter.notifyDataSetChanged();
                 Ab_AbPullToRefreshView.onHeaderRefreshFinish();
-               startAction(LV_MessageListView);
+                startAction(LV_MessageListView);
             }
         });
 
@@ -119,13 +122,13 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
         LV_MessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // getActivity().findViewById(R.id.FL_point).setVisibility(View.GONE);//点击item之后，小圆点隐藏
-                MainActivity.hideBadge();//点击之后小圆点隐藏
+                EventBus.getDefault().post("hide"); //点击之后小圆点隐藏
                 LogTaskBean.DataBean.LogsBean logsitemBean = listlogs.get(position);
                 Intent intent = new Intent();
                 intent.putExtra("itembean", logsitemBean);
                 intent.setClass(getActivity(), OrderActivity.class);
                 startActivity(intent);
+                messageAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -175,28 +178,26 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
                         AbToastUtil.showToast(getActivity(), "您的账号在其他客户端登录！");
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         SharedPreferencesSava.getInstance().savaStringValue(getActivity(), "MDpwd", "");
-                        AbToastUtil.showToast(getActivity(), "数据获取失败，请重试！");
                     }
                 } else {
-                    AbToastUtil.showToast(getActivity(), "没有返回数据！");
+                    AbToastUtil.showToast(getActivity(), "无数据！");
                 }
             }
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {//失败
                 AbDialogUtil.removeDialog(getActivity());
-                AbToastUtil.showToast(getActivity(), "查询失败，请重试~");
+                AbToastUtil.showToast(getActivity(), "无网络连接，查询订单失败！");
             }
 
             @Override
             public void onStart() {//开始
-
+                getActivity().startService(new Intent(getActivity(), MessageService.class));
             }
 
             @Override
             public void onFinish() {//完成
-                getActivity().startService(new Intent(getActivity(), MessageService.class));
-              //  new Thread(new Myrun()).start();
+
             }
 
         });
@@ -205,12 +206,12 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.IV_scan://扫描
+//                扫描之后，关闭页面并联网获取订单状态，根据订单状态跳转相应的页面
                 ZxingUtil.getInstance().decode(getActivity());//扫描
-//                生成二维码
-//                Bitmap  bitmap= ZxingUtil.getInstance().encodeAsBitmap(MainActivity.this, "哈哈哈");
                 break;
         }
     }
+
 }

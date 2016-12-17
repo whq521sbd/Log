@@ -3,6 +3,7 @@ package com.auto.logistics.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -30,11 +31,16 @@ import com.auto.logistics.Fragment.MineInfoFragment;
 import com.auto.logistics.Fragment.TransListFragment;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
+import com.auto.logistics.Service.CarGpsService;
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 public class MainActivity extends AbActivity {
     private FragmentManager fm;
@@ -48,7 +54,6 @@ public class MainActivity extends AbActivity {
     private MessageAdapter messageAdapter;
     private static Activity instance;
     private static BadgeView badgeView;
-
 
     /*
     * 初始化控件
@@ -78,19 +83,37 @@ public class MainActivity extends AbActivity {
         TV_Message.setTextColor(Color.parseColor("#00C3C5"));
         params = new AbRequestParams();
         mAbHttpUtil = AbHttpUtil.getInstance(this);
+        startService(new Intent(MainActivity.this,CarGpsService.class));
 
-        instance = this;
+        badgeView = new BadgeView(MainActivity.this, TV_Message);
+      //  instance = this;
+//        注册eventbus:
+        EventBus.getDefault().register(this);
+
         // getData();
 
     }
 
-    public static Activity getInstance() {
-        return instance;
+// 解除注册eventbus
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//反注册EventBus
     }
 
-    public static void setInstance(Activity instance) {
-        MainActivity.instance = instance;
+
+//   eventbus 订阅者
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(String message){
+       if (message.equals("show")){
+           badgeView.setText("new");
+           badgeView.setTextSize(8.0f);
+           badgeView.show();
+       }else {
+           badgeView.hide();
+       }
     }
+
 
     /*
         *
@@ -179,7 +202,6 @@ public class MainActivity extends AbActivity {
 
 
 
-
     /**
      * @param v 点击事件
      *
@@ -234,23 +256,6 @@ public class MainActivity extends AbActivity {
     }
 
 
-    /**
-     * 显示小圆点
-     */
-    public static void  showBadge(){
-        badgeView = new BadgeView(MainActivity.getInstance(), TV_Message);
-        badgeView.setText("new");
-        badgeView.setTextSize(8.0f);
-        badgeView.show();
-
-    }
-
-    /**
-     * 隐藏小圆点
-     */
-    public static void hideBadge(){
-        badgeView.hide();
-    }
 
 
 

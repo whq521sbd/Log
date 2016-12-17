@@ -5,12 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
 import com.auto.logistics.Activity.DispatchNotesActivity;
 import com.auto.logistics.Activity.EditPhoneActivity;
+import com.auto.logistics.Activity.FixCarHistory;
 import com.auto.logistics.Activity.LoginActivity;
 import com.auto.logistics.Activity.RevisePWDActivity;
 import com.auto.logistics.DiyView.CircleImageView;
@@ -57,7 +60,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     private TextView TV_MineUserName;
     private File tempFile;
     private Uri tempUri;
-    private LinearLayout LL_revisePWD, LL_dispatchNotes,LL_editphone;
+    private LinearLayout LL_revisePWD, LL_dispatchNotes, LL_editphone,LL_fixcar;
     private AbImageLoader loader;
     private String headImgUrl;
     private CircleImageView IV_Headimg2;
@@ -81,32 +84,23 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     *
     * */
     private void exit() {
+        getActivity().finish();
         params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
         mHttpUtil.post(FinalURL.URL + "/LogOut", params, new AbStringHttpResponseListener() {
             @Override
             public void onSuccess(int i, String s) {
-                if (s != null) {
-                    try {
-                        JSONObject object = new JSONObject(s);
-                        if (object.getBoolean("Suc")) {
-//                            sp密码设为空，判断自动登录，设置状态不通过
-                            SharedPreferencesSava.getInstance().savaStringValue(getActivity(), "MDpwd", "");
-                            getActivity().finish();
-                            System.exit(0);
-                        } else if (object.getString("Msg").equals("token已失效")) {
-                            AbToastUtil.showToast(getActivity(), "您的账号在其他客户端登录！");
-                            startActivity(new Intent(getActivity(), LoginActivity.class));
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                if (s != null && !s.equals("")) {
+                    Log.d("MineInfoFragment", "onSuccess: " + s);
                 }
+
+
             }
 
             @Override
             public void onStart() {
-
+//               sp密码设为空，判断自动登录，设置状态不通过
+                SharedPreferencesSava.getInstance().savaStringValue(getActivity(), "MDpwd", "");
+                System.exit(0);
             }
 
             @Override
@@ -116,7 +110,6 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {
-
             }
         });
     }
@@ -128,10 +121,11 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         LL_editphone = (LinearLayout) view.findViewById(R.id.LL_editphone);
         IV_Headimg2 = (CircleImageView) view.findViewById(R.id.IV_Headimg2);
         TV_exit = (TextView) view.findViewById(R.id.TV_exit);
-       // IV_Headimg = (ImageView) view.findViewById(R.id.IV_Headimg);
+        // IV_Headimg = (ImageView) view.findViewById(R.id.IV_Headimg);
         TV_MineUserName = (TextView) view.findViewById(R.id.TV_MineUserName);
         LL_revisePWD = (LinearLayout) view.findViewById(R.id.LL_revisePWD);
         LL_dispatchNotes = (LinearLayout) view.findViewById(R.id.LL_dispatchNotes);
+        LL_fixcar = (LinearLayout) view.findViewById(R.id.LL_fixcar);
     }
 
 
@@ -143,13 +137,13 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         IV_Headimg2.setOnClickListener(this);
 //        tv_phone.setText(LogsBean.getRecTel());
         TV_exit.setOnClickListener(this);
-       // IV_Headimg.setOnClickListener(this);
+        // IV_Headimg.setOnClickListener(this);
         TV_MineUserName.setText(SharedPreferencesSava.getInstance().getStringValue(getActivity(), "username"));
         LL_revisePWD.setOnClickListener(this);
         LL_dispatchNotes.setOnClickListener(this);
         LL_editphone.setOnClickListener(this);
+        LL_fixcar.setOnClickListener(this);
     }
-
 
     /*
     *  点击事件
@@ -157,8 +151,11 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.LL_fixcar:
+                startActivity(new Intent(getActivity(),FixCarHistory.class));
+                break;
             case R.id.LL_editphone:
-            startActivity(new Intent(getActivity(), EditPhoneActivity.class));
+                startActivity(new Intent(getActivity(), EditPhoneActivity.class));
                 break;
             case R.id.LL_dispatchNotes:
                 startActivity(new Intent(getActivity(), DispatchNotesActivity.class));
@@ -246,6 +243,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
 
     /*
     * 上传头像
+    * 确保
     *
     * */
     private void upDataImg() {
@@ -287,8 +285,6 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
-
 
 
     // 调用系统相机
@@ -355,6 +351,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     private Bitmap decodeUriAsBitmap(Uri uri) {
         Bitmap bitmap = null;
         try {
+
             bitmap = BitmapFactory.decodeStream(getContext().getContentResolver()
                     .openInputStream(uri));
         } catch (FileNotFoundException e) {
@@ -374,7 +371,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
         mHttpUtil.post(FinalURL.URL + "/UserInfo", params, new AbStringHttpResponseListener() {
             @Override
             public void onSuccess(int i, String s) {
-                if (s != null) {
+                if (s != null && !s.equals("")) {
                     HeadBean bean = AbJsonUtil.fromJson(s, HeadBean.class);
                     headImgUrl = bean.getData().getAvatar();
                     loader = AbImageLoader.getInstance(getActivity());
@@ -409,7 +406,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {
-
+                AbToastUtil.showToast(getActivity(), "获取头像网络失败！");
             }
         });
 

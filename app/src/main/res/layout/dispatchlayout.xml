@@ -39,13 +39,13 @@
 
     <!--按钮第一排区域-->
     <LinearLayout
-        android:layout_marginTop="1dp"
         android:id="@+id/mylogisticsArea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/Inactionline"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
+        android:layout_marginTop="1dp"
         android:background="#fff"
         android:orientation="horizontal"
         android:paddingBottom="2dp"
@@ -62,7 +62,7 @@
             android:drawableTop="@mipmap/stop"
             android:focusable="true"
             android:gravity="center"
-            android:text="不接单"
+            android:text="暂停接单"
             android:textColor="@drawable/textstyle"
             android:typeface="monospace" />
 
@@ -90,7 +90,7 @@
             android:drawableTop="@mipmap/accept"
             android:focusable="true"
             android:gravity="center"
-            android:text="已接单"
+            android:text="进场签到"
             android:textColor="@drawable/textstyle"
             android:typeface="monospace"></TextView>
 
@@ -102,19 +102,18 @@
             android:visibility="invisible"></FrameLayout>
 
 
-
     </LinearLayout>
 
 
     <!--按钮第二排区域-->
     <LinearLayout
-        android:layout_marginTop="1dp"
         android:id="@+id/mylogisticsArea2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mylogisticsArea"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
+        android:layout_marginTop="1dp"
         android:background="#fff"
         android:orientation="horizontal"
         android:paddingBottom="2dp"
@@ -131,7 +130,7 @@
             android:drawableTop="@mipmap/install"
             android:focusable="true"
             android:gravity="center"
-            android:text="已装配"
+            android:text="装配货物"
             android:textColor="@drawable/textstyle"
             android:typeface="monospace" />
 
@@ -160,7 +159,7 @@
             android:drawableTop="@mipmap/send"
             android:focusable="true"
             android:gravity="center"
-            android:text="已发车"
+            android:text="配送途中"
             android:textColor="@drawable/textstyle"
             android:typeface="monospace" />
 
@@ -183,12 +182,13 @@
 
     <!--按钮第三排区域-->
     <LinearLayout
-        android:layout_marginTop="1dp"
+        android:id="@+id/mylogisticsArea3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mylogisticsArea2"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
+        android:layout_marginTop="1dp"
         android:background="#fff"
         android:orientation="horizontal"
         android:paddingBottom="2dp"
@@ -204,7 +204,7 @@
             android:drawableTop="@mipmap/black"
             android:focusable="true"
             android:gravity="center"
-            android:text="已返程"
+            android:text="配送完成"
             android:textColor="@drawable/textstyle"
             android:typeface="monospace" />
 
@@ -216,35 +216,98 @@
             android:visibility="invisible"></FrameLayout>
 
         <TextView
-            android:layout_marginLeft="8dp"
             android:layout_width="0.6px"
             android:layout_height="match_parent"
+            android:layout_marginLeft="-7dp"
             android:background="@color/colorPrimary"
             android:visibility="visible" />
 
 
         <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/TV_exit"
+            android:id="@+id/TV_eating"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
             android:drawablePadding="10dp"
-            android:drawableTop="@mipmap/no"
-            android:focusable="true"
+            android:drawableTop="@mipmap/eating"
             android:gravity="center"
-            android:text="敬请期待"
-            android:textColor="#707070"
+            android:text="吃饭休息"
             android:typeface="monospace" />
 
         <FrameLayout
+            android:id="@+id/frame5"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@mipmap/ture"
+            android:visibility="invisible"></FrameLayout>
+    </LinearLayout>
+
+    <!--按钮第四排区域-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mylogisticsArea3"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="1dp"
+        android:background="#fff"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
+
+        <TextView
+            android:id="@+id/TV_fix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/fix"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="车辆检修"
+            android:textColor="@drawable/textstyle"
+            android:typeface="monospace" />
+
+        <FrameLayout
+            android:id="@+id/frame6"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@mipmap/ture"
             android:visibility="invisible"></FrameLayout>
 
+        <TextView
+            android:layout_width="0.6px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-7dp"
+            android:background="@color/colorPrimary"
+            android:visibility="visible" />
+
+
+        <TextView
+
+            android:id="@+id/TV_blockup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/blockup"
+            android:gravity="center"
+            android:text="车辆停用"
+            android:typeface="monospace" />
+
+        <FrameLayout
+            android:id="@+id/frame7"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@mipmap/ture"
+            android:visibility="invisible"></FrameLayout>
     </LinearLayout>
+
 
 
 </RelativeLayout>

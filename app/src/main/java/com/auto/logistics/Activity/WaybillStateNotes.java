@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
+ * 运单列表页
+ *
  * Created by Administrator on 2016/11/28.
  */
 public class WaybillStateNotes extends AbActivity {
@@ -42,11 +45,6 @@ public class WaybillStateNotes extends AbActivity {
     private Intent intent;
     private int state;
     private ArrayList<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<>();
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +52,7 @@ public class WaybillStateNotes extends AbActivity {
         setContentView(R.layout.waybillstatenoteslayout);
         intent = getIntent();
         logsListBean = (List<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("logsListBean");
+
         state = intent.getIntExtra("state", -1);
         switch (state) {
             case 3:
@@ -74,12 +73,9 @@ public class WaybillStateNotes extends AbActivity {
                 break;
         }
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void setView(final int stata) {
+    private void setView( int stata) {
         if (logsListBean != null) {
             WaybillAdapter waybillAdapter = new WaybillAdapter(WaybillStateNotes.this, (ArrayList<LogTaskBean.DataBean.LogsBean>) logsListBean);
             LV_waybillListView.setAdapter(waybillAdapter);
@@ -91,11 +87,18 @@ public class WaybillStateNotes extends AbActivity {
                     holder.ck_itemcheck.toggle();
                     WaybillAdapter.getIsSelected().put(position, holder.ck_itemcheck.isChecked());
 
-                    intent = new Intent(WaybillStateNotes.this, DispatchDetailActivity.class);
-                    //intent.putExtra("itembean", logsListBean.get(position));
-                        intent.putExtra("newlist",newlist);
-                    //intent.putExtra("state", stata);
-                    //startActivity(intent);
+                    if (holder.ck_itemcheck.isChecked()){
+                        newlist.add(logsListBean.get(position));
+                    }else {
+                        newlist.remove(newlist.size()-1);
+                    }
+
+
+//                    intent = new Intent(WaybillStateNotes.this, DispatchDetailActivity.class);
+//                    //intent.putExtra("itembean", logsListBean.get(position));
+//                        intent.putExtra("newlist",newlist);
+//                    intent.putExtra("state", stata);
+//                    startActivity(intent);
                 }
             });
 
@@ -108,6 +111,13 @@ public class WaybillStateNotes extends AbActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.tv_waybillnext:
+                intent = new Intent(WaybillStateNotes.this, DispatchDetailActivity.class);
+                intent.putExtra("newlist",newlist);
+                intent.putExtra("state", state);
+                startActivity(intent);
+                finish();
+
+
                 break;
             case R.id.IV_waybillback:
                 finish();

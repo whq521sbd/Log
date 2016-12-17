@@ -20,7 +20,19 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 
+import com.ab.http.AbHttpUtil;
+import com.ab.http.AbRequestParams;
+import com.ab.http.AbStringHttpResponseListener;
+import com.ab.util.AbJsonUtil;
+import com.ab.util.AbToastUtil;
+import com.auto.logistics.Activity.ScanInstall;
+import com.auto.logistics.Activity.ScanOrderAcitvity;
+import com.auto.logistics.Activity.ScanReach;
+import com.auto.logistics.Activity.ScanSendGoods;
+import com.auto.logistics.JavaBean.TaskInfo;
 import com.auto.logistics.R;
+import com.auto.logistics.Utills.FinalURL;
+import com.auto.logistics.Utills.SharedPreferencesSava;
 import com.auto.logistics.zxing.camera.CameraManager;
 import com.auto.logistics.zxing.common.BitmapUtils;
 import com.auto.logistics.zxing.decode.BitmapDecoder;
@@ -38,7 +50,7 @@ import java.util.Map;
 
 /**
  * 条形码和二维码扫描器(使用方法：启动本界面即可)
- *
+ * <p>
  * This activity opens the camera and does the actual scanning on a background
  * thread. It draws a viewfinder to help the user place the barcode correctly,
  * shows feedback as the image processing is happening, and then overlays the
@@ -124,7 +136,7 @@ public final class DecodeActivity extends Activity implements
 
     private Handler mHandler = new MyHandler(this);
 
-    static class MyHandler extends Handler {
+    class MyHandler extends Handler {
 
         private WeakReference<Activity> activityReference;
 
@@ -139,6 +151,7 @@ public final class DecodeActivity extends Activity implements
                 case PARSE_BARCODE_SUC: // 解析图片成功
                     Toast.makeText(activityReference.get(),
                             "解析成功，结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
+                    SharedPreferencesSava.getInstance().savaStringValue(DecodeActivity.this, "scanstring", msg.obj.toString());//手动添加
                     break;
 
                 case PARSE_BARCODE_FAIL:// 解析图片失败
@@ -393,8 +406,90 @@ public final class DecodeActivity extends Activity implements
                 "识别结果:" + ResultParser.parseResult(rawResult).toString(),
                 Toast.LENGTH_SHORT).show();
 
+//        ---------------------------------------------------------------------------------------
+        String QRinfo = ResultParser.parseResult(rawResult).toString();
+        Log.d("queryStatus", "handleDecode: " + QRinfo);
+        String[] QRinfos = QRinfo.split(",");
+        queryStatus(QRinfos[0]);
+
+        finish();//手工加的：关闭界面，并保存扫描信息
     }
 
+    private void queryStatus(String TaskNum) {
+        AbHttpUtil httpUtil = AbHttpUtil.getInstance(DecodeActivity.this);
+        AbRequestParams params = new AbRequestParams();
+        params.put("Token", SharedPreferencesSava.getInstance().getStringValue(DecodeActivity.this, "Token"));
+        params.put("TaskNum", TaskNum);
+        httpUtil.post(FinalURL.URL + "/TaskInfo", params, new AbStringHttpResponseListener() {
+            @Override
+            public void onSuccess(int i, String s) {
+                if (s != null & !s.equals("")) {
+                    TaskInfo taskInfo = AbJsonUtil.fromJson(s, TaskInfo.class);
+                    Log.d("queryStatus", "onSuccess: "+s);
+                    if (taskInfo.isSuc()) {
+                        String state = taskInfo.getData().getLogTask_State();
+
+                        switch (state) {
+                            case "2":
+                                //Bundle bundle = new Bundle();
+                                //bundle.putSerializable("taskInfo", taskInfo);
+                                Intent intent = new Intent(DecodeActivity.this, ScanOrderAcitvity.class);
+                                intent.putExtra("taskInfo", taskInfo);
+                                startActivity(intent);
+                                break;
+                            case "3":
+//                                bundle = new Bundle();
+//                                bundle.putSerializable("taskInfo", taskInfo);
+                                intent = new Intent(DecodeActivity.this, ScanInstall.class);
+                                intent.putExtra("taskInfo", taskInfo);
+                                startActivity(intent);
+                                break;
+                            case "4":
+//                                bundle = new Bundle();
+//                                bundle.putSerializable("taskInfo", taskInfo);
+                                intent = new Intent(DecodeActivity.this, ScanSendGoods.class);
+                                intent.putExtra("taskInfo", taskInfo);
+                                startActivity(intent);
+                                break;
+                            case "5":
+//                                bundle = new Bundle();
+//                                bundle.putSerializable("taskInfo", taskInfo);
+                                intent = new Intent(DecodeActivity.this, ScanReach.class);
+                                intent.putExtra("taskInfo", taskInfo);
+                                startActivity(intent);
+                                break;
+                        }
+
+
+                    } else {
+                        AbToastUtil.showToast(DecodeActivity.this, taskInfo.getMsg());
+                    }
+                }
+
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onFailure(int i, String s, Throwable throwable) {
+
+                AbToastUtil.showToast(DecodeActivity.this, "连接网络失败！");
+
+            }
+        });
+
+    }
+
+
+    //--------------------------------------------------------------------------------------------------------------
     public void restartPreviewAfterDelay(long delayMS) {
         if (handler != null) {
             handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);

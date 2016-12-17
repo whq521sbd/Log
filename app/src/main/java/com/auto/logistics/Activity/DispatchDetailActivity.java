@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
@@ -17,6 +18,7 @@ import com.ab.image.AbImageLoader;
 import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
+import com.auto.logistics.Adapter.DispatchDetailAdapter;
 import com.auto.logistics.JavaBean.DispatchBean;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
@@ -93,6 +95,8 @@ public class DispatchDetailActivity extends AbActivity {
     TextView tv_next;
     @AbIocView(id = R.id.LV_dispatchlistview)
     ListView LV_dispatchlistview;
+    @AbIocView(id = R.id.SV_waybill)
+    ScrollView SV_waybill;
     private LogTaskBean.DataBean.LogsBean logsListBean;
     private String[] pickPics;
     private String[] sendPics;
@@ -103,38 +107,47 @@ public class DispatchDetailActivity extends AbActivity {
     private ArrayList<ImageView> IV_pickPiclist = new ArrayList<ImageView>();
     private ArrayList<ImageView> IV_sendPiclist = new ArrayList<ImageView>();
     private ArrayList<ImageView> IV_depPicslist = new ArrayList<ImageView>();
-
+    private  ArrayList<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.dispatchdetaillayout);
         intent = getIntent();
-        logsListBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("itembean");
         state = intent.getIntExtra("state", -1);
-
-        IV_pickPiclist.add(IV_pickPic0);
-        IV_pickPiclist.add(IV_pickPic1);
-        IV_pickPiclist.add(IV_pickPic2);
-
-        IV_sendPiclist.add(IV_sendPic0);
-        IV_sendPiclist.add(IV_sendPic1);
-        IV_sendPiclist.add(IV_sendPic2);
-
-        IV_depPicslist.add(IV_depPics0);
-        IV_depPicslist.add(IV_depPics1);
-        IV_depPicslist.add(IV_depPics2);
-
-
-        imageintent = new Intent(this, DetailShow.class);
         if (state == 6) {//如果状态为6时，改变按钮颜色及文字
             tv_next.setText("返回首页");
             tv_next.setBackground(getResources().getDrawable(R.drawable.buttonstyle));
         }
 
-        setView();
-    }
+        if (state==3||state==4||state==5||state==6){
+            newlist = (ArrayList<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("newlist");
+            DispatchDetailAdapter dispatchDetailAdapter =  new DispatchDetailAdapter(DispatchDetailActivity.this,newlist);
+            LV_dispatchlistview.setAdapter(dispatchDetailAdapter);
+        }else if (state==110){
+            tv_next.setVisibility(View.GONE);
+            SV_waybill.setVisibility(View.VISIBLE);
+            LV_dispatchlistview.setVisibility(View.GONE);
+            logsListBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("itembean");
 
+            IV_pickPiclist.add(IV_pickPic0);
+            IV_pickPiclist.add(IV_pickPic1);
+            IV_pickPiclist.add(IV_pickPic2);
+
+            IV_sendPiclist.add(IV_sendPic0);
+            IV_sendPiclist.add(IV_sendPic1);
+            IV_sendPiclist.add(IV_sendPic2);
+
+            IV_depPicslist.add(IV_depPics0);
+            IV_depPicslist.add(IV_depPics1);
+            IV_depPicslist.add(IV_depPics2);
+
+            imageintent = new Intent(this, DetailShow.class);
+
+            setView();
+        }
+
+        }
 
     private void setView() {
         TV_TaskNum.setText(logsListBean.getTaskNum());
@@ -208,46 +221,55 @@ public class DispatchDetailActivity extends AbActivity {
                 String path = FinalURL.IMGURL + pickPics[0];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
+                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_pickPic1:
                 path = FinalURL.IMGURL + pickPics[1];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
+                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_pickPic2:
                 path = FinalURL.IMGURL + pickPics[2];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
+                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_sendPic0:
                 path = FinalURL.IMGURL + sendPics[0];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
+                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_sendPic1:
                 path = FinalURL.IMGURL + sendPics[1];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
+                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_sendPic2:
                 path = FinalURL.IMGURL + sendPics[2];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
+                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_depPics0:
                 path = FinalURL.IMGURL + depPics[0];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
+                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_depPics1:
                 path = FinalURL.IMGURL + depPics[1];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
+                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_depPics2:
                 path = FinalURL.IMGURL + depPics[2];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
+                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.tv_next:
                 switch (state) {
@@ -256,27 +278,36 @@ public class DispatchDetailActivity extends AbActivity {
                         break;
                     case 3:
                         Intent intent = new Intent();
-                        intent.putExtra("logsBean", logsListBean);
+                        intent.putExtra("newlist",newlist);
+                        intent.putExtra("state",3);
+                        //intent.putExtra("logsBean", logsListBean);
                         intent.setClass(DispatchDetailActivity.this, InstallCarActivity.class);
                         startActivity(intent);
+                        finish();
                         break;
                     case 4:
                         intent = new Intent();
-                        intent.putExtra("logsBean", logsListBean);
+                        intent.putExtra("newlist",newlist);
+                        intent.putExtra("state",4);
+                        //intent.putExtra("logsBean", logsListBean);
                         intent.setClass(DispatchDetailActivity.this, SendGoodsActivity.class);
                         startActivity(intent);
+                        finish();
                         break;
                     case 5:
                         intent = new Intent();
-                        intent.putExtra("logsBean", logsListBean);
+                        intent.putExtra("newlist",newlist);
+                        intent.putExtra("state",5);
+                        //intent.putExtra("logsBean", logsListBean);
                         intent.setClass(DispatchDetailActivity.this, ReachAcitvity.class);
                         startActivity(intent);
+                        finish();
                         break;
                     case 6:
                         startActivity(new Intent(this, MainActivity.class));
+                        finish();
                         break;
                 }
-
 
                 break;
             case R.id.IV_dispatchdetaillback:

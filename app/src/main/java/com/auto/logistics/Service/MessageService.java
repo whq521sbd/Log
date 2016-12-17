@@ -72,7 +72,7 @@ public class MessageService extends Service {
             @Override
             public void onSuccess(int i, String s) {//成功
                 Intent intent = new Intent();
-                intent.putExtra("QryLogTaskInfo",s);
+                intent.putExtra("QryLogTaskInfo", s);
                 intent.setAction("com.auto.logistics.messagereceiver");
                 sendBroadcast(intent);
             }
@@ -102,7 +102,7 @@ public class MessageService extends Service {
         @Override
         public void run() {
             try {
-                Thread.sleep(30000);
+                Thread.sleep(60000);
                 Message msg = new Message();
                 msg.what = 10010;
                 handler.sendMessage(msg);

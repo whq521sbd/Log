@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.auto.logistics.JavaBean.DispatchBean;
+import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 
 import java.util.ArrayList;
@@ -20,9 +21,9 @@ import java.util.ArrayList;
  */
 
 public class DispatchAdapter extends BaseAdapter {
-    private ArrayList<DispatchBean.DataBean.LogsListBean> dataList = new ArrayList<DispatchBean.DataBean.LogsListBean>();
+    private ArrayList<LogTaskBean.DataBean.LogsBean> dataList = new ArrayList<LogTaskBean.DataBean.LogsBean>();
     private Context ctx;
-    public DispatchAdapter(Context ctx, ArrayList<DispatchBean.DataBean.LogsListBean> dataList) {
+    public DispatchAdapter(Context ctx, ArrayList<LogTaskBean.DataBean.LogsBean> dataList) {
         this.ctx = ctx;
         this.dataList = dataList;
     }

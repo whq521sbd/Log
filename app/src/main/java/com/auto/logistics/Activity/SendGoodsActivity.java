@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
@@ -39,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -69,7 +71,8 @@ public class SendGoodsActivity extends AbActivity {
     ImageView IV_installUpImg3;
     @AbIocView(id =R.id.tv_sendReturn,click = "click")
     TextView tv_sendReturn;
-
+    @AbIocView(id = R.id.LL_senditemArea)
+    LinearLayout LL_senditemArea;
 
     private LogTaskBean.DataBean.LogsBean logsBean;
     private AbHttpUtil mHttpUtil;
@@ -81,7 +84,10 @@ public class SendGoodsActivity extends AbActivity {
     private File myCaptureFile;
     private Intent imageintent;
     private int  count=1;
-
+    private ArrayList<LogTaskBean.DataBean.LogsBean> newlist = new ArrayList<>();
+    private  StringBuffer buffer = new StringBuffer();
+    private int state;
+    private Bitmap textBitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,10 +98,20 @@ public class SendGoodsActivity extends AbActivity {
         mHttpUtil.setTimeout(10000);
 //       获取上个页面的bean
         Intent intent = getIntent();
-        logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
+        state  = intent.getIntExtra("state",-1);
+        if (state==3||state==4){
+            LL_senditemArea.setVisibility(View.GONE);
+            newlist = (ArrayList<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("newlist");
+            for (int i =0;i<newlist.size();i++){
+                newlist.get(i).getTaskNum();
+                buffer.append(newlist.get(i).getTaskNum()+",");
+            }
+        }else {
+            logsBean = (LogTaskBean.DataBean.LogsBean) intent.getSerializableExtra("logsBean");
+            //     注册并设置值
+            setView();
+        }
         imageintent   =new Intent(this,ImageShowActivity.class);
-//     注册并设置值
-        setView();
     }
 
 
@@ -109,7 +125,6 @@ public class SendGoodsActivity extends AbActivity {
         TV_SendDepTime.setText(logsBean.getDepTime());
         TV_SendDepUser.setText(logsBean.getDepUser());
     }
-
 
 
     public  void  longclick(View view){
@@ -207,7 +222,11 @@ public class SendGoodsActivity extends AbActivity {
             case R.id.tv_sendgoods:
                 if (isLoadImage()) {
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(SendGoodsActivity.this, "Token"));
-                params.put("TaskNum", logsBean.getTaskNum());
+                    if (state ==3||state==4){
+                        params.put("TaskNum",buffer.toString());
+                    }else {
+                        params.put("TaskNum", logsBean.getTaskNum());
+                    }
                 params.put("state", "5");
                 mHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                     @Override
@@ -232,10 +251,18 @@ public class SendGoodsActivity extends AbActivity {
                             try {
                                 JSONObject object = new JSONObject(s);
                                 if (object.getBoolean("Suc")) {
-                                    Intent intent = new Intent(SendGoodsActivity.this, ReachAcitvity.class);
-                                    intent.putExtra("logsBean", logsBean);
-                                    startActivity(intent);
 
+                                    Intent intent = new Intent(SendGoodsActivity.this, ReachAcitvity.class);
+                                    if (state==3||state==4){
+                                        intent.putExtra("state",state);
+                                        intent.putExtra("newlist",newlist);
+                                    }else {
+                                        intent.putExtra("logsBean", logsBean);
+                                        intent.putExtra("state",state);
+                                    }
+
+                                    startActivity(intent);
+                                    finish();
                                 } else if (object.getString("Msg").equals("token已失效")){
                                     AbToastUtil.showToast(SendGoodsActivity.this,"您的账号在其他客户端登录！");
                                     startActivity(new Intent(SendGoodsActivity.this, LoginActivity.class));
@@ -250,10 +277,8 @@ public class SendGoodsActivity extends AbActivity {
                     }
                 });
                 }
-
                 break;
         }
-
 
     }
 
@@ -295,7 +320,10 @@ public class SendGoodsActivity extends AbActivity {
                     case 1:
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String time = format.format(new Date());
-                        Bitmap textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        if (bitmap!=null){
+                            textBitmap  = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
+
+
                         try {
                             saveFile(textBitmap, getPhotoFileName());//bitmap转换file
                             if (myCaptureFile.exists()) {
@@ -310,11 +338,17 @@ public class SendGoodsActivity extends AbActivity {
                         IV_installUpImg1.setImageBitmap(textBitmap);//时间水印
                         IV_installUpImg1.setVisibility(View.VISIBLE);
                         count=2;
+                        }
                         break;
                     case 2:
                         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         time = format.format(new Date());
-                        textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+
+                        if (bitmap!=null){
+
+                            textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
+
+
                         try {
                             saveFile(textBitmap, getPhotoFileName());//bitmap转换file
                             if (myCaptureFile.exists()) {
@@ -329,12 +363,17 @@ public class SendGoodsActivity extends AbActivity {
                         IV_installUpImg2.setImageBitmap(textBitmap);//时间水印
                         IV_installUpImg2.setVisibility(View.VISIBLE);
                         count=3;
+                        }
                         break;
                     case 3:
                         file3 = tempFile;
                         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         time = format.format(new Date());
-                        textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 16, Color.RED, 0, 0);
+                        if (bitmap!=null){
+
+                            textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
+
+
                         try {
                             saveFile(textBitmap, getPhotoFileName());//bitmap转换file
                             if (myCaptureFile.exists()) {
@@ -351,6 +390,7 @@ public class SendGoodsActivity extends AbActivity {
                         IV_installUpImg3.setVisibility(View.VISIBLE);
                         IV_installAddImg.setVisibility(View.GONE);
                         count=1;
+                        }
                         break;
                 }
                 break;

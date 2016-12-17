@@ -35,11 +35,11 @@
 
 
     <ListView
-        android:layout_weight="1"
         android:id="@+id/LV_waybillListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/waybillSataArea_titleArea"
+        android:layout_weight="1"
         android:divider="@color/colorPrimary"
         android:dividerHeight="0.6px"
         android:layoutAnimation="@anim/list_anim_layout"></ListView>
