@@ -1,7 +1,10 @@
 package com.auto.logistics.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -55,6 +58,19 @@ public class FixCarHistory extends AbActivity {
         params = new AbRequestParams();
 
 
+        setView();
+
+    }
+
+    private void setView() {
+        LV_fxihistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent =  new Intent(FixCarHistory.this,FixcarItem.class);
+                intent.putExtra("itemBean",signCarsBeanlist.get(position));
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -96,7 +112,6 @@ public class FixCarHistory extends AbActivity {
                         CarSign carSign =  AbJsonUtil.fromJson(s,CarSign.class);
                         if (carSign.isSuc()){
                             signCarsBeanlist  = (ArrayList<CarSign.DataBean.SignCarsBean>) carSign.getData().getSignCars();
-                            //TODO:适配器 listview
                             FixCarAdapter adapter = new FixCarAdapter(FixCarHistory.this,signCarsBeanlist);
                             LV_fxihistory.setAdapter(adapter);
                         }else {
@@ -125,4 +140,15 @@ public class FixCarHistory extends AbActivity {
             }
         });
     }
+
+
+    //返回键监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+        }
+        return false;
+    }
+
 }

@@ -3,10 +3,10 @@
 
     <!-- 圆角 -->
     <corners
-        android:topLeftRadius="2dp"
-        android:topRightRadius="2dp"
-        android:bottomLeftRadius="2dp"
-        android:bottomRightRadius="2dp"/><!-- 设置圆角半径 -->
+        android:topLeftRadius="3dp"
+        android:topRightRadius="3dp"
+        android:bottomLeftRadius="3dp"
+        android:bottomRightRadius="3dp"/><!-- 设置圆角半径 -->
 
 
 
@@ -19,15 +19,15 @@
 
     <!-- 大小 -->
     <size
-        android:width="102dp"
-        android:height="102dp"/><!-- 宽度和高度 -->
+        android:width="25dp"
+        android:height="2dp"/><!-- 宽度和高度 -->
 
 
     <!-- 描边 -->
     <stroke
-        android:width="2dp"
-        android:color="@color/colorPrimary"
-        android:dashWidth="6dp"
+        android:width="1px"
+        android:color="#D26419"
+        android:dashWidth="0dp"
         android:dashGap="6dp"/>
 
 </shape>

@@ -48,7 +48,6 @@ import java.util.Date;
  * Created by Administrator on 2016/12/12.
  */
 public class ScanReach extends AbActivity {
-
     @AbIocView(id = R.id.TV_intallGoodsTitle)
     TextView TV_intallGoodsTitle;
     @AbIocView(id = R.id.TV_installWeight)
@@ -85,7 +84,6 @@ public class ScanReach extends AbActivity {
     private TaskInfo taskInfo;
     private Bitmap textBitmap;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,9 +116,10 @@ public class ScanReach extends AbActivity {
      */
     private void setview(TaskInfo taskInfo) {
         TV_tile.setText("货物到达");
-        TV_intallGoodsTitle.setText("送达时间：" + taskInfo.getData().getLogTask_SendTime());
-        TV_installWeight.setText("送达人：" + taskInfo.getData().getLogTask_SendUser());
-        TV_installArea.setText("收货人：" + taskInfo.getData().getLogTask_Area() + taskInfo.getData().getLogTask_DeliUser());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+        TV_intallGoodsTitle.setText("送达时间：" +  sdf.format(new Date()));
+        TV_installWeight.setText("重量：" + taskInfo.getData().getLogTask_Weight()+"千克");
+        TV_installArea.setText("收货人：" + taskInfo.getData().getLogTask_RecPerson());
     }
 
 
@@ -158,7 +157,6 @@ public class ScanReach extends AbActivity {
         });
     }
 
-
     public void click(View view) {
         switch (view.getId()) {
             case R.id.IV_installUpImg1:
@@ -187,8 +185,6 @@ public class ScanReach extends AbActivity {
             case R.id.tv_installcommit:
                 commitData();
                 break;
-
-
         }
     }
 
@@ -196,7 +192,7 @@ public class ScanReach extends AbActivity {
         if (isLoadImage()) {
             params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ScanReach.this, "Token"));
             params.put("TaskNum", taskInfo.getData().getLogTask_TaskNum());
-            params.put("state", 6);
+            params.put("state", 16);
             httpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                 @Override
                 public void onSuccess(int i, String s) {
@@ -217,7 +213,6 @@ public class ScanReach extends AbActivity {
                         AbToastUtil.showToast(ScanReach.this, "服务器没有返回数据！");
                     }
                 }
-
                 @Override
                 public void onStart() {
 
@@ -251,18 +246,26 @@ public class ScanReach extends AbActivity {
                             AlertDialog.Builder builder = new AlertDialog.Builder(ScanReach.this)
                                     .setTitle("提示：")
                                     .setMessage("您暂时没有运单派送，是否立即返程？")
-                                    .setNegativeButton("取消", null)
+                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    })
                                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             editCarState();//改变物流状态
+                                            finish();
                                         }
                                     });
 
                             builder.show();
 
                         } else {
-                            AbToastUtil.showToast(ScanReach.this, object.getString("Msg"));
+                            finish();
+                            AbToastUtil.showToast(ScanReach.this, object.getString("上传资料成功！"));
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -302,6 +305,7 @@ public class ScanReach extends AbActivity {
                 if (s != null && !s.equals("")) {
                     CarSata catbean = AbJsonUtil.fromJson(s, CarSata.class);
                     if (catbean.isSuc()) {
+
                         AbToastUtil.showToast(ScanReach.this, "已经修改物流状态");
                     }
 

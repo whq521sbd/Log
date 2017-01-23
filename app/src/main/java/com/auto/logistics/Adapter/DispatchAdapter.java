@@ -59,6 +59,7 @@ public class DispatchAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.message_item, null);
 
             holder = new DispatchAdapter.ViewHolder();
+
             // 每项的视图布是一样的,findview
             holder.tv_GoodsTitle = (TextView) view.findViewById(R.id.tv_GoodsTitle);
             holder.tv_Weight = (TextView) view.findViewById(R.id.tv_Weight);
@@ -75,7 +76,7 @@ public class DispatchAdapter extends BaseAdapter {
         holder.tv_GoodsTitle.setText(dataList.get(position).getGoodsTitle());
         holder.tv_Weight.setText(dataList.get(position).getWeight() + "千克");
         holder.tv_Booth.setText(dataList.get(position).getBooth());
-//        holder.iv_main_item_sex.setImageDrawable(dataList.get(position).getSex());
+//      holder.iv_main_item_sex.setImageDrawable(dataList.get(position).getSex());
         //AbToastUtil.showToast(ctx,dataList.get(position).getRecAddr());
         return view;
     }

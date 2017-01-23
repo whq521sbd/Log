@@ -67,7 +67,7 @@ public class MessageService extends Service {
         String time = format.format(date);
         params.put("queryTime", time);
         params.put("curPage", curPage);
-        params.put("state", "2");
+        params.put("state", "12");
         mAbHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
             @Override
             public void onSuccess(int i, String s) {//成功

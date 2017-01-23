@@ -37,7 +37,6 @@
 
 
         <TextView
-            android:layout_marginLeft="10dp"
             android:id="@+id/TV_Message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,7 +75,7 @@
             android:drawableTop="@mipmap/dispatching"
             android:focusable="true"
             android:gravity="center"
-            android:text="我的物流"
+            android:text="我的车辆"
             android:textColor="@drawable/textstyle" />
 
 

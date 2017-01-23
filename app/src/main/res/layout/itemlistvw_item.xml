@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/Area1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LL_group"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow">
+
+
+        <TextView
+            android:drawableLeft="@mipmap/waybillnum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="2dp"
+            android:text="运单号："
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_waybillNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_wry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="加急"
+            android:textColor="#ff00"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Area2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow">
+
+        <TextView
+            android:drawableLeft="@mipmap/goodsname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="2dp"
+            android:text="商品名称："
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_GoodsName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/ck_itemcheck"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Area3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area2"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow">
+
+        <TextView
+            android:drawableLeft="@mipmap/booths"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="2dp"
+            android:text="商家摊位："
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_Booth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/Area4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area3"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow"
+        android:gravity="center_vertical">
+
+
+        <TextView
+            android:drawableLeft="@mipmap/unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="2dp"
+            android:text="买家单位："
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_ComName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_Distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#D26419"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

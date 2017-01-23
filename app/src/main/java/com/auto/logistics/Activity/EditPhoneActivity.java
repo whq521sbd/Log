@@ -1,9 +1,14 @@
 package com.auto.logistics.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,6 +23,7 @@ import com.ab.util.AbMd5;
 import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
+import com.auto.logistics.ContentObserver.SMSContentObserver;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.CountDownTimerUtils;
 import com.auto.logistics.Utills.FinalURL;
@@ -68,13 +74,33 @@ public class EditPhoneActivity extends AbActivity {
     private String idcode;
     private String newIdCode;
 
+
+    @SuppressLint("HandlerLeak")
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 1) {
+                ed_Identifyingcode.setText(msg.obj.toString());
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.editphonelayout);
+
+        SMSContentObserver smsContentObserver = new SMSContentObserver(
+                EditPhoneActivity.this, handler);
+
+        EditPhoneActivity.this.getContentResolver().registerContentObserver(
+                Uri.parse("content://sms/"), true, smsContentObserver);
+
         mAbHttpUtil = AbHttpUtil.getInstance(this);
         setView();
+
     }
+
 
     private void setView() {
 
@@ -198,7 +224,6 @@ public class EditPhoneActivity extends AbActivity {
 
     }
 
-
     public void click(View view) {
         switch (view.getId()) {
             case R.id.tv_resetting:
@@ -288,9 +313,6 @@ public class EditPhoneActivity extends AbActivity {
      */
     private void requestIDcode() {
         if (checkphone()) {
-            //                点击后获取验证码并设置60秒倒计时，倒计时期间，设置按键不可用
-            CountDownTimerUtils countDownTimerUtils = new CountDownTimerUtils(tv_getcode, 60000, 1000);
-            countDownTimerUtils.start();
             AbRequestParams params = new AbRequestParams();
             params.put("Token", SharedPreferencesSava.getInstance().getStringValue(EditPhoneActivity.this, "Token"));
             params.put("PhoneNum", phoneNum);
@@ -301,6 +323,9 @@ public class EditPhoneActivity extends AbActivity {
                         try {
                             JSONObject object = new JSONObject(s);
                             if (object.getBoolean("Suc")) {
+                                //                点击后获取验证码并设置60秒倒计时，倒计时期间，设置按键不可用
+                                CountDownTimerUtils countDownTimerUtils = new CountDownTimerUtils(tv_getcode, 60000, 1000);
+                                countDownTimerUtils.start();
                                 AbToastUtil.showToast(EditPhoneActivity.this, "获取验证码成功！");
                             } else {
                                 AbToastUtil.showToast(EditPhoneActivity.this, object.getString("Msg"));
@@ -382,7 +407,6 @@ public class EditPhoneActivity extends AbActivity {
             }
         });
     }
-
 
 
     /**
@@ -491,5 +515,14 @@ public class EditPhoneActivity extends AbActivity {
         return true;
     }
 
+
+    //返回键监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+        }
+        return false;
+    }
 
 }

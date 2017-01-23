@@ -21,6 +21,7 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ab.fragment.AbAlertDialogFragment;
 import com.ab.http.AbHttpUtil;
@@ -40,6 +41,7 @@ import com.auto.logistics.JavaBean.HeadBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
+import com.auto.logistics.Utills.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -264,6 +266,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                         e.printStackTrace();
                     }
                 } else {
+
                     AbToastUtil.showToast(getActivity(), "没有返回数据！");
                 }
 
@@ -351,7 +354,6 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
     private Bitmap decodeUriAsBitmap(Uri uri) {
         Bitmap bitmap = null;
         try {
-
             bitmap = BitmapFactory.decodeStream(getContext().getContentResolver()
                     .openInputStream(uri));
         } catch (FileNotFoundException e) {
@@ -376,11 +378,11 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
                     headImgUrl = bean.getData().getAvatar();
                     loader = AbImageLoader.getInstance(getActivity());
                     if (!bean.getMsg().equals("token已失效")) {
-                        if (headImgUrl != null) {
+                        if (!headImgUrl.equals("")) {
                             //loader.display(IV_Headimg, FinalURL.IMGURL + headImgUrl);
                             loader.display(IV_Headimg2, FinalURL.IMGURL + headImgUrl);
                             //startanima(IV_Headimg);
-                            startanima(IV_Headimg2);
+                           // startanima(IV_Headimg2);
                         } else {
                             AbToastUtil.showToast(getActivity(), "没有头像链接哦~");
                         }
@@ -406,7 +408,7 @@ public class MineInfoFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {
-                AbToastUtil.showToast(getActivity(), "获取头像网络失败！");
+                Toast.makeText(getContext(), "获取头像网络失败！", Toast.LENGTH_SHORT).show();
             }
         });
 

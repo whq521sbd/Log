@@ -1,7 +1,9 @@
 package com.auto.logistics.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.ab.util.AbDialogUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
 import com.auto.logistics.Adapter.OrderAdapter;
+import com.auto.logistics.Fragment.MineInfoFragment;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
@@ -62,7 +65,7 @@ public class OrderActivity extends AbActivity {
     TextView TV_AccTime;
     @AbIocView(id = R.id.TV_Booth)
     TextView TV_Booth;
-    @AbIocView(id =  R.id.tv_ordReturn,click = "clickMe")
+    @AbIocView(id = R.id.tv_ordReturn, click = "clickMe")
     TextView tv_ordReturn;
 
     @AbIocView(id = R.id.order_listview)
@@ -79,14 +82,12 @@ public class OrderActivity extends AbActivity {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.orderlayout);
         //首先获得上个页面传过来的bean
-       Intent intent = getIntent();
-//
+        Intent intent = getIntent();
 //        newlist = (ArrayList<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("newlist");
 //        OrderAdapter orderAdapter = new OrderAdapter(OrderActivity.this,newlist);
 //        order_listview.setAdapter(orderAdapter);
 //
 
-//
 //        for (int i=0;i<newlist.size();i++){
 //            String  TaskNum = newlist.get(i).getTaskNum();
 //            params.put("TaskNum",TaskNum);
@@ -125,7 +126,7 @@ public class OrderActivity extends AbActivity {
         TV_Area.setText(logsBean.getArea() + logsBean.getStreet());
         //TV_Street.setText(logsBean.getStreet());
         TV_GoodsTitle.setText(logsBean.getGoodsTitle());
-        TV_Weight.setText(logsBean.getWeight());
+        TV_Weight.setText(logsBean.getWeight()+"千克");
         TV_RecPerson.setText(logsBean.getRecPerson());
         TV_RecTel.setText(logsBean.getRecTel());
         TV_RecAddr.setText(logsBean.getRecAddr());
@@ -141,6 +142,7 @@ public class OrderActivity extends AbActivity {
         switch (v.getId()) {
             case R.id.tv_ordReturn://返回首页
                 finish();
+
                 break;
             case R.id.order_goback://返回
                 finish();
@@ -148,8 +150,8 @@ public class OrderActivity extends AbActivity {
             case R.id.tv_confirm:
                 Log.d("OrderActivity", "clickMe: " + SharedPreferencesSava.getInstance().getStringValue(OrderActivity.this, "Token").toString());
                 params.put("Token", SharedPreferencesSava.getInstance().getStringValue(OrderActivity.this, "Token"));
-              params.put("TaskNum", logsBean.getTaskNum().toString());
-                params.put("state", "3");
+                params.put("TaskNum", logsBean.getTaskNum().toString());
+                params.put("state", "13");
                 mHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                     @Override
                     public void onSuccess(int i, String s) {
@@ -168,6 +170,7 @@ public class OrderActivity extends AbActivity {
                                 } else if (obj.getString("Msg").equals("token已失效")) {
                                     AbToastUtil.showToast(OrderActivity.this, "您的账号在其他客户端登录！");
                                     startActivity(new Intent(OrderActivity.this, LoginActivity.class));
+                                    finish();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

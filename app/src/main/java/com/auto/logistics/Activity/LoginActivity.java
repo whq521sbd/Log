@@ -53,13 +53,10 @@ public class LoginActivity extends AbActivity {
     ImageView IV_cleanall;
     @AbIocView(id = R.id.IV_showpwd, click = "click")
     ImageView IV_showpwd;
-
     @AbIocView(id =R.id.PB_progressbar)
     ProgressBar PB_progressbar;
-
     private AbHttpUtil mHttpUtil;
     private String username;
-
 
     //返回键监听相关参数
     private static Boolean isQuit = false;
@@ -242,39 +239,6 @@ public class LoginActivity extends AbActivity {
         super.onStart();
     }
 
-//    /*
-//    * 此方法是判断网络是否打开(wifi、移动蜂窝)
-//    * */
-//    private void goToMain() {
-//        if (!NetworkUtils.isNetworkAvailable(this)) {
-//            // 如果网络不可用，则弹出对话框，对网络进行设置
-//            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this)
-//                    .setTitle("网络提醒")
-//                    .setMessage("没有开启网络连接哦，点击确定去打开吧。")
-//                    .setPositiveButton("确定",
-//                            new android.content.DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    try {
-//                                        String sdkVersion = android.os.Build.VERSION.SDK;
-//                                        if (Integer.valueOf(sdkVersion) > 10) {
-//                                            startActivity(new Intent(
-//                                                    android.provider.Settings.ACTION_SETTINGS));
-//                                        } else {
-//                                            startActivity(new Intent(
-//                                                    android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-//                                        }
-//                                        dialog.cancel();
-//                                    } catch (Exception e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            })
-//                    .setNegativeButton("取消", null);
-//            builder.create().show();
-//        }
-//        super.onStart();
-//    }
 
 
     /**

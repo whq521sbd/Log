@@ -3,9 +3,11 @@ package com.auto.logistics.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ab.http.AbHttpUtil;
 import com.ab.http.AbRequestParams;
@@ -29,6 +33,7 @@ import com.auto.logistics.R;
 import com.auto.logistics.Service.MessageService;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
+import com.auto.logistics.Utills.ToastUtil;
 import com.auto.logistics.Utills.ZxingUtil;
 
 import java.text.DateFormat;
@@ -52,8 +57,8 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
     private List<LogTaskBean.DataBean.LogsBean> listlogs;
     private MessageAdapter messageAdapter;
     private LogTaskBean dataBean;
-    private AbPullToRefreshView Ab_AbPullToRefreshView;
-    private int curPage = 1;
+    private SwipeRefreshLayout Ab_AbPullToRefreshView;
+
     private Message message = new Message();
     private Timer timer = new Timer(true);
     private TimerTask timerTask;
@@ -63,6 +68,7 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
     private String time;
     private LogTaskBean logTaskBean;
     private LogTaskBean.DataBean.LogsBean logsBean;
+    private TextView tv_Refreshtitle;
 
     @Nullable
     @Override
@@ -89,18 +95,33 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
     //设置控件
     private void setView() {
         IV_scan.setOnClickListener(this);
-        Ab_AbPullToRefreshView.setLoadMoreEnable(false);
-//      上拉刷新
-        Ab_AbPullToRefreshView.setOnHeaderRefreshListener(new AbPullToRefreshView.OnHeaderRefreshListener() {
+
+        //设置刷新时动画的颜色，可以设置4个
+        Ab_AbPullToRefreshView.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
+
+        Ab_AbPullToRefreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
             @Override
-            public void onHeaderRefresh(AbPullToRefreshView abPullToRefreshView) {
-                listlogs.clear();
-                getData(1);
-                messageAdapter.notifyDataSetChanged();
-                Ab_AbPullToRefreshView.onHeaderRefreshFinish();
-                startAction(LV_MessageListView);
+            public void onRefresh() {
+               // listlogs.clear();
+                    RefreshData();
             }
         });
+
+
+//
+//        Ab_AbPullToRefreshView.setLoadMoreEnable(false);
+////      上拉刷新
+//        Ab_AbPullToRefreshView.setOnHeaderRefreshListener(new AbPullToRefreshView.OnHeaderRefreshListener() {
+//            @Override
+//            public void onHeaderRefresh(AbPullToRefreshView abPullToRefreshView) {
+//                listlogs.clear();
+//                getData(1);
+//                messageAdapter.notifyDataSetChanged();
+//                Ab_AbPullToRefreshView.onHeaderRefreshFinish();
+//                startAction(LV_MessageListView);
+//            }
+//        });
 
 ////      下拉加载更多
 //        Ab_AbPullToRefreshView.setOnFooterLoadListener(new AbPullToRefreshView.OnFooterLoadListener() {
@@ -122,7 +143,7 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
         LV_MessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventBus.getDefault().post("hide"); //点击之后小圆点隐藏
+                //EventBus.getDefault().post("hide"); //点击之后小圆点隐藏
                 LogTaskBean.DataBean.LogsBean logsitemBean = listlogs.get(position);
                 Intent intent = new Intent();
                 intent.putExtra("itembean", logsitemBean);
@@ -130,6 +151,65 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
                 startActivity(intent);
                 messageAdapter.notifyDataSetChanged();
             }
+        });
+    }
+//  刷新数据
+    private void RefreshData() {
+        params.put("TaskNum", "");
+        params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
+        // Log.d("111", "onClick: " + SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
+        Date date = new Date();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = format.format(date);
+        params.put("queryTime", time);
+        params.put("curPage", 1);
+        params.put("state", "12");
+        mAbHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
+
+            @Override
+            public void onSuccess(int i, String s) {//成功
+                if (s != null) {
+                    dataBean = AbJsonUtil.fromJson(s, LogTaskBean.class);
+                    if (dataBean.isSuc()) {
+
+                            listlogs = dataBean.getData().getLogs();
+                            //        适配器装载数据源
+                            messageAdapter = new MessageAdapter(getActivity(), (ArrayList<LogTaskBean.DataBean.LogsBean>) listlogs);
+                            //       listview加载适配器
+                            LV_MessageListView.setAdapter(messageAdapter);
+
+                    } else if (dataBean.getMsg().equals("token已失效")) {
+                        AbToastUtil.showToast(getActivity(), "您的账号在其他客户端登录！");
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        SharedPreferencesSava.getInstance().savaStringValue(getActivity(), "MDpwd", "");
+                    }
+                } else {
+                    AbToastUtil.showToast(getActivity(), "无数据！");
+                }
+            }
+
+            @Override
+            public void onFailure(int i, String s, Throwable throwable) {//失败
+                AbDialogUtil.removeDialog(getActivity());
+                //AbToastUtil.showToast(getActivity(), "无网络连接，查询订单失败！");
+                ToastUtil.showToast(getActivity(),"无网络连接，查询订单失败！",0);
+                Ab_AbPullToRefreshView.setRefreshing(false);
+                tv_Refreshtitle.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onStart() {//开始
+                tv_Refreshtitle.setText("正在刷新...");
+            }
+
+            @Override
+            public void onFinish() {//完成
+                Ab_AbPullToRefreshView.setRefreshing(false);
+                messageAdapter.notifyDataSetChanged();
+                tv_Refreshtitle.setText("刷新成功");
+                tv_Refreshtitle.setVisibility(View.GONE);
+            }
+
         });
     }
 
@@ -145,8 +225,9 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
     //初始化listview
     private void initView(View view) {
         IV_scan = (ImageView) view.findViewById(R.id.IV_scan);
-        Ab_AbPullToRefreshView = (AbPullToRefreshView) view.findViewById(R.id.Ab_AbPullToRefreshView);
+        Ab_AbPullToRefreshView = (SwipeRefreshLayout) view.findViewById(R.id.Ab_AbPullToRefreshView);
         LV_MessageListView = (ListView) view.findViewById(R.id.LV_MessageListView);
+        tv_Refreshtitle = (TextView) view.findViewById(R.id.tv_Refreshtitle);
     }
 
     //获取数据
@@ -159,7 +240,7 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
         String time = format.format(date);
         params.put("queryTime", time);
         params.put("curPage", curPage);
-        params.put("state", "2");
+        params.put("state", "12");
         mAbHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
 
             @Override
@@ -186,18 +267,19 @@ public class MessageCenterFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {//失败
+
                 AbDialogUtil.removeDialog(getActivity());
-                AbToastUtil.showToast(getActivity(), "无网络连接，查询订单失败！");
+                ToastUtil.showToast(getContext(),"无网络连接，查询订单失败！",0);
             }
 
             @Override
             public void onStart() {//开始
-                getActivity().startService(new Intent(getActivity(), MessageService.class));
+//                轮询服务
+               // getActivity().startService(new Intent(getActivity(), MessageService.class));
             }
 
             @Override
             public void onFinish() {//完成
-
             }
 
         });

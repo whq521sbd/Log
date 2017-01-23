@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ab.activity.AbActivity;
 import com.ab.fragment.AbAlertDialogFragment;
@@ -73,6 +74,7 @@ public class SendGoodsActivity extends AbActivity {
     TextView tv_sendReturn;
     @AbIocView(id = R.id.LL_senditemArea)
     LinearLayout LL_senditemArea;
+    private Intent intent;
 
     private LogTaskBean.DataBean.LogsBean logsBean;
     private AbHttpUtil mHttpUtil;
@@ -122,7 +124,8 @@ public class SendGoodsActivity extends AbActivity {
         TV_SendRecPerson.setText(logsBean.getRecPerson());
         TV_SendRecTel.setText(logsBean.getRecTel());
         TV_SendRecAddr.setText(logsBean.getRecAddr());
-        TV_SendDepTime.setText(logsBean.getDepTime());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        TV_SendDepTime.setText(df.format(new Date()));
         TV_SendDepUser.setText(logsBean.getDepUser());
     }
 
@@ -173,17 +176,21 @@ public class SendGoodsActivity extends AbActivity {
             case R.id.IV_installUpImg1:
                 imageintent.putExtra("state",1);
                 startActivity(imageintent);
+                finish();
                 break;
             case R.id.IV_installUpImg2:
                 imageintent.putExtra("state",2);
                 startActivity(imageintent);
+                finish();
                 break;
             case R.id.IV_installUpImg3:
                 imageintent.putExtra("state",3);
                 startActivity(imageintent);
+                finish();
                 break;
             case R.id.tv_sendReturn:
-                startActivity(new Intent(this,MainActivity.class));
+                //startActivity(new Intent(this,MainActivity.class));
+                finish();
                 break;
             case R.id.IV_installAddImg:
 
@@ -227,7 +234,7 @@ public class SendGoodsActivity extends AbActivity {
                     }else {
                         params.put("TaskNum", logsBean.getTaskNum());
                     }
-                params.put("state", "5");
+                params.put("state", "15");
                 mHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                     @Override
                     public void onStart() {
@@ -237,6 +244,7 @@ public class SendGoodsActivity extends AbActivity {
                     @Override
                     public void onFinish() {
                         AbDialogUtil.removeDialog(SendGoodsActivity.this);
+
                     }
 
                     @Override
@@ -245,6 +253,7 @@ public class SendGoodsActivity extends AbActivity {
                         AbToastUtil.showToast(SendGoodsActivity.this, "访问网络失败，请重试~");
                     }
 
+
                     @Override
                     public void onSuccess(int i, String s) {
                         if (s != null) {
@@ -252,7 +261,7 @@ public class SendGoodsActivity extends AbActivity {
                                 JSONObject object = new JSONObject(s);
                                 if (object.getBoolean("Suc")) {
 
-                                    Intent intent = new Intent(SendGoodsActivity.this, ReachAcitvity.class);
+                                    intent  = new Intent(SendGoodsActivity.this, ReachAcitvity.class);
                                     if (state==3||state==4){
                                         intent.putExtra("state",state);
                                         intent.putExtra("newlist",newlist);
@@ -261,8 +270,8 @@ public class SendGoodsActivity extends AbActivity {
                                         intent.putExtra("state",state);
                                     }
 
-                                    startActivity(intent);
-                                    finish();
+                                    //改变车辆状态,成功之后跳转页面
+                                    changeCarState("3");
                                 } else if (object.getString("Msg").equals("token已失效")){
                                     AbToastUtil.showToast(SendGoodsActivity.this,"您的账号在其他客户端登录！");
                                     startActivity(new Intent(SendGoodsActivity.this, LoginActivity.class));
@@ -282,6 +291,46 @@ public class SendGoodsActivity extends AbActivity {
 
     }
 
+    private void changeCarState(String State) {
+        AbHttpUtil mAbHttpUtil = AbHttpUtil.getInstance(this);
+        // mAbHttpUtil.post(FinalURL.URL + "/CarSign", params,new  );
+        AbRequestParams params = new AbRequestParams();
+        params.put("State",State);
+        params.put("Token",SharedPreferencesSava.getInstance().getStringValue(SendGoodsActivity.this,"Token"));
+        mAbHttpUtil.post(FinalURL.URL + "/CarSign",params, new AbStringHttpResponseListener() {
+            @Override
+            public void onSuccess(int i, String s) {
+                try {
+                    JSONObject object = new JSONObject(s);
+                    if (object.getBoolean("Suc")) {
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(SendGoodsActivity.this, object.getString("Msg"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onFailure(int i, String s, Throwable throwable) {
+                Toast.makeText(SendGoodsActivity.this, "无网络连接，改变车辆状态失败！", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     /**
      * 返回键监听
      *

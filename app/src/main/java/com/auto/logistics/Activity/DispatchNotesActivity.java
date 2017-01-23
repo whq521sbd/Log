@@ -101,7 +101,6 @@ public class DispatchNotesActivity extends AbActivity {
             case R.id.IV_dispatchgoback:
                 finish();
                 break;
-
         }
 
     }
@@ -120,9 +119,7 @@ public class DispatchNotesActivity extends AbActivity {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 TV_Dataselect.setText(year + "年" + (monthOfYear+1) + "月" + dayOfMonth + "日");
-
                 data = year + "-" + (monthOfYear+1) + "-" + dayOfMonth;
-
                 params.put("queryTime", data);
             }
         });
@@ -140,7 +137,7 @@ public class DispatchNotesActivity extends AbActivity {
         } else {
             params.put("Token", SharedPreferencesSava.getInstance().getStringValue(DispatchNotesActivity.this, "Token"));
             params.put("curPage", 1);
-            params.put("state", 6);
+            params.put("state", 16);
             params.put("TaskNum", "");
             mHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
                 @Override

@@ -32,13 +32,17 @@
             android:src="@mipmap/scan" />
     </FrameLayout>
 
-
-    <com.ab.view.pullview.AbPullToRefreshView
-        android:id="@+id/Ab_AbPullToRefreshView"
+    <TextView
+        android:id="@+id/tv_Refreshtitle"
+        android:gravity="center"
+        android:text="下拉刷新"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/messagetitelArea"
-        android:layout_weight="1">
+        android:layout_height="wrap_content" />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_weight="1"
+        android:id="@+id/Ab_AbPullToRefreshView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ListView
             android:id="@+id/LV_MessageListView"
@@ -47,22 +51,9 @@
             android:divider="@color/colorPrimary"
             android:dividerHeight="0.6px"
             android:layoutAnimation="@anim/list_anim_layout"></ListView>
-    </com.ab.view.pullview.AbPullToRefreshView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-    <TextView
-        android:id="@+id/tv_next"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/LV_MessageListView"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bluebuttonstyle"
-        android:gravity="center"
-        android:text="下一步"
-        android:textColor="#fff"
-        android:textSize="25sp"
-        android:visibility="gone" />
+
+
 
 </LinearLayout>

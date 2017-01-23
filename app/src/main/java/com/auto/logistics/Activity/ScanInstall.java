@@ -134,7 +134,7 @@ public class ScanInstall extends AbActivity {
         if (isLoadImageViews()) {
             params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ScanInstall.this, "Token"));
             params.put("TaskNum", taskInfo.getData().getLogTask_TaskNum());
-            params.put("state", 4);
+            params.put("state", 14);
             httpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                 @Override
                 public void onSuccess(int i, String s) {

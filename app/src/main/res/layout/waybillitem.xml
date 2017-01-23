@@ -10,21 +10,67 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="8dp"
-        android:background="@mipmap/rightarrow" />
+        android:background="@mipmap/rightarrow"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:visibility="visible"
+        android:id="@+id/LL_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:background="#80B547"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:padding="5dp"
+                android:textSize="15sp"
+
+                android:layout_margin="3dp"
+                android:id="@+id/tv_groupname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="" />
+
+            <CheckBox
+                android:layout_marginRight="5dp"
+                android:id="@+id/ck_check"
+                android:visibility="visible"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.6px"
+            android:background="#000" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/Area1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/LL_group"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
         android:layout_toLeftOf="@+id/rightarrow">
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/googsname"
+            android:drawableLeft="@mipmap/waybillnum"
             android:drawablePadding="2dp"
             android:text="运单号："
             android:textSize="16sp"
@@ -34,7 +80,16 @@
             android:id="@+id/tv_waybillNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_wry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="加急"
+            android:textColor="#ff00"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,7 +105,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/weight"
+            android:drawableLeft="@mipmap/goodsname"
             android:drawablePadding="2dp"
             android:text="商品名称："
             android:textSize="16sp"
@@ -64,12 +119,12 @@
             android:textSize="16sp" />
 
         <CheckBox
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             android:id="@+id/ck_itemcheck"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:visibility="visible" />
     </LinearLayout>
 
@@ -87,7 +142,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/booth"
+            android:drawableLeft="@mipmap/booths"
             android:drawablePadding="2dp"
             android:text="商家摊位："
             android:textSize="16sp"
@@ -98,6 +153,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/Area4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area3"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow"
+        android:gravity="center_vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/unit"
+            android:drawablePadding="2dp"
+            android:text="买家单位："
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_ComName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_Distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/rim"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#D26419"
+            android:textSize="10sp" />
 
     </LinearLayout>
 

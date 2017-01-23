@@ -41,8 +41,7 @@
         android:layout_below="@+id/waybillSataArea_titleArea"
         android:layout_weight="1"
         android:divider="@color/colorPrimary"
-        android:dividerHeight="0.6px"
-        android:layoutAnimation="@anim/list_anim_layout"></ListView>
+        android:dividerHeight="0.6px"></ListView>
 
     <TextView
         android:id="@+id/tv_waybillnext"

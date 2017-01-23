@@ -81,6 +81,8 @@ public class DispatchDetailAdapter extends BaseAdapter implements View.OnClickLi
             vieweHolder.TV_SendUser = (TextView) convertView.findViewById(R.id.TV_SendUser);
             vieweHolder.TV_DeliTime = (TextView) convertView.findViewById(R.id.TV_DeliTime);
             vieweHolder.TV_DeliUser = (TextView) convertView.findViewById(R.id.TV_DeliUser);
+            vieweHolder.TV_ComName = (TextView) convertView.findViewById(R.id.TV_ComName);
+            vieweHolder.TV_Distance = (TextView) convertView.findViewById(R.id.TV_Distance);
 //            9张图片
             vieweHolder.IV_pickPic0 = (ImageView) convertView.findViewById(R.id.IV_pickPic0);
             vieweHolder.IV_pickPic1 = (ImageView) convertView.findViewById(R.id.IV_pickPic1);
@@ -93,34 +95,35 @@ public class DispatchDetailAdapter extends BaseAdapter implements View.OnClickLi
             vieweHolder.IV_depPics2 = (ImageView) convertView.findViewById(R.id.IV_depPics2);
 
 
-            vieweHolder.IV_pickPic0.setOnClickListener(this);
-            vieweHolder.IV_pickPic1.setOnClickListener(this);
-            vieweHolder.IV_pickPic2.setOnClickListener(this);
-            vieweHolder.IV_sendPic0.setOnClickListener(this);
-            vieweHolder.IV_sendPic1.setOnClickListener(this);
-            vieweHolder.IV_sendPic2.setOnClickListener(this);
-            vieweHolder.IV_depPics0.setOnClickListener(this);
-            vieweHolder.IV_depPics1.setOnClickListener(this);
-            vieweHolder.IV_depPics2.setOnClickListener(this);
-
-
-            IV_pickPiclist.add(vieweHolder.IV_pickPic0);
-            IV_pickPiclist.add(vieweHolder.IV_pickPic1);
-            IV_pickPiclist.add(vieweHolder.IV_pickPic2);
-
-            IV_sendPiclist.add(vieweHolder.IV_sendPic0);
-            IV_sendPiclist.add(vieweHolder.IV_sendPic1);
-            IV_sendPiclist.add(vieweHolder.IV_sendPic2);
-
-            IV_depPicslist.add(vieweHolder.IV_depPics0);
-            IV_depPicslist.add(vieweHolder.IV_depPics1);
-            IV_depPicslist.add(vieweHolder.IV_depPics2);
-
-
             convertView.setTag(vieweHolder);
         } else {
             vieweHolder = (VieweHolder) convertView.getTag();
         }
+
+
+
+        IV_pickPiclist.add(vieweHolder.IV_pickPic0);
+        IV_pickPiclist.add(vieweHolder.IV_pickPic1);
+        IV_pickPiclist.add(vieweHolder.IV_pickPic2);
+
+        IV_sendPiclist.add(vieweHolder.IV_sendPic0);
+        IV_sendPiclist.add(vieweHolder.IV_sendPic1);
+        IV_sendPiclist.add(vieweHolder.IV_sendPic2);
+
+        IV_depPicslist.add(vieweHolder.IV_depPics0);
+        IV_depPicslist.add(vieweHolder.IV_depPics1);
+        IV_depPicslist.add(vieweHolder.IV_depPics2);
+
+
+        vieweHolder.IV_pickPic0.setOnClickListener(this);
+        vieweHolder.IV_pickPic1.setOnClickListener(this);
+        vieweHolder.IV_pickPic2.setOnClickListener(this);
+        vieweHolder.IV_sendPic0.setOnClickListener(this);
+        vieweHolder.IV_sendPic1.setOnClickListener(this);
+        vieweHolder.IV_sendPic2.setOnClickListener(this);
+        vieweHolder.IV_depPics0.setOnClickListener(this);
+        vieweHolder.IV_depPics1.setOnClickListener(this);
+        vieweHolder.IV_depPics2.setOnClickListener(this);
 
         vieweHolder.TV_TaskNum.setText(datalist.get(position).getTaskNum());
         vieweHolder.TV_Serial.setText(datalist.get(position).getSerial());
@@ -128,7 +131,7 @@ public class DispatchDetailAdapter extends BaseAdapter implements View.OnClickLi
         vieweHolder.TV_Area.setText(datalist.get(position).getArea());
         vieweHolder.TV_Street.setText(datalist.get(position).getStreet());
         vieweHolder.TV_GoodsTitle.setText(datalist.get(position).getGoodsTitle());
-        vieweHolder.TV_Weight.setText(datalist.get(position).getWeight());
+        vieweHolder.TV_Weight.setText(datalist.get(position).getWeight()+"千克");
         vieweHolder.TV_RecPerson.setText(datalist.get(position).getRecPerson());
         vieweHolder.TV_RecTel.setText(datalist.get(position).getRecTel());
         // vieweHolder.TV_RecAddr.setText(datalist.get(position).getRecAddr());
@@ -142,6 +145,8 @@ public class DispatchDetailAdapter extends BaseAdapter implements View.OnClickLi
         vieweHolder.TV_SendUser.setText(datalist.get(position).getSendUser());
         vieweHolder.TV_DeliTime.setText(datalist.get(position).getDeliTime());
         vieweHolder.TV_DeliUser.setText(datalist.get(position).getDeliUser());
+        vieweHolder.TV_ComName.setText(datalist.get(position).getComName());
+        vieweHolder.TV_Distance.setText(datalist.get(position).getDistance()+"千米");
 
         String pickPic = datalist.get(position).getPackPic();
         String depPic = datalist.get(position).getDepPic();
@@ -154,7 +159,7 @@ public class DispatchDetailAdapter extends BaseAdapter implements View.OnClickLi
             for (int i = 0; i < pickPics.length; i++) {
                 Glide.with(context).load(FinalURL.IMGURL + pickPics[i]).into(IV_pickPiclist.get(i));
                 IV_pickPiclist.get(i).setVisibility(View.VISIBLE);
-                startAction(IV_pickPiclist.get(i));
+               // startAction(IV_pickPiclist.get(i));
             }
 
         }
@@ -164,7 +169,7 @@ public class DispatchDetailAdapter extends BaseAdapter implements View.OnClickLi
             for (int i = 0; i < sendPics.length; i++) {
                 Glide.with(context).load(FinalURL.IMGURL + sendPics[i]).into(IV_sendPiclist.get(i));
                 IV_sendPiclist.get(i).setVisibility(View.VISIBLE);
-                startAction(IV_sendPiclist.get(i));
+               // startAction(IV_sendPiclist.get(i));
             }
         }
 
@@ -172,7 +177,7 @@ public class DispatchDetailAdapter extends BaseAdapter implements View.OnClickLi
             for (int i = 0; i < depPics.length; i++) {
                 Glide.with(context).load(FinalURL.IMGURL + depPics[i]).into(IV_depPicslist.get(i));
                 IV_depPicslist.get(i).setVisibility(View.VISIBLE);
-                startAction(IV_depPicslist.get(i));
+                //startAction(IV_depPicslist.get(i));
             }
 
         }
@@ -262,6 +267,8 @@ public class DispatchDetailAdapter extends BaseAdapter implements View.OnClickLi
         public TextView TV_SendUser;
         public TextView TV_DeliTime;
         public TextView TV_DeliUser;
+        public TextView TV_ComName;
+        public TextView TV_Distance;
 
         public ImageView IV_pickPic0;
         public ImageView IV_pickPic1;

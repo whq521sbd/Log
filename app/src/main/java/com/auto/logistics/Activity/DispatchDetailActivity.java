@@ -14,6 +14,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ab.activity.AbActivity;
+import com.ab.http.AbHttpUtil;
+import com.ab.http.AbRequestParams;
+import com.ab.http.AbStringHttpResponseListener;
 import com.ab.image.AbImageLoader;
 import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
@@ -115,12 +118,12 @@ public class DispatchDetailActivity extends AbActivity {
         setAbContentView(R.layout.dispatchdetaillayout);
         intent = getIntent();
         state = intent.getIntExtra("state", -1);
-        if (state == 6) {//如果状态为6时，改变按钮颜色及文字
+        if (state == 16) {//如果状态为6时，改变按钮颜色及文字
             tv_next.setText("返回首页");
             tv_next.setBackground(getResources().getDrawable(R.drawable.buttonstyle));
         }
 
-        if (state==3||state==4||state==5||state==6){
+        if (state==13||state==14||state==15||state==16){
             newlist = (ArrayList<LogTaskBean.DataBean.LogsBean>) intent.getSerializableExtra("newlist");
             DispatchDetailAdapter dispatchDetailAdapter =  new DispatchDetailAdapter(DispatchDetailActivity.this,newlist);
             LV_dispatchlistview.setAdapter(dispatchDetailAdapter);
@@ -146,7 +149,6 @@ public class DispatchDetailActivity extends AbActivity {
 
             setView();
         }
-
         }
 
     private void setView() {
@@ -182,7 +184,7 @@ public class DispatchDetailActivity extends AbActivity {
             for (int i = 0; i < pickPics.length; i++) {
                 Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + pickPics[i]).into(IV_pickPiclist.get(i));
                 IV_pickPiclist.get(i).setVisibility(View.VISIBLE);
-                startAction(IV_pickPiclist.get(i));
+               // startAction(IV_pickPiclist.get(i));
             }
 
         }
@@ -191,7 +193,7 @@ public class DispatchDetailActivity extends AbActivity {
             for (int i = 0; i < sendPics.length; i++) {
                 Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + sendPics[i]).into(IV_sendPiclist.get(i));
                 IV_sendPiclist.get(i).setVisibility(View.VISIBLE);
-                startAction(IV_sendPiclist.get(i));
+               // startAction(IV_sendPiclist.get(i));
             }
         }
 
@@ -199,7 +201,7 @@ public class DispatchDetailActivity extends AbActivity {
             for (int i = 0; i < depPics.length; i++) {
                 Glide.with(DispatchDetailActivity.this).load(FinalURL.IMGURL + depPics[i]).into(IV_depPicslist.get(i));
                 IV_depPicslist.get(i).setVisibility(View.VISIBLE);
-                startAction(IV_depPicslist.get(i));
+                //startAction(IV_depPicslist.get(i));
             }
 
         }
@@ -221,62 +223,53 @@ public class DispatchDetailActivity extends AbActivity {
                 String path = FinalURL.IMGURL + pickPics[0];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
-                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_pickPic1:
                 path = FinalURL.IMGURL + pickPics[1];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
-                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_pickPic2:
                 path = FinalURL.IMGURL + pickPics[2];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
-                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_sendPic0:
                 path = FinalURL.IMGURL + sendPics[0];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
-                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_sendPic1:
                 path = FinalURL.IMGURL + sendPics[1];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
-                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_sendPic2:
                 path = FinalURL.IMGURL + sendPics[2];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
-                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_depPics0:
                 path = FinalURL.IMGURL + depPics[0];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
-                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_depPics1:
                 path = FinalURL.IMGURL + depPics[1];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
-                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.IV_depPics2:
                 path = FinalURL.IMGURL + depPics[2];
                 imageintent.putExtra("path", path);
                 startActivity(imageintent);
-                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
                 break;
             case R.id.tv_next:
                 switch (state) {
                     case -1:
                         AbToastUtil.showToast(DispatchDetailActivity.this, "-1");
                         break;
-                    case 3:
+                    case 13:
                         Intent intent = new Intent();
                         intent.putExtra("newlist",newlist);
                         intent.putExtra("state",3);
@@ -285,16 +278,18 @@ public class DispatchDetailActivity extends AbActivity {
                         startActivity(intent);
                         finish();
                         break;
-                    case 4:
+                    case 14:
                         intent = new Intent();
                         intent.putExtra("newlist",newlist);
                         intent.putExtra("state",4);
                         //intent.putExtra("logsBean", logsListBean);
                         intent.setClass(DispatchDetailActivity.this, SendGoodsActivity.class);
                         startActivity(intent);
+
+
                         finish();
                         break;
-                    case 5:
+                    case 15:
                         intent = new Intent();
                         intent.putExtra("newlist",newlist);
                         intent.putExtra("state",5);
@@ -303,8 +298,8 @@ public class DispatchDetailActivity extends AbActivity {
                         startActivity(intent);
                         finish();
                         break;
-                    case 6:
-                        startActivity(new Intent(this, MainActivity.class));
+                    case 16:
+                        //startActivity(new Intent(this, MainActivity.class));
                         finish();
                         break;
                 }
@@ -315,6 +310,7 @@ public class DispatchDetailActivity extends AbActivity {
                 break;
         }
     }
+
 
 
     //返回键监听

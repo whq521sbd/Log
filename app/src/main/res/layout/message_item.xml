@@ -31,10 +31,19 @@
             android:typeface="sans" />
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/tv_GoodsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_worry"
+            android:visibility="gone"
+            android:text="加急"
+            android:textColor="#ff00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -68,7 +77,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:checked="false"
-
             android:visibility="gone" />
     </LinearLayout>
 
@@ -86,7 +94,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/booth"
+            android:drawableLeft="@mipmap/booths"
             android:drawablePadding="2dp"
             android:text="商家摊位："
             android:textSize="16sp"

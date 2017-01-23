@@ -150,7 +150,7 @@ public class ScanSendGoods extends AbActivity {
         if (isLoadImage()) {
             params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ScanSendGoods.this, "Token"));
             params.put("TaskNum", taskInfo.getData().getLogTask_TaskNum());
-            params.put("state", 5);
+            params.put("state", 15);
             httpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                 @Override
                 public void onSuccess(int i, String s) {

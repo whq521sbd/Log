@@ -3,6 +3,7 @@ package com.auto.logistics.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -13,6 +14,8 @@ import com.auto.logistics.R;
 import com.auto.logistics.Utills.SharedPreferencesSava;
 import com.bumptech.glide.Glide;
 
+import java.util.Set;
+
 /**
  * Created by Administrator on 2016/12/5.
  */
@@ -22,6 +25,7 @@ public class ImageShowActivity extends AbActivity {
     private AbImageLoader loader = AbImageLoader.getInstance(ImageShowActivity.this);
     @AbIocView(id = R.id.ImageShow_goback,click = "click")
     ImageView ImageShow_goback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,5 +57,18 @@ public class ImageShowActivity extends AbActivity {
         }
 
     }
+
+
+
+    //返回键监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+        }
+        return false;
+    }
+
+
 
 }

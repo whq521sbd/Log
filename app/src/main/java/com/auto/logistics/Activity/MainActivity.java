@@ -3,15 +3,22 @@ package com.auto.logistics.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.transition.Transition;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +39,10 @@ import com.auto.logistics.Fragment.TransListFragment;
 import com.auto.logistics.JavaBean.LogTaskBean;
 import com.auto.logistics.R;
 import com.auto.logistics.Service.CarGpsService;
+import com.auto.logistics.Service.DemoIntentService;
+import com.auto.logistics.Service.DemoPushService;
+import com.auto.logistics.Utills.SharedPreferencesSava;
+import com.igexin.sdk.PushManager;
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import java.util.List;
@@ -41,6 +52,9 @@ import java.util.TimerTask;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
+
+
+
 
 public class MainActivity extends AbActivity {
     private FragmentManager fm;
@@ -54,12 +68,17 @@ public class MainActivity extends AbActivity {
     private MessageAdapter messageAdapter;
     private static Activity instance;
     private static BadgeView badgeView;
+    private  MessageCenterFragment messageCenterFragment;
+    private  TransListFragment transListFragment;
+    private  MineInfoFragment MineInfoFragment;
+    private DispatchFragment dispatchFragment;
+    private NotificationManager mNotificationManager;
+    private NotificationCompat.Builder mBuilder;
 
     /*
     * 初始化控件
     * */
     @AbIocView(id = R.id.TV_Message, click = "click")
-    static
     TextView TV_Message;
     @AbIocView(id = R.id.TV_list, click = "click")
     TextView TV_list;
@@ -73,28 +92,51 @@ public class MainActivity extends AbActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.activity_main);
-//     首先过得fragment管理器
+
+        // 绑定别名
+        PushManager.getInstance().bindAlias(this, SharedPreferencesSava.getInstance().getStringValue(this,"username"));
+
+        // com.getui.demo.DemoPushService 为第三方自定义推送服务
+        PushManager.getInstance().initialize(this.getApplicationContext(), DemoPushService.class);
+
+        // com.getui.demo.DemoIntentService 为第三方自定义的推送服务事件接收类
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), DemoIntentService.class);
+
+        String name =  SharedPreferencesSava.getInstance().getStringValue(this,"username");
+
+        //        注册eventbus:
+        EventBus.getDefault().register(this);
+       // badgeView = new BadgeView(MainActivity.this, TV_Message);
+//        开启Gps上传服务
+       // startService(new Intent(MainActivity.this,CarGpsService.class));
+        params = new AbRequestParams();
+        mAbHttpUtil = AbHttpUtil.getInstance(this);
+        //     首先过得fragment管理器
         fm = getSupportFragmentManager();
+
+        if (savedInstanceState != null) {
+            messageCenterFragment = (MessageCenterFragment) fm.findFragmentByTag("messageCenterFragment");
+            transListFragment = (TransListFragment) fm.findFragmentByTag("transListFragment");
+            dispatchFragment = (DispatchFragment) fm.findFragmentByTag("dispatchFragment");
+            MineInfoFragment = (com.auto.logistics.Fragment.MineInfoFragment) fm.findFragmentByTag("MineInfoFragment");
+        }
+
+
 //      默认显示的第一个页面
         MessageCenterFragment messageCenterFragment = new MessageCenterFragment();
         fm.beginTransaction()
                 .replace(R.id.RL_container, messageCenterFragment)
                 .commit();
         TV_Message.setTextColor(Color.parseColor("#00C3C5"));
-        params = new AbRequestParams();
-        mAbHttpUtil = AbHttpUtil.getInstance(this);
-        startService(new Intent(MainActivity.this,CarGpsService.class));
-
-        badgeView = new BadgeView(MainActivity.this, TV_Message);
-      //  instance = this;
-//        注册eventbus:
-        EventBus.getDefault().register(this);
-
-        // getData();
-
     }
 
-// 解除注册eventbus
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+//        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    // 解除注册eventbus
     @Override
     protected void onDestroy(){
         super.onDestroy();
@@ -105,25 +147,63 @@ public class MainActivity extends AbActivity {
 //   eventbus 订阅者
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(String message){
-       if (message.equals("show")){
-           badgeView.setText("new");
-           badgeView.setTextSize(8.0f);
-           badgeView.show();
-       }else {
-           badgeView.hide();
-       }
+//       if (message.equals("show")){
+//           badgeView.setText("new");
+//           badgeView.setTextSize(8.0f);
+//           badgeView.show();
+//       }else if (message.equals("hide")){
+//           badgeView.hide();
+//       }else {
+           notifymethod("请开往就绪区", "请将车辆开往就绪区，停车位为："+message.toString(), "您有新的物流信息！");
+           new AlertDialog.Builder(this)
+                   .setTitle("就绪提示：")
+                   .setMessage("请将车辆开往就绪区，车位号为："+message.toString()+",如果没有订单信息请刷新列表！")
+                   .setPositiveButton("确定",null)
+                   .show();
+
+    //   }
+    }
+
+    private void notifymethod(String title, String content, String ticker) {
+        mNotificationManager = (NotificationManager) MainActivity.this.getSystemService(NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(MainActivity.this);
+        mBuilder.setContentTitle(title)//设置通知栏标题
+                .setContentText(content) //设置通知栏显示内容
+                .setAutoCancel(true)//自动清空 打开
+                //.setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL)) //设置通知栏点击意图
+                //  .setNumber(number) //设置通知集合的数量
+                .setTicker(ticker) //通知首次出现在通知栏，带上升动画效果的
+                .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
+                .setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
+                //  .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
+                .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
+                .setDefaults(Notification.DEFAULT_VIBRATE)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
+                //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
+                .setSmallIcon(R.mipmap.logsimg)//设置通知小ICON
+                .setLights(Color.parseColor("#00C3C5"), 2000, 5000);
+        Notification notification = mBuilder.build();
+        notification.flags = Notification.FLAG_SHOW_LIGHTS;              //三色灯提醒，在使用三色灯提醒时候必须加该标志符
+        // notification.flags = Notification.FLAG_ONGOING_EVENT;          //发起正在运行事件（活动中）
+        //notification.flags = Notification.FLAG_INSISTENT;   //让声音、振动无限循环，直到用户响应 （取消或者打开）
+        notification.flags = Notification.FLAG_ONLY_ALERT_ONCE;  //发起Notification后，铃声和震动均只执行一次
+        notification.flags = Notification.FLAG_AUTO_CANCEL;      //用户单击通知后自动消失
+        //notification.flags = Notification.FLAG_NO_CLEAR;          //只有全部清除时，Notification才会清除 ，不清楚该通知(QQ的通知无法清除，就是用的这个)
+        // notification.flags = Notification.FLAG_FOREGROUND_SERVICE;    //表示正在运行的服务
+        mNotificationManager.notify(1, mBuilder.build());
+
     }
 
 
+
     /*
-        *
-        * Andrroid 6.0 系统，进去页面之后判断WRITE_EXTERNAL_STORAGE，是否打开
-        *
-        * 因为 STORAGE，是危险权限组，所以如果WRITE_EXTERNAL_STORAGE打开之后
-        *
-        * 则READ_EXTERNAL_STORAGE权限会自动被系统授权，不需重复判断
-        *
-        * */
+            *
+            * Andrroid 6.0 系统，进去页面之后判断WRITE_EXTERNAL_STORAGE，是否打开
+            *
+            * 因为 STORAGE，是危险权限组，所以如果WRITE_EXTERNAL_STORAGE打开之后
+            *
+            * 则READ_EXTERNAL_STORAGE权限会自动被系统授权，不需重复判断
+            *
+            * */
     private void judgePermission() {
 //        如果mainfast里面没有WRITE_EXTERNAL_STORAGE权限，则提示用户授权
         if (ContextCompat.checkSelfPermission(MainActivity.this,
@@ -131,7 +211,7 @@ public class MainActivity extends AbActivity {
                 != PackageManager.PERMISSION_GRANTED) {
 //            toast长时间提醒
             Toast.makeText(MainActivity.this, "此权限为重要权限，请允许授权!", Toast.LENGTH_LONG).show();
-//           系统自动条用授权窗口
+//           系统自动调用授权窗口
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
@@ -158,7 +238,6 @@ public class MainActivity extends AbActivity {
                 AbDialogUtil.showAlertDialog(MainActivity.this, "权限提示", "此权限为重要权限，请允许!", new AbAlertDialogFragment.AbDialogOnClickListener() {
                     @Override
                     public void onPositiveClick() {
-
                         ActivityCompat.requestPermissions(MainActivity.this,
                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
@@ -178,6 +257,7 @@ public class MainActivity extends AbActivity {
 
 
     /**
+     *
      * //图片的下载
      * AbImageLoader mAbImageLoader = AbImageLoader.newInstance(this);
      * mAbImageLoader.setLoadingImage(R.drawable.image_loading);
@@ -198,6 +278,7 @@ public class MainActivity extends AbActivity {
      * mAbImageLoader.setMaxWidth(180);
      * mAbImageLoader.setMaxHeight(180);
      * mAbImageLoader.display(scaleView3,imageUrl3);
+     *
      */
 
 
@@ -215,28 +296,30 @@ public class MainActivity extends AbActivity {
                 TV_Message.setTextColor(Color.parseColor("#45494A"));
                 TV_list.setTextColor(Color.parseColor("#45494A"));
                 TV_mydispatching.setTextColor(Color.parseColor("#45494A"));
-                MineInfoFragment MineInfoFragment = new MineInfoFragment();
+                MineInfoFragment= new MineInfoFragment();
                 fm.beginTransaction()
                         .replace(R.id.RL_container, MineInfoFragment)
                         .commit();
                 break;
+
             case R.id.TV_Message:
                 TV_Message.setTextColor(Color.parseColor("#00C3C5"));
                 TV_list.setTextColor(Color.parseColor("#45494A"));
                 TV_mydispatching.setTextColor(Color.parseColor("#45494A"));
                 TV_mineinfo.setTextColor(Color.parseColor("#45494A"));
-                MessageCenterFragment messageCenterFragment = new MessageCenterFragment();
-                fm.beginTransaction()
+                messageCenterFragment= new MessageCenterFragment();
+               fm.beginTransaction()
                         .replace(R.id.RL_container, messageCenterFragment)
                         .commit();
                 //AbToastUtil.showToast(MainActivity.this, "已经获取焦点1");
                 break;
+
             case R.id.TV_list:
                 TV_list.setTextColor(Color.parseColor("#00C3C5"));
                 TV_Message.setTextColor(Color.parseColor("#45494A"));
                 TV_mydispatching.setTextColor(Color.parseColor("#45494A"));
                 TV_mineinfo.setTextColor(Color.parseColor("#45494A"));
-                TransListFragment transListFragment = new TransListFragment();
+                transListFragment  = new TransListFragment();
                 fm.beginTransaction()
                         .replace(R.id.RL_container, transListFragment)
                         .commit();
@@ -247,15 +330,13 @@ public class MainActivity extends AbActivity {
                 TV_list.setTextColor(Color.parseColor("#45494A"));
                 TV_Message.setTextColor(Color.parseColor("#45494A"));
                 TV_mineinfo.setTextColor(Color.parseColor("#45494A"));
-                DispatchFragment dispatchFragment = new DispatchFragment();
+                dispatchFragment = new DispatchFragment();
                 fm.beginTransaction()
                         .replace(R.id.RL_container, dispatchFragment)
                         .commit();
                 break;
         }
     }
-
-
 
 
 
@@ -290,9 +371,9 @@ public class MainActivity extends AbActivity {
      */
     @Override
     protected void onStart() {
+        super.onStart();
 //        判断权限
         judgePermission();
-        super.onStart();
     }
 
 

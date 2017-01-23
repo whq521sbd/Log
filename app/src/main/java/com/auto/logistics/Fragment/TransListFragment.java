@@ -39,6 +39,24 @@ import java.util.List;
  * Created by Administrator on 2016/10/21.
  */
 
+
+/**
+ * ┌───┐   ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
+ * │Esc│   │ F1│ F2│ F3│ F4│ │ F5│ F6│ F7│ F8│ │ F9│F10│F11│F12│ │P/S│S L│P/B│  ┌┐    ┌┐    ┌┐
+ * └───┘   └───┴───┴───┴───┘ └───┴───┴───┴───┘ └───┴───┴───┴───┘ └───┴───┴───┘  └┘    └┘    └┘
+ * ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐ ┌───┬───┬───┐ ┌───┬───┬───┬───┐
+ * │~ `│! 1│@ 2│# 3│$ 4│% 5│^ 6│& 7│* 8│( 9│) 0│_ -│+ =│ BacSp │ │Ins│Hom│PUp│ │N L│ / │ * │ - │
+ * ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤ ├───┼───┼───┤ ├───┼───┼───┼───┤
+ * │ Tab │ Q │ W │ E │ R │ T │ Y │ U │ I │ O │ P │{ [│} ]│ | \ │ │Del│End│PDn│ │ 7 │ 8 │ 9 │   │
+ * ├─────┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴─────┤ └───┴───┴───┘ ├───┼───┼───┤ + │
+ * │ Caps │ A │ S │ D │ F │ G │ H │ J │ K │ L │: ;│" '│ Enter  │               │ 4 │ 5 │ 6 │   │
+ * ├──────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────────┤     ┌───┐     ├───┼───┼───┼───┤
+ * │ Shift  │ Z │ X │ C │ V │ B │ N │ M │< ,│> .│? /│  Shift   │     │ ↑ │     │ 1 │ 2 │ 3 │   │
+ * ├─────┬──┴─┬─┴──┬┴───┴───┴───┴───┴───┴──┬┴───┼───┴┬────┬────┤ ┌───┼───┼───┐ ├───┴───┼───┤  ││
+ * │ Ctrl│ win│Alt │         Space         │ Alt│win │    │Ctrl│ │ ← │ ↓ │ → │ │   0   │ . │←─┘│
+ * └─────┴────┴────┴───────────────────────┴────┴────┴────┴────┘ └───┴───┴───┘ └───────┴───┴───┘
+ */
+
 public class TransListFragment extends Fragment implements View.OnClickListener {
     private TextView TV_query;
     private EditText ED_number;
@@ -142,16 +160,16 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.LL_orders:
-                requestData(3);
+                requestData(13);
             break;
             case R.id.LL_loading :
-                requestData(4);
+                requestData(14);
             break;
             case R.id.LL_depart:
-                requestData(5);
+                requestData(15);
             break;
             case R.id.LL_arrive:
-                requestData(6);
+                requestData(16);
             break;
             case R.id.LL_finish:
                 startActivity(new Intent(getActivity(),DispatchNotesActivity.class));
@@ -170,7 +188,7 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                     String time = format.format(date);
                     params.put("queryTime", time);
                     params.put("curPage", "1");
-                    params.put("state", "6");
+                    params.put("state", "16");
                     mAbHttpUtil.post(FinalURL.URL + "/QryLogTask", params, new AbStringHttpResponseListener() {
                         @Override
                         public void onSuccess(int i, String s) {
@@ -190,7 +208,6 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                                 AbToastUtil.showToast(getActivity(),"接口获取数据失败！");
                             }
                         }
-
                         @Override
                         public void onStart() {
                             AbDialogUtil.showProgressDialog(getActivity(),-1,"正在查询订单...");
@@ -243,7 +260,7 @@ public class TransListFragment extends Fragment implements View.OnClickListener 
                         intent.putExtra("state",state);
                         startActivity(intent);
                     } else {
-                        AbToastUtil.showToast(getActivity(),"查询不到此单号！");
+                        AbToastUtil.showToast(getActivity(),"没有运单！");
                     }
                 }else {
                     AbToastUtil.showToast(getActivity(),"接口获取数据失败！");

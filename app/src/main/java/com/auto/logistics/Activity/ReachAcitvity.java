@@ -136,9 +136,11 @@ public class ReachAcitvity extends AbActivity {
      */
     private void setView() {
         TV_tile.setText("货物到达");
-        TV_intallGoodsTitle.setText("送达时间：" + logsBean.getSendTime());
-        TV_installWeight.setText("送达人：" + logsBean.getSendUser());
-        TV_installArea.setText("收货人：" + logsBean.getArea() + logsBean.getDeliUser());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+
+        TV_intallGoodsTitle.setText("送达时间：" + sdf.format(new Date()));
+        TV_installWeight.setText("重量：" + logsBean.getWeight());
+        TV_installArea.setText("收货人：" + logsBean.getComName());
     }
 
 
@@ -196,7 +198,8 @@ public class ReachAcitvity extends AbActivity {
                 break;
 
             case R.id.tv_Return:
-                startActivity(new Intent(this, MainActivity.class));
+                //startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
 //            提交操作
             case R.id.tv_installcommit:
@@ -207,7 +210,7 @@ public class ReachAcitvity extends AbActivity {
                     } else {
                         params.put("TaskNum", logsBean.getTaskNum());
                     }
-                    params.put("state", "6");
+                    params.put("state", "16");
                     mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                         @Override
                         public void onStart() {
@@ -234,6 +237,7 @@ public class ReachAcitvity extends AbActivity {
                                     boolean Suc = object.getBoolean("Suc");
                                     if (Suc) {
                                         queryLogOver();//查询手中还有多少订单
+
                                     } else if (object.getString("Msg").equals("token已失效")) {
                                         AbToastUtil.showToast(ReachAcitvity.this, "您的账号在其他客户端登录！");
                                         startActivity(new Intent(ReachAcitvity.this, LoginActivity.class));
@@ -286,29 +290,37 @@ public class ReachAcitvity extends AbActivity {
     }
 
     private void queryLogOver() {
-        params.put("Token",SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this,"Token"));
-        mAbHttpUtil.post(FinalURL.URL+"/LogOver", params, new AbStringHttpResponseListener() {
+        params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this, "Token"));
+        mAbHttpUtil.post(FinalURL.URL + "/LogOver", params, new AbStringHttpResponseListener() {
             @Override
             public void onSuccess(int i, String s) {
-                if (s!=null&&!s.equals("")){
+                if (s != null && !s.equals("")) {
                     try {
                         JSONObject object = new JSONObject(s);
-                        if (object.getBoolean("Data")){
-                            AlertDialog.Builder  builder= new AlertDialog.Builder(ReachAcitvity.this)
+                        if (object.getBoolean("Data")) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(ReachAcitvity.this)
                                     .setTitle("提示：")
                                     .setMessage("您暂时没有运单派送，是否立即返程？")
-                                    .setNegativeButton("取消",null)
+                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    })
                                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             editCarState();//改变物流状态
+                                            finish();
                                         }
                                     });
 
                             builder.show();
 
-                        }else {
-                            AbToastUtil.showToast(ReachAcitvity.this,object.getString("Msg"));
+                        } else {
+                            AbToastUtil.showToast(ReachAcitvity.this, "上传资料成功！");
+                            finish();
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -330,7 +342,7 @@ public class ReachAcitvity extends AbActivity {
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {
-                AbToastUtil.showToast(ReachAcitvity.this,"无法连接网络，查询订单状态失败！");
+                AbToastUtil.showToast(ReachAcitvity.this, "无法连接网络，查询订单状态失败！");
             }
         });
 
@@ -339,37 +351,38 @@ public class ReachAcitvity extends AbActivity {
 
     private void editCarState() {
         AbRequestParams Abparams = new AbRequestParams();
-        Abparams.put("Token",SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this,"Token"));
-        Abparams.put("State",4);
-            mAbHttpUtil.post(FinalURL.URL + "/CarSign", Abparams, new AbStringHttpResponseListener() {
-                @Override
-                public void onSuccess(int i, String s) {
-                    if (s != null && !s.equals("")) {
-                        CarSata catbean = AbJsonUtil.fromJson(s, CarSata.class);
-                        if (catbean.isSuc()) {
-                            AbToastUtil.showToast(ReachAcitvity.this, "已经修改物流状态");
-                        }
-
+        Abparams.put("Token", SharedPreferencesSava.getInstance().getStringValue(ReachAcitvity.this, "Token"));
+        Abparams.put("State", 4);
+        mAbHttpUtil.post(FinalURL.URL + "/CarSign", Abparams, new AbStringHttpResponseListener() {
+            @Override
+            public void onSuccess(int i, String s) {
+                if (s != null && !s.equals("")) {
+                    CarSata catbean = AbJsonUtil.fromJson(s, CarSata.class);
+                    if (catbean.isSuc()) {
+                        AbToastUtil.showToast(ReachAcitvity.this, "已经修改物流状态");
+                        SharedPreferencesSava.getInstance().savaIntValue(ReachAcitvity.this, "CARSTATE", 4);
                     }
-                }
 
-                @Override
-                public void onStart() {
-                    AbDialogUtil.showProgressDialog(ReachAcitvity.this, -1, "正在修改状态");
                 }
+            }
 
-                @Override
-                public void onFinish() {
-                    AbDialogUtil.removeDialog(ReachAcitvity.this);
-                }
+            @Override
+            public void onStart() {
+                AbDialogUtil.showProgressDialog(ReachAcitvity.this, -1, "正在修改状态");
+            }
 
-                @Override
-                public void onFailure(int i, String s, Throwable throwable) {
-                    AbDialogUtil.removeDialog(ReachAcitvity.this);
-                    AbToastUtil.showToast(ReachAcitvity.this, "无法访问网络，修改车辆状态失败！");
-                }
-            });
-        }
+            @Override
+            public void onFinish() {
+                AbDialogUtil.removeDialog(ReachAcitvity.this);
+            }
+
+            @Override
+            public void onFailure(int i, String s, Throwable throwable) {
+                AbDialogUtil.removeDialog(ReachAcitvity.this);
+                AbToastUtil.showToast(ReachAcitvity.this, "无法访问网络，修改车辆状态失败！");
+            }
+        });
+    }
 
 
     /**
@@ -394,70 +407,68 @@ public class ReachAcitvity extends AbActivity {
                     case 1:
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String time = format.format(new Date());
-                        if (bitmap!=null){
-                            textBitmap= ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
+                        if (bitmap != null) {
+                            textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
 
-                        try {
-                            saveFile(textBitmap, getPhotoFileName());//bitmap转换file
-                            if (myCaptureFile.exists()) {
-                                file1 = myCaptureFile;
-                                params.put("file1", file1);
-                                String img1 = file1.getAbsolutePath();
-                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this, "img1", img1);
+                            try {
+                                saveFile(textBitmap, getPhotoFileName());//bitmap转换file
+                                if (myCaptureFile.exists()) {
+                                    file1 = myCaptureFile;
+                                    params.put("file1", file1);
+                                    String img1 = file1.getAbsolutePath();
+                                    SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this, "img1", img1);
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        IV_installUpImg1.setImageBitmap(textBitmap);//时间水印
-                        IV_installUpImg1.setVisibility(View.VISIBLE);
-                        count = 2;
+                            IV_installUpImg1.setImageBitmap(textBitmap);//时间水印
+                            IV_installUpImg1.setVisibility(View.VISIBLE);
+                            count = 2;
                         }
                         break;
                     case 2:
                         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         time = format.format(new Date());
-                        if (bitmap!=null){
+                        if (bitmap != null) {
                             textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
 
-                        try {
-                            saveFile(textBitmap, getPhotoFileName());//bitmap转换file
-                            if (myCaptureFile.exists()) {
-                                file2 = myCaptureFile;
-                                params.put("file2", file2);
-                                String img2 = file2.getAbsolutePath();
-                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this, "img2", img2);
+                            try {
+                                saveFile(textBitmap, getPhotoFileName());//bitmap转换file
+                                if (myCaptureFile.exists()) {
+                                    file2 = myCaptureFile;
+                                    params.put("file2", file2);
+                                    String img2 = file2.getAbsolutePath();
+                                    SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this, "img2", img2);
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        IV_installUpImg2.setImageBitmap(textBitmap);//时间水印
-                        IV_installUpImg2.setVisibility(View.VISIBLE);
-                        count = 3;
+                            IV_installUpImg2.setImageBitmap(textBitmap);//时间水印
+                            IV_installUpImg2.setVisibility(View.VISIBLE);
+                            count = 3;
                         }
                         break;
                     case 3:
                         file3 = tempFile;
                         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         time = format.format(new Date());
-                        if (bitmap!=null){
+                        if (bitmap != null) {
                             textBitmap = ImageUtil.drawTextToRightBottom(this, bitmap, time, 10, Color.RED, 0, 0);
-
-
-                        try {
-                            saveFile(textBitmap, getPhotoFileName());//bitmap转换file
-                            if (myCaptureFile.exists()) {
-                                file3 = myCaptureFile;
-                                params.put("file3", file3);
-                                String img3 = file3.getAbsolutePath();
-                                SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this, "img3", img3);
+                            try {
+                                saveFile(textBitmap, getPhotoFileName());//bitmap转换file
+                                if (myCaptureFile.exists()) {
+                                    file3 = myCaptureFile;
+                                    params.put("file3", file3);
+                                    String img3 = file3.getAbsolutePath();
+                                    SharedPreferencesSava.getInstance().savaStringValue(ReachAcitvity.this, "img3", img3);
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        IV_installUpImg3.setImageBitmap(textBitmap);//时间水印
-                        IV_installUpImg3.setVisibility(View.VISIBLE);
-                        IV_installAddImg.setVisibility(View.GONE);
-                        count = 1;
+                            IV_installUpImg3.setImageBitmap(textBitmap);//时间水印
+                            IV_installUpImg3.setVisibility(View.VISIBLE);
+                            IV_installAddImg.setVisibility(View.GONE);
+                            count = 1;
                         }
                         break;
                 }

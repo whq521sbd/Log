@@ -87,8 +87,6 @@ public class InstallCarActivity extends AbActivity {
     private int  count=1;
     private int  state;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,18 +168,23 @@ public class InstallCarActivity extends AbActivity {
             case R.id.IV_installUpImg1:
                 intent.putExtra("state",1);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.IV_installUpImg2:
                 intent.putExtra("state",2);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.IV_installUpImg3:
                 intent.putExtra("state",3);
                 startActivity(intent);
+                finish();
                 break;
 //            返回
             case R.id.tv_Return:
-                startActivity(new Intent(this, MainActivity.class));
+             //   startActivity(new Intent(this, MainActivity.class));
+
+                finish();
                 break;
 //            提交操作
             case R.id.tv_installcommit:
@@ -193,7 +196,7 @@ public class InstallCarActivity extends AbActivity {
                     }else {
                         params.put("TaskNum", logsBean.getTaskNum());
                     }
-                    params.put("state", "4");
+                    params.put("state", "14");
 
                     mAbHttpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
                         @Override

@@ -44,7 +44,7 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
     private AbHttpUtil mAbHttpUtil;
     private TextView TV_accept, TV_install, TV_send, TV_stop, TV_back, TV_eating;
     private AbRequestParams params;
-    private FrameLayout frame1, frame2, frame3, frame4, frame5, frame6, frame8;
+    private FrameLayout frame0, frame1, frame2, frame3, frame4, frame5, frame6;
     private BigDecimal bigDecimal;
     private TextView TV_fix, TV_blockup;
     private NotificationManager mNotificationManager;
@@ -65,84 +65,78 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
         params.put("Token", SharedPreferencesSava.getInstance().getStringValue(getActivity(), "Token"));
         framelists = new ArrayList<FrameLayout>();
 
-
 //     初始化view
         initView(view);
 //    设置view事件
         setView();
 
-        if (savedInstanceState != null) {
-            switch (savedInstanceState.getInt("fragmentState", -1)) {
+            switch (SharedPreferencesSava.getInstance().getIntValue(getActivity(),"CARSTATE")) {
                 case 0:
+                    frame0.setVisibility(View.VISIBLE);
+                    frame1.setVisibility(View.INVISIBLE);
+                    frame2.setVisibility(View.INVISIBLE);
+                    frame3.setVisibility(View.INVISIBLE);
+                    frame4.setVisibility(View.INVISIBLE);
+                    frame5.setVisibility(View.INVISIBLE);
+                    frame6.setVisibility(View.INVISIBLE);
+                    break;
+                case 1:
+                    frame0.setVisibility(View.INVISIBLE);
                     frame1.setVisibility(View.VISIBLE);
                     frame2.setVisibility(View.INVISIBLE);
                     frame3.setVisibility(View.INVISIBLE);
                     frame4.setVisibility(View.INVISIBLE);
                     frame5.setVisibility(View.INVISIBLE);
                     frame6.setVisibility(View.INVISIBLE);
-                    notifymethod("暂停接单啦！", "师傅辛苦了~", "您有新的物流信息！");
-                    alphaAnmation(frame1);
-
                     break;
-                case 1:
+                case 2:
+                    frame0.setVisibility(View.INVISIBLE);
                     frame1.setVisibility(View.INVISIBLE);
                     frame2.setVisibility(View.VISIBLE);
                     frame3.setVisibility(View.INVISIBLE);
                     frame4.setVisibility(View.INVISIBLE);
                     frame5.setVisibility(View.INVISIBLE);
                     frame6.setVisibility(View.INVISIBLE);
-                    notifymethod("开始接单啦！", "开车请小心~", "您有新的物流信息！");
-                    alphaAnmation(frame2);
                     break;
-                case 2:
+                case 3:
+                    frame0.setVisibility(View.INVISIBLE);
                     frame1.setVisibility(View.INVISIBLE);
                     frame2.setVisibility(View.INVISIBLE);
                     frame3.setVisibility(View.VISIBLE);
                     frame4.setVisibility(View.INVISIBLE);
                     frame5.setVisibility(View.INVISIBLE);
                     frame6.setVisibility(View.INVISIBLE);
-                    alphaAnmation(frame3);
                     break;
-                case 3:
+                case 4:
+                    frame0.setVisibility(View.INVISIBLE);
                     frame1.setVisibility(View.INVISIBLE);
                     frame2.setVisibility(View.INVISIBLE);
                     frame3.setVisibility(View.INVISIBLE);
                     frame4.setVisibility(View.VISIBLE);
                     frame5.setVisibility(View.INVISIBLE);
                     frame6.setVisibility(View.INVISIBLE);
-                    alphaAnmation(frame4);
                     break;
-                case 4:
+                case 5:
+                    frame0.setVisibility(View.INVISIBLE);
                     frame1.setVisibility(View.INVISIBLE);
                     frame2.setVisibility(View.INVISIBLE);
                     frame3.setVisibility(View.INVISIBLE);
                     frame4.setVisibility(View.INVISIBLE);
                     frame5.setVisibility(View.VISIBLE);
                     frame6.setVisibility(View.INVISIBLE);
-                    alphaAnmation(frame5);
                     break;
-                case 5:
+                case 6:
+                    frame0.setVisibility(View.INVISIBLE);
                     frame1.setVisibility(View.INVISIBLE);
                     frame2.setVisibility(View.INVISIBLE);
                     frame3.setVisibility(View.INVISIBLE);
                     frame4.setVisibility(View.INVISIBLE);
                     frame5.setVisibility(View.INVISIBLE);
                     frame6.setVisibility(View.VISIBLE);
-                    alphaAnmation(frame6);
-                    break;
-                case 7:
-                    frame1.setVisibility(View.INVISIBLE);
-                    frame2.setVisibility(View.INVISIBLE);
-                    frame3.setVisibility(View.INVISIBLE);
-                    frame4.setVisibility(View.INVISIBLE);
-                    frame5.setVisibility(View.INVISIBLE);
-                    frame6.setVisibility(View.INVISIBLE);
-                    frame8.setVisibility(View.VISIBLE);
-                    alphaAnmation(frame8);
                     break;
             }
 
-        }
+
         return view;
     }
 
@@ -161,13 +155,13 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
     //    初始化控件
     private void initView(View view) {
         //对号
-        frame1 = (FrameLayout) view.findViewById(R.id.frame0);
-        frame2 = (FrameLayout) view.findViewById(R.id.frame1);
-        frame3 = (FrameLayout) view.findViewById(R.id.frame2);
-        frame4 = (FrameLayout) view.findViewById(R.id.frame3);
-        frame5 = (FrameLayout) view.findViewById(R.id.frame4);
-        frame6 = (FrameLayout) view.findViewById(R.id.frame5);
-        frame8 = (FrameLayout) view.findViewById(R.id.frame7);
+        frame0 = (FrameLayout) view.findViewById(R.id.frame0);
+        frame1 = (FrameLayout) view.findViewById(R.id.frame1);
+        frame2 = (FrameLayout) view.findViewById(R.id.frame2);
+        frame3 = (FrameLayout) view.findViewById(R.id.frame3);
+        frame4 = (FrameLayout) view.findViewById(R.id.frame4);
+        frame5 = (FrameLayout) view.findViewById(R.id.frame5);
+        frame6 = (FrameLayout) view.findViewById(R.id.frame6);
         TV_accept = (TextView) view.findViewById(R.id.TV_accept);
         TV_install = (TextView) view.findViewById(R.id.TV_install);
         TV_send = (TextView) view.findViewById(R.id.TV_send);
@@ -176,11 +170,6 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
         TV_eating = (TextView) view.findViewById(R.id.TV_eating);
         TV_fix = (TextView) view.findViewById(R.id.TV_fix);
         TV_blockup = (TextView) view.findViewById(R.id.TV_blockup);
-        framelists.add(frame1);
-        framelists.add(frame2);
-        framelists.add(frame3);
-        framelists.add(frame4);
-        framelists.add(frame5);
 
     }
 
@@ -202,27 +191,39 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
 //                   判断显示与隐藏
                         switch (tag) {
                             case 0:
-                                frame1.setVisibility(View.VISIBLE);
+                                frame0.setVisibility(View.VISIBLE);
+                                frame1.setVisibility(View.INVISIBLE);
                                 frame2.setVisibility(View.INVISIBLE);
                                 frame3.setVisibility(View.INVISIBLE);
                                 frame4.setVisibility(View.INVISIBLE);
                                 frame5.setVisibility(View.INVISIBLE);
                                 frame6.setVisibility(View.INVISIBLE);
                                 notifymethod("暂停接单啦！", "师傅辛苦了~", "您有新的物流信息！");
-                                alphaAnmation(frame1);
-
+                                alphaAnmation(frame0);
                                 break;
                             case 1:
+                                frame0.setVisibility(View.INVISIBLE);
+                                frame1.setVisibility(View.VISIBLE);
+                                frame2.setVisibility(View.INVISIBLE);
+                                frame3.setVisibility(View.INVISIBLE);
+                                frame4.setVisibility(View.INVISIBLE);
+                                frame5.setVisibility(View.INVISIBLE);
+                                frame6.setVisibility(View.INVISIBLE);
+                                notifymethod("开始接单啦！", "开车请小心~", "您有新的物流信息！");
+                                alphaAnmation(frame1);
+                                break;
+                            case 2:
+                                frame0.setVisibility(View.INVISIBLE);
                                 frame1.setVisibility(View.INVISIBLE);
                                 frame2.setVisibility(View.VISIBLE);
                                 frame3.setVisibility(View.INVISIBLE);
                                 frame4.setVisibility(View.INVISIBLE);
                                 frame5.setVisibility(View.INVISIBLE);
                                 frame6.setVisibility(View.INVISIBLE);
-                                notifymethod("开始接单啦！", "开车请小心~", "您有新的物流信息！");
                                 alphaAnmation(frame2);
                                 break;
-                            case 2:
+                            case 3:
+                                frame0.setVisibility(View.INVISIBLE);
                                 frame1.setVisibility(View.INVISIBLE);
                                 frame2.setVisibility(View.INVISIBLE);
                                 frame3.setVisibility(View.VISIBLE);
@@ -231,7 +232,8 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                                 frame6.setVisibility(View.INVISIBLE);
                                 alphaAnmation(frame3);
                                 break;
-                            case 3:
+                            case 4:
+                                frame0.setVisibility(View.INVISIBLE);
                                 frame1.setVisibility(View.INVISIBLE);
                                 frame2.setVisibility(View.INVISIBLE);
                                 frame3.setVisibility(View.INVISIBLE);
@@ -240,7 +242,8 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                                 frame6.setVisibility(View.INVISIBLE);
                                 alphaAnmation(frame4);
                                 break;
-                            case 4:
+                            case 5:
+                                frame0.setVisibility(View.INVISIBLE);
                                 frame1.setVisibility(View.INVISIBLE);
                                 frame2.setVisibility(View.INVISIBLE);
                                 frame3.setVisibility(View.INVISIBLE);
@@ -249,30 +252,20 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
                                 frame6.setVisibility(View.INVISIBLE);
                                 alphaAnmation(frame5);
                                 break;
-                            case 5:
+                            case 6:
+                                frame0.setVisibility(View.INVISIBLE);
                                 frame1.setVisibility(View.INVISIBLE);
                                 frame2.setVisibility(View.INVISIBLE);
                                 frame3.setVisibility(View.INVISIBLE);
                                 frame4.setVisibility(View.INVISIBLE);
                                 frame5.setVisibility(View.INVISIBLE);
                                 frame6.setVisibility(View.VISIBLE);
-                                alphaAnmation(frame6);
-                                break;
-                            case 7:
-                                frame1.setVisibility(View.INVISIBLE);
-                                frame2.setVisibility(View.INVISIBLE);
-                                frame3.setVisibility(View.INVISIBLE);
-                                frame4.setVisibility(View.INVISIBLE);
-                                frame5.setVisibility(View.INVISIBLE);
-                                frame6.setVisibility(View.INVISIBLE);
-                                frame8.setVisibility(View.VISIBLE);
-                                alphaAnmation(frame8);
                                 break;
                         }
                         AbToastUtil.showToast(getActivity(), "已经修改物流状态");
+                        return;
                     }
-                    String str = catbean.getData().toString();
-                    Log.i("1111111111", "onSuccess: " + str);
+
                 }
             }
 
@@ -345,55 +338,49 @@ public class DispatchFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.TV_stop://停止接单
+                params.put("State", "N");
+                getData(params, 0);
                 params.put("State", "0");
                 getData(params, 0);
-                paramsCar.put("State", "N");
-                getData(params, 0);
-                fragmentState = 0;
+                SharedPreferencesSava.getInstance().savaIntValue(getContext(),"CARSTATE",0);
                 break;
             case R.id.TV_accept://开始接单
+                params.put("State", "N");
+                getData(params, 1);
                 params.put("State", "1");
                 getData(params, 1);
-                paramsCar.put("State", "N");
-                getData(params, 1);
-                fragmentState = 1;
+                SharedPreferencesSava.getInstance().savaIntValue(getContext(),"CARSTATE",1);
                 break;
             case R.id.TV_install://正在装车
+                paramsCar.put("State", "N");
+                getData(params, 2);
                 params.put("State", "2");
                 getData(params, 2);
-                paramsCar.put("State", "N");
-                getData(params, 2);
-                fragmentState = 2;
+                SharedPreferencesSava.getInstance().savaIntValue(getContext(),"CARSTATE",2);
                 break;
             case R.id.TV_send://准备运送
+                paramsCar.put("State", "N");
+                getData(params, 3);
                 params.put("State", "3");
                 getData(params, 3);
-                paramsCar.put("State", "N");
-                getData(params, 3);
-                fragmentState = 3;
+                SharedPreferencesSava.getInstance().savaIntValue(getContext(),"CARSTATE",3);
                 break;
             case R.id.TV_back://运送返回
-                params.put("State", "4");
-                getData(params, 4);
                 paramsCar.put("State", "N");
                 getData(params, 4);
-                fragmentState = 4;
+                params.put("State", "4");
+                getData(params, 4);
+                SharedPreferencesSava.getInstance().savaIntValue(getContext(),"CARSTATE",4);
                 break;
             case R.id.TV_eating:
+                paramsCar.put("State", "N");//吃饭休息是改变车辆状态为暂停
+                getData(params, 5);
                 params.put("State", "5");//吃饭休息
                 getData(params, 5);
-                paramsCar.put("State", "S");//吃饭休息是改变车辆状态为暂停
-                getData(params, 5);
-                fragmentState = 5;
+                SharedPreferencesSava.getInstance().savaIntValue(getContext(),"CARSTATE",5);
                 break;
             case R.id.TV_fix:
                 startActivity(new Intent(getActivity(), FixCar.class));
-                break;
-
-            case R.id.TV_blockup:
-                params.put("State", "E");
-                getData(params, 7);
-                fragmentState = 7;
                 break;
 
 

@@ -42,7 +42,7 @@ public class ScanOrderAcitvity extends AbActivity {
     ImageView order_goback;
     @AbIocView(id = R.id.tv_confirm, click = "click")
     TextView tv_confirm;
-    @AbIocView(id =  R.id.tv_ordReturn,click = "click")
+    @AbIocView(id = R.id.tv_ordReturn, click = "click")
     TextView tv_ordReturn;
     //相关展示区域控件信息
     @AbIocView(id = R.id.TV_TaskNum)
@@ -74,12 +74,12 @@ public class ScanOrderAcitvity extends AbActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setAbContentView(R.layout.scanorderlayout);
-        params =new AbRequestParams();
-        httpUtil=AbHttpUtil.getInstance(ScanOrderAcitvity.this);
+        params = new AbRequestParams();
+        httpUtil = AbHttpUtil.getInstance(ScanOrderAcitvity.this);
         intent = getIntent();
-       //Bundle bundle = intent.getExtras();
+        //Bundle bundle = intent.getExtras();
         taskInfo = (TaskInfo) intent.getSerializableExtra("taskInfo");
-        Log.d("ScanOrderAcitvity", "onCreate: "+taskInfo);
+        Log.d("ScanOrderAcitvity", "onCreate: " + taskInfo);
         setView(taskInfo);
     }
 
@@ -93,9 +93,8 @@ public class ScanOrderAcitvity extends AbActivity {
     }
 
 
-
-    public void click(View view){
-        switch (view.getId()){
+    public void click(View view) {
+        switch (view.getId()) {
             case R.id.order_goback:
                 finish();
                 break;
@@ -109,23 +108,23 @@ public class ScanOrderAcitvity extends AbActivity {
     }
 
     private void commitData() {
-        params.put("Token",SharedPreferencesSava.getInstance().getStringValue(ScanOrderAcitvity.this,"Token"));
-        params.put("TaskNum",taskInfo.getData().getLogTask_TaskNum());
-        params.put("state",3);
+        params.put("Token", SharedPreferencesSava.getInstance().getStringValue(ScanOrderAcitvity.this, "Token"));
+        params.put("TaskNum", taskInfo.getData().getLogTask_TaskNum());
+        params.put("state", 13);
         httpUtil.post(FinalURL.URL + "/LogTaskOper", params, new AbStringHttpResponseListener() {
             @Override
             public void onSuccess(int i, String s) {
-                Log.d("ScanOrderAcitvity", "onSuccess: "+s);
-                if (s!=null&&!s.equals("")){
+                Log.d("ScanOrderAcitvity", "onSuccess: " + s);
+                if (s != null && !s.equals("")) {
                     try {
-                        JSONObject object =new JSONObject(s);
-                        if (object.getBoolean("Suc")){
-                            intent.setClass(ScanOrderAcitvity.this,ScanInstall.class);
-                            intent.putExtra("taskInfo",taskInfo);
+                        JSONObject object = new JSONObject(s);
+                        if (object.getBoolean("Suc")) {
+                            intent.setClass(ScanOrderAcitvity.this, ScanInstall.class);
+                            intent.putExtra("taskInfo", taskInfo);
                             startActivity(intent);
                             finish();
-                        }else {
-                            AbToastUtil.showToast(ScanOrderAcitvity.this,object.getString("Msg"));
+                        } else {
+                            AbToastUtil.showToast(ScanOrderAcitvity.this, object.getString("Msg"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -146,7 +145,7 @@ public class ScanOrderAcitvity extends AbActivity {
 
             @Override
             public void onFailure(int i, String s, Throwable throwable) {
-                AbToastUtil.showToast(ScanOrderAcitvity.this,"连接网络失败！");
+                AbToastUtil.showToast(ScanOrderAcitvity.this, "连接网络失败！");
             }
         });
 
@@ -159,10 +158,10 @@ public class ScanOrderAcitvity extends AbActivity {
         TV_Booth.setText(taskInfo.getData().getLogTask_Booth());
         TV_TaskNum.setText(taskInfo.getData().getLogTask_TaskNum());
         TV_Serial.setText(taskInfo.getData().getLogTask_Serial());
-       TV_TransNum.setText(taskInfo.getData().getLogTask_TransNum());
+        TV_TransNum.setText(taskInfo.getData().getLogTask_TransNum());
         TV_Area.setText(taskInfo.getData().getLogTask_Area() + taskInfo.getData().getLogTask_Street());
         TV_GoodsTitle.setText(taskInfo.getData().getLogTask_GoodsTitle());
-        //TV_Weight.setText(taskInfo.getData().getLogTask_Weight());
+        TV_Weight.setText(taskInfo.getData().getLogTask_Weight()+"千克");
         TV_RecPerson.setText(taskInfo.getData().getLogTask_RecPerson());
         TV_RecTel.setText(taskInfo.getData().getLogTask_RecTel());
         TV_RecAddr.setText(taskInfo.getData().getLogTask_RecAddr());

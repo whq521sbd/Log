@@ -154,6 +154,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -289,6 +290,7 @@
                 android:typeface="sans" />
 
             <TextView
+                android:autoLink="phone"
                 android:id="@+id/TV_RecTel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -323,6 +325,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -334,7 +337,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="3dp"
-                android:text="接单时间："
+                android:text="派单时间："
                 android:typeface="sans" />
 
             <TextView

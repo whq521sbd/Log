@@ -92,8 +92,8 @@ public class SharedPreferencesSava {
      * @方法名称:getIntValue
      * @返回int
      */
-    public int getIntValue(Context context, String spName, String key) {
-        return getIntValue(context, spName, key, 0);
+    public int getIntValue(Context context, String key) {
+        return getIntValue(context, "litdate", key, 0);
     }
 
     /**

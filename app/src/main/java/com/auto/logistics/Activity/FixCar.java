@@ -159,7 +159,9 @@ public class FixCar extends AbActivity {
                 finish();
                 break;
             case R.id.tv_commit:
-                commit();
+                if (cheakNull()&&isLoadImageViews()){
+                    commit();
+                }
                 break;
             case R.id.IV_installAddImg:
                 AlertDialog.Builder builder = new AlertDialog.Builder(FixCar.this);
@@ -192,7 +194,14 @@ public class FixCar extends AbActivity {
                         }).show();
                 break;
         }
+    }
 
+    private boolean cheakNull() {
+        if (ED_Remarks.getText().toString().equals("")){
+            AbToastUtil.showToast(FixCar.this,"请必须填写检修原因！");
+            return  false;
+        }
+        return true;
     }
 
     private void commit() {
@@ -208,6 +217,7 @@ public class FixCar extends AbActivity {
 
                         if (object.getBoolean("Suc")) {
                             AbToastUtil.showToast(FixCar.this, "提交数据成功！");
+                            SharedPreferencesSava.getInstance().savaIntValue(FixCar.this,"CARSTATE",6);
                             finish();
                         } else if (object.getString("Msg").equals("token已失效")) {
                             startActivity(new Intent(FixCar.this, LoginActivity.class));
@@ -483,6 +493,7 @@ public class FixCar extends AbActivity {
                 break;
         }
     }
+
 
 
 }

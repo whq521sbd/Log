@@ -25,6 +25,7 @@ import com.ab.http.AbRequestParams;
 import com.ab.http.AbStringHttpResponseListener;
 import com.ab.util.AbJsonUtil;
 import com.ab.util.AbToastUtil;
+import com.auto.logistics.Activity.DispatchDetailActivity;
 import com.auto.logistics.Activity.ScanInstall;
 import com.auto.logistics.Activity.ScanOrderAcitvity;
 import com.auto.logistics.Activity.ScanReach;
@@ -33,6 +34,7 @@ import com.auto.logistics.JavaBean.TaskInfo;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
+import com.auto.logistics.Utills.ToastUtil;
 import com.auto.logistics.zxing.camera.CameraManager;
 import com.auto.logistics.zxing.common.BitmapUtils;
 import com.auto.logistics.zxing.decode.BitmapDecoder;
@@ -151,7 +153,14 @@ public final class DecodeActivity extends Activity implements
                 case PARSE_BARCODE_SUC: // 解析图片成功
                     Toast.makeText(activityReference.get(),
                             "解析成功，结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
-                    SharedPreferencesSava.getInstance().savaStringValue(DecodeActivity.this, "scanstring", msg.obj.toString());//手动添加
+//                    ------------------------------------------------------------------------------------------------
+                    String QRinfo = ResultParser.parseResult((Result) msg.obj).toString();
+                    Log.d("queryStatus", "handleDecode: " + QRinfo);
+                    String[] QRinfos = QRinfo.split(",");
+                    queryStatus(QRinfos[0]);
+
+                    finish();//手工加的：关闭界面，并保存扫描信息
+//                    ---------------------------------------------------------------------------------------
                     break;
 
                 case PARSE_BARCODE_FAIL:// 解析图片失败
@@ -402,9 +411,9 @@ public final class DecodeActivity extends Activity implements
 
         beepManager.playBeepSoundAndVibrate();
 
-        Toast.makeText(this,
-                "识别结果:" + ResultParser.parseResult(rawResult).toString(),
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,
+//                "识别结果:" + ResultParser.parseResult(rawResult).toString(),
+//                Toast.LENGTH_SHORT).show();
 
 //        ---------------------------------------------------------------------------------------
         String QRinfo = ResultParser.parseResult(rawResult).toString();
@@ -428,35 +437,38 @@ public final class DecodeActivity extends Activity implements
                     Log.d("queryStatus", "onSuccess: "+s);
                     if (taskInfo.isSuc()) {
                         String state = taskInfo.getData().getLogTask_State();
-
+                        Log.d("queryStatus", "state: "+state);
                         switch (state) {
-                            case "2":
+                            case "12":
                                 //Bundle bundle = new Bundle();
                                 //bundle.putSerializable("taskInfo", taskInfo);
                                 Intent intent = new Intent(DecodeActivity.this, ScanOrderAcitvity.class);
                                 intent.putExtra("taskInfo", taskInfo);
                                 startActivity(intent);
                                 break;
-                            case "3":
+                            case "13":
 //                                bundle = new Bundle();
 //                                bundle.putSerializable("taskInfo", taskInfo);
                                 intent = new Intent(DecodeActivity.this, ScanInstall.class);
                                 intent.putExtra("taskInfo", taskInfo);
                                 startActivity(intent);
                                 break;
-                            case "4":
+                            case "14":
 //                                bundle = new Bundle();
 //                                bundle.putSerializable("taskInfo", taskInfo);
                                 intent = new Intent(DecodeActivity.this, ScanSendGoods.class);
                                 intent.putExtra("taskInfo", taskInfo);
                                 startActivity(intent);
                                 break;
-                            case "5":
+                            case "15":
 //                                bundle = new Bundle();
 //                                bundle.putSerializable("taskInfo", taskInfo);
                                 intent = new Intent(DecodeActivity.this, ScanReach.class);
                                 intent.putExtra("taskInfo", taskInfo);
                                 startActivity(intent);
+                                break;
+                            case "16":
+                                ToastUtil.showToast(DecodeActivity.this,"此单状态已完成，请在“我的运单”查看~",0);
                                 break;
                         }
 

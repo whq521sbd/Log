@@ -30,6 +30,11 @@ public class MessageAdapter extends BaseAdapter {
         this.dataList = dataList;
     }
 
+
+    /**
+     * 对于ListView中的数据，显示每行数据都要调用一次该方法convertView和ViewHolder同完成缓存机，以优化性能
+     */
+
     // 必须得到真实的数据源项数，否则不能适配数据
     @Override
     public int getCount() {
@@ -47,9 +52,6 @@ public class MessageAdapter extends BaseAdapter {
     }
 
 
-    /**
-     * 对于ListView中的数据，显示每行数据都要调用一次该方法convertView和ViewHolder同完成缓存机，以优化性能
-     */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -68,7 +70,7 @@ public class MessageAdapter extends BaseAdapter {
             holder.rightarrow = (ImageView) view.findViewById(R.id.rightarrow);
             holder.tv_Booth = (TextView) view.findViewById(R.id.tv_Booth);
             holder.ck_itemcheck = (CheckBox) view.findViewById(R.id.ck_itemcheck);
-
+            holder.tv_worry = (TextView) view.findViewById(R.id.tv_worry);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -82,6 +84,28 @@ public class MessageAdapter extends BaseAdapter {
         holder.tv_Booth.setText(dataList.get(position).getBooth());
 //        holder.iv_main_item_sex.setImageDrawable(dataList.get(position).getSex());
         //AbToastUtil.showToast(ctx,dataList.get(position).getRecAddr());
+        //TODO:  从数据源获取每条数据，如果有加急，则显示
+        switch (dataList.get(position).getLogUrg().toString()){
+            case "0":
+                holder.tv_worry.setVisibility(View.GONE);
+                break;
+            case "1":
+                holder.tv_worry.setText("一级加急");
+                holder.tv_worry.setVisibility(View.VISIBLE);
+                break;
+            case "2":
+                holder.tv_worry.setText("二级加急");
+                holder.tv_worry.setVisibility(View.VISIBLE);
+                break;
+            case "3":
+                holder.tv_worry.setText("三级加急");
+                holder.tv_worry.setVisibility(View.VISIBLE);
+                break;
+        }
+//
+//        if (dataList.get(position).getLogUrg().toString().equals("")){
+//            holder.tv_worry.setVisibility(View.VISIBLE);
+//        }
         return view;
     }
 
@@ -92,6 +116,7 @@ public class MessageAdapter extends BaseAdapter {
         public ImageView rightarrow;
         public  TextView tv_Booth;
         public CheckBox ck_itemcheck;
+        public TextView tv_worry;
     }
 
 

@@ -32,7 +32,7 @@ public class CarGpsService extends Service {
     // 位置
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private Location location = null;
+    private Location location ;
     private String oldlocation = "";
     private String contextService = Context.LOCATION_SERVICE;
     private String provider;
@@ -50,6 +50,7 @@ public class CarGpsService extends Service {
             switch (msg.what) {
                 case 10086:
                     UpdataLoction();
+                    Log.d("CarGpsService", "GPS坐标已上传");
                     break;
             }
         }
@@ -59,6 +60,7 @@ public class CarGpsService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d("CarGpsService", "GPS服务已开启！ ");
         httpUtil = AbHttpUtil.getInstance(getApplicationContext());
         params = new AbRequestParams();
 

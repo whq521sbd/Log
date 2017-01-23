@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <FrameLayout
+        android:id="@+id/fixcaritem_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00C3C5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:padding="15dp"
+            android:text="检修详情"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:typeface="sans" />
+
+        <ImageView
+            android:id="@+id/IV_Rback"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="4dp"
+            android:padding="6dp"
+            android:src="@mipmap/back_img" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fixcaritem_title"
+        android:background="#FE6E03"
+        android:drawablePadding="2dp"
+        android:text=" | 列表详情"
+        android:textSize="16sp"
+        android:typeface="sans" />
+
+    <LinearLayout
+        android:id="@+id/Area1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toLeftOf="@+id/rightarrow"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/date"
+            android:drawablePadding="2dp"
+            android:text="检修日期："
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_fixdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.6px"
+        android:layout_below="@+id/Area1"
+        android:background="@color/colorAccent" />
+
+    <LinearLayout
+        android:id="@+id/Area2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow"
+        android:padding="5dp"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/consoler"
+            android:drawablePadding="2dp"
+            android:text="操作人员："
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_consoler"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.6px"
+        android:layout_below="@+id/Area2"
+        android:background="@color/colorAccent" />
+
+    <LinearLayout
+        android:id="@+id/Area3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area2"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/marks"
+            android:drawablePadding="2dp"
+            android:text="备注信息："
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_marks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.6px"
+        android:layout_below="@+id/Area3"
+        android:background="@color/colorAccent" />
+
+    <LinearLayout
+        android:id="@+id/Area4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area3"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/state"
+            android:drawablePadding="2dp"
+            android:text="车辆状态："
+            android:textSize="16sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_fixcarstate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.6px"
+        android:layout_below="@+id/Area4"
+        android:background="@color/colorAccent" />
+
+
+    <LinearLayout
+        android:id="@+id/Area5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area4"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/rightarrow"
+        android:padding="5dp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/photo"
+            android:drawablePadding="2dp"
+            android:text="车辆照片："
+            android:textSize="16sp"
+            android:typeface="sans" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ImagArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Area5"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/IV_fixcarimg0"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/IV_fixcarimg1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/IV_fixcarimg2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.6px"
+        android:layout_below="@+id/Area5"
+        android:background="@color/colorAccent" />
+
+
+    <TextView
+        android:id="@+id/tv_return"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/ImagArea"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bluebuttonstyle"
+        android:gravity="center"
+        android:text="返回"
+        android:textColor="#fff"
+        android:textSize="25sp" />
+
+
+</RelativeLayout>

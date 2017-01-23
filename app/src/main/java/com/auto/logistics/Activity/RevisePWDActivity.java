@@ -1,7 +1,11 @@
 package com.auto.logistics.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PersistableBundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +25,7 @@ import com.ab.util.AbMd5;
 import com.ab.util.AbStrUtil;
 import com.ab.util.AbToastUtil;
 import com.ab.view.ioc.AbIocView;
+import com.auto.logistics.ContentObserver.SMSContentObserver;
 import com.auto.logistics.R;
 import com.auto.logistics.Utills.FinalURL;
 import com.auto.logistics.Utills.SharedPreferencesSava;
@@ -53,6 +58,8 @@ public class RevisePWDActivity extends AbActivity {
 
     private AbHttpUtil mAbHttpUtil;
     private AbRequestParams params;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

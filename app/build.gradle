@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'android-apt'//butterknife 8.4.0
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
@@ -10,6 +10,20 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
+        manifestPlaceholders = [
+                GETUI_APP_ID : "l1LFG9EJ499jGx968LWwS3",
+                GETUI_APP_KEY : "CmP9hP868W8FNO8o6G03L9",
+                GETUI_APP_SECRET : "rgu5DEn77z91q2SrvNSxS6"
+        ]
+
+        ndk {
+
+            abiFilters "armeabi", "armeabi-v7a", "x86_64"
+        }
+
+
     }
     buildTypes {
         release {
@@ -17,6 +31,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
 }
 
 dependencies {
@@ -35,4 +57,10 @@ dependencies {
     compile 'com.google.zxing:android-core:3.2.1'
     compile 'de.greenrobot:eventbus:3.0.0-beta1'
     compile files('libs/Msc.jar')
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.getui:sdk:2.+'
+    compile 'com.android.support:support-v4:+'
+    compile files('libs/BaiduLBS_Android.jar')
+    compile 'com.jakewharton:butterknife:8.4.0'
 }
